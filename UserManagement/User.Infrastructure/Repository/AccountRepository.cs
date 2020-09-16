@@ -1,4 +1,6 @@
-﻿using System.Threading.Tasks;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
+using System.Threading.Tasks;
 using User.Infrastructure.Repository.Entities;
 
 namespace User.Infrastructure.Repository
@@ -17,6 +19,55 @@ namespace User.Infrastructure.Repository
                     RoleId = roleId,
                     ProfilePic = image
                 });
+
+                await context.SaveChangesAsync();
+            }
+        }
+
+        public async Task<Account> GetAccountByName(string name)
+        {
+            using (var context = new TaskManagementContext())
+            {
+                var account = await context.Account.FirstOrDefaultAsync(a => a.Name == name);
+
+                if(account == null)
+                {
+                    throw new Exception("Account does not exist.");
+                }
+
+                return account;
+            }
+        }
+
+        public async Task UpdatePassword(string name, string newPassword)
+        {
+            using (var context = new TaskManagementContext())
+            {
+                var account = await context.Account.FirstOrDefaultAsync(a => a.Name == name);
+
+                if (account == null)
+                {
+                    throw new Exception("Account does not exist.");
+                }
+
+                account.Password = newPassword;
+
+                await context.SaveChangesAsync();
+            }
+        }
+
+        public async Task UpdateRole(string name, int newRoleId)
+        {
+            using (var context = new TaskManagementContext())
+            {
+                var account = await context.Account.FirstOrDefaultAsync(a => a.Name == name);
+
+                if (account == null)
+                {
+                    throw new Exception("Account does not exist.");
+                }
+
+                account.RoleId = newRoleId;
 
                 await context.SaveChangesAsync();
             }
