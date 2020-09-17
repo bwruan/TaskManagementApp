@@ -9,6 +9,8 @@ namespace User.Infrastructure.Repository
 
         Task<Account> GetAccountByName(string name);
 
+        Task<Account> GetAccountByEmail(string email);
+
         Task UpdatePassword(string name, string newPassword);
 
         Task UpdateRole(string name, int newRole);

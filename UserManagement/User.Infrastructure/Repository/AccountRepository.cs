@@ -24,6 +24,21 @@ namespace User.Infrastructure.Repository
             }
         }
 
+        public async Task<Account> GetAccountByEmail(string email)
+        {
+            using (var context = new TaskManagementContext())
+            {
+                var account = await context.Account.FirstOrDefaultAsync(a => a.Email == email);
+
+                if (account == null)
+                {
+                    throw new Exception("Account does not exist.");
+                }
+
+                return account;
+            }
+        }
+
         public async Task<Account> GetAccountByName(string name)
         {
             using (var context = new TaskManagementContext())
