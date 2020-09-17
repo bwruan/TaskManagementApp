@@ -11,8 +11,12 @@ namespace User.Infrastructure.Repository
 
         Task<Account> GetAccountByEmail(string email);
 
-        Task UpdatePassword(string name, string newPassword);
+        Task<Account> GetAccountById(long id);
 
-        Task UpdateRole(string name, int newRole);
+        Task UpdatePassword(long id, string newPassword);
+
+        Task UpdateUserInfo(long id, string newName, string newEmail, int newRoleId, byte[]newPic);
+
+        Task UpdateStatus(long id, bool status);
     }
 }

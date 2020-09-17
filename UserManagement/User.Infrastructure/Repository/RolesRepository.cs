@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using User.Infrastructure.Repository.Entities;
 
 namespace User.Infrastructure.Repository
@@ -13,6 +14,11 @@ namespace User.Infrastructure.Repository
 
                 await context.SaveChangesAsync();
             }
+        }
+
+        public Task<List<Roles>> GetRoles()
+        {
+            throw new System.NotImplementedException();
         }
     }
 }

@@ -9,8 +9,9 @@ namespace User.Infrastructure.Repository.Entities
         public string Name { get; set; }
         public string Email { get; set; }
         public string Password { get; set; }
-        public int? RoleId { get; set; }
+        public int RoleId { get; set; }
         public byte[] ProfilePic { get; set; }
+        public bool Status { get; set; }
         public DateTime CreatedDate { get; set; }
         public DateTime? UpdatedDate { get; set; }
         public bool? Active { get; set; }

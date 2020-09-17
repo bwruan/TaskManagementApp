@@ -31,7 +31,9 @@ namespace User.Infrastructure.Repository.Entities
         {
             modelBuilder.Entity<Account>(entity =>
             {
-                entity.Property(e => e.Active).HasDefaultValueSql("((1))");
+                entity.Property(e => e.Active)
+                    .IsRequired()
+                    .HasDefaultValueSql("((1))");
 
                 entity.Property(e => e.CreatedDate).HasDefaultValueSql("(getdate())");
 
@@ -53,7 +55,8 @@ namespace User.Infrastructure.Repository.Entities
                 entity.HasOne(d => d.Role)
                     .WithMany(p => p.Account)
                     .HasForeignKey(d => d.RoleId)
-                    .HasConstraintName("FK__Account__RoleId__49C3F6B7");
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK__Account__RoleId__5441852A");
             });
 
             modelBuilder.Entity<Roles>(entity =>

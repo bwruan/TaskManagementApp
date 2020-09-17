@@ -32,7 +32,22 @@ namespace User.Infrastructure.Repository
 
                 if (account == null)
                 {
-                    throw new Exception("Account does not exist.");
+                    throw new ArgumentException("Account does not exist.");
+                }
+
+                return account;
+            }
+        }
+
+        public async Task<Account> GetAccountById(long id)
+        {
+            using(var context = new TaskManagementContext())
+            {
+                var account = await context.Account.FirstOrDefaultAsync(a => a.Id == id);
+
+                if (account == null)
+                {
+                    throw new ArgumentException("Account does not exist.");
                 }
 
                 return account;
@@ -47,45 +62,39 @@ namespace User.Infrastructure.Repository
 
                 if(account == null)
                 {
-                    throw new Exception("Account does not exist.");
+                    throw new ArgumentException("Account does not exist.");
                 }
 
                 return account;
             }
         }
 
-        public async Task UpdatePassword(string name, string newPassword)
+        public async Task UpdatePassword(long id, string newPassword)
         {
             using (var context = new TaskManagementContext())
             {
-                var account = await context.Account.FirstOrDefaultAsync(a => a.Name == name);
+                var account = await context.Account.FirstOrDefaultAsync(a => a.Id == id);
 
                 if (account == null)
                 {
-                    throw new Exception("Account does not exist.");
+                    throw new ArgumentException("Account does not exist.");
                 }
 
                 account.Password = newPassword;
+                account.UpdatedDate = DateTime.Now;
 
                 await context.SaveChangesAsync();
             }
         }
 
-        public async Task UpdateRole(string name, int newRoleId)
+        public Task UpdateStatus(long id, bool status)
         {
-            using (var context = new TaskManagementContext())
-            {
-                var account = await context.Account.FirstOrDefaultAsync(a => a.Name == name);
+            throw new NotImplementedException();
+        }
 
-                if (account == null)
-                {
-                    throw new Exception("Account does not exist.");
-                }
-
-                account.RoleId = newRoleId;
-
-                await context.SaveChangesAsync();
-            }
+        public Task UpdateUserInfo(long id, string newName, string newEmail, int newRoleId, byte[] newPic)
+        {
+            throw new NotImplementedException();
         }
     }
 }
