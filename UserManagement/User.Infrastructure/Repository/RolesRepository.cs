@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using User.Infrastructure.Repository.Entities;
 
@@ -16,9 +17,12 @@ namespace User.Infrastructure.Repository
             }
         }
 
-        public Task<List<Roles>> GetRoles()
+        public async Task<List<Roles>> GetRoles()
         {
-            throw new System.NotImplementedException();
+            using(var context = new TaskManagementContext())
+            {
+                return await context.Roles.ToListAsync();
+            }
         }
     }
 }

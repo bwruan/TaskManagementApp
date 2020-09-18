@@ -15,7 +15,7 @@ namespace User.Infrastructure.Repository
 
         Task UpdatePassword(long id, string newPassword);
 
-        Task UpdateUserInfo(long id, string newName, string newEmail, int newRoleId, byte[]newPic);
+        Task UpdateAccountInfo(long id, string newName, string newEmail, int newRoleId, byte[]newPic);
 
         Task UpdateStatus(long id, bool status);
     }

@@ -87,14 +87,43 @@ namespace User.Infrastructure.Repository
             }
         }
 
-        public Task UpdateStatus(long id, bool status)
+        public async Task UpdateStatus(long id, bool status)
         {
-            throw new NotImplementedException();
+            using (var context = new TaskManagementContext())
+            {
+                var account = await context.Account.FirstOrDefaultAsync(a => a.Id == id);
+
+                if (account == null)
+                {
+                    throw new ArgumentException("Account does not exist.");
+                }
+
+                account.Status = status;
+                account.UpdatedDate = DateTime.Now;
+
+                await context.SaveChangesAsync();
+            }
         }
 
-        public Task UpdateUserInfo(long id, string newName, string newEmail, int newRoleId, byte[] newPic)
+        public async Task UpdateAccountInfo(long id, string newName, string newEmail, int newRoleId, byte[] newPic)
         {
-            throw new NotImplementedException();
+            using (var context = new TaskManagementContext())
+            {
+                var account = await context.Account.FirstOrDefaultAsync(a => a.Id == id);
+
+                if (account == null)
+                {
+                    throw new ArgumentException("Account does not exist.");
+                }
+
+                account.Name = newName;
+                account.Email = newEmail;
+                account.RoleId = newRoleId;
+                account.ProfilePic = newPic;
+                account.UpdatedDate = DateTime.Now;
+
+                await context.SaveChangesAsync();
+            }
         }
     }
 }

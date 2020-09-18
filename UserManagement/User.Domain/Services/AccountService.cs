@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using User.Domain.Mapper;
 using User.Domain.Models;
 using User.Infrastructure.Repository;
 
@@ -31,6 +32,11 @@ namespace User.Domain.Services
                 throw new ArgumentException("Password field blank.");
             }
 
+            if(password.Length < 8 || password.Length > 32)
+            {
+                throw new ArgumentException("Password length not met.");
+            }
+
             await _accountRepository.CreateAccount(name, email, password, roleId, image);
         }
 
@@ -38,27 +44,65 @@ namespace User.Domain.Services
         {
             var account = await _accountRepository.GetAccountById(id);
 
-            return account;
+            return AccountMapper.DbAccountToCoreAccount(account);
         }
 
-        public Task LogIn(long id)
+        public async Task LogIn(long id)
         {
-            throw new NotImplementedException();
+            var account = await _accountRepository.GetAccountById(id);
+
+            if(account.Status == true)
+            {
+                return;
+            }
+
+            await _accountRepository.UpdateStatus(id, true);
         }
 
-        public Task LogOut(long id)
+        public async Task LogOut(long id)
         {
-            throw new NotImplementedException();
+            var account = await _accountRepository.GetAccountById(id);
+
+            if (account.Status == false)
+            {
+                return;
+            }
+
+            await _accountRepository.UpdateStatus(id, false);
         }
 
-        public Task UpdateAccountInfo(long id, string newName, string newEmail, int newRoleId, byte[] newPic)
+        public async Task UpdateAccountInfo(long id, string newName, string newEmail, int newRoleId, byte[] newPic)
         {
-            throw new NotImplementedException();
+            var account = await _accountRepository.GetAccountById(id);
+
+            if (string.IsNullOrEmpty(newName))
+            {
+                throw new ArgumentException("Name field blank.");
+            }
+
+            if (string.IsNullOrEmpty(newEmail))
+            {
+                throw new ArgumentException("Email field blank.");
+            }
+
+            await _accountRepository.UpdateAccountInfo(id, newName, newEmail, newRoleId, newPic);
         }
 
-        public Task UpdatePassword(long id, string newPassword)
+        public async Task UpdatePassword(long id, string newPassword)
         {
-            throw new NotImplementedException();
+            var account = await _accountRepository.GetAccountById(id);
+
+            if (string.IsNullOrEmpty(newPassword))
+            {
+                throw new ArgumentException("Password field blank.");
+            }
+
+            if (newPassword.Length < 8 || newPassword.Length > 32)
+            {
+                throw new ArgumentException("Password length not met.");
+            }
+
+            await _accountRepository.UpdatePassword(id, newPassword);
         }
     }
 }

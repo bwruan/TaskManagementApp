@@ -8,8 +8,4 @@
     <ProjectReference Include="..\User.Infrastructure\User.Infrastructure.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Mapper\" />
-  </ItemGroup>
-
 </Project>
