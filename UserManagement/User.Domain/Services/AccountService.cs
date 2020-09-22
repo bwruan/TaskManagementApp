@@ -53,7 +53,7 @@ namespace User.Domain.Services
 
             if(account.Status == true)
             {
-                return;
+                throw new ArgumentException("Account already online");
             }
 
             await _accountRepository.UpdateStatus(id, true);
@@ -65,7 +65,7 @@ namespace User.Domain.Services
 
             if (account.Status == false)
             {
-                return;
+                throw new ArgumentException("Account already offline");
             }
 
             await _accountRepository.UpdateStatus(id, false);
