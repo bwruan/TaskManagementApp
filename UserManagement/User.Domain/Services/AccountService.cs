@@ -40,23 +40,23 @@ namespace User.Domain.Services
             await _accountRepository.CreateAccount(name, email, password, roleId, image);
         }
 
-        public async Task<Account> GetAccount(long id)
+        public async Task<Account> GetAccount(string email)
         {
-            var account = await _accountRepository.GetAccountById(id);
+            var account = await _accountRepository.GetAccountByEmail(email);
 
             return AccountMapper.DbAccountToCoreAccount(account);
         }
 
-        public async Task LogIn(long id)
+        public async Task LogIn(string email, string password)
         {
-            var account = await _accountRepository.GetAccountById(id);
+            var account = await _accountRepository.GetAccountByEmail(email);
 
             if(account.Status == true)
             {
                 throw new ArgumentException("Account already online");
             }
 
-            await _accountRepository.UpdateStatus(id, true);
+            await _accountRepository.UpdateStatus(email, password, true);
         }
 
         public async Task LogOut(long id)
@@ -68,7 +68,7 @@ namespace User.Domain.Services
                 throw new ArgumentException("Account already offline");
             }
 
-            await _accountRepository.UpdateStatus(id, false);
+            await _accountRepository.UpdateStatus(account.Email, account.Password, false);
         }
 
         public async Task UpdateAccountInfo(long id, string newName, string newEmail, int newRoleId, byte[] newPic)

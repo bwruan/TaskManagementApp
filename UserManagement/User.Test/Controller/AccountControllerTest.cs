@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using Moq;
 using NUnit.Framework;
 using System;
@@ -14,11 +15,18 @@ namespace User.Test.Controller
     public class AccountControllerTest
     {
         private Mock<IAccountService> _accountService;
+        private Mock<IConfiguration> _configuration;
 
         [SetUp]
         public void Setup()
         {
             _accountService = new Mock<IAccountService>();
+            _configuration = new Mock<IConfiguration>();
+
+            _configuration.Setup(g => g.GetSection(It.Is<string>(s => s.Equals("Jwt:Key"))).Value)
+                .Returns("ThisismySecretKey");
+            _configuration.Setup(g => g.GetSection(It.Is<string>(s => s.Equals("Jwt:Issuer"))).Value)
+                .Returns("test.com");
         }
 
         [Test]
@@ -27,7 +35,7 @@ namespace User.Test.Controller
             _accountService.Setup(a => a.CreateAccount(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<byte[]>()))
                 .Returns(Task.CompletedTask);
 
-            var controller = new AccountController(_accountService.Object);
+            var controller = new AccountController(_accountService.Object, _configuration.Object);
 
             var response = await controller.CreateAccount(new AccountRequest()
             {
@@ -51,7 +59,7 @@ namespace User.Test.Controller
             _accountService.Setup(a => a.CreateAccount(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<byte[]>()))
                 .ThrowsAsync(new Exception());
 
-            var controller = new AccountController(_accountService.Object);
+            var controller = new AccountController(_accountService.Object, _configuration.Object);
 
             var response = await controller.CreateAccount(new AccountRequest()
             {
@@ -70,14 +78,14 @@ namespace User.Test.Controller
         }
 
         [Test]
-        public async Task GetAccountById_Success()
+        public async Task GetAccountByEmail_Success()
         {
-            _accountService.Setup(a => a.GetAccount(It.IsAny<long>()))
+            _accountService.Setup(a => a.GetAccount(It.IsAny<string>()))
                 .ReturnsAsync(new Account());
 
-            var controller = new AccountController(_accountService.Object);
+            var controller = new AccountController(_accountService.Object, _configuration.Object);
 
-            var response = await controller.GetAccountById(1);
+            var response = await controller.GetAccountByEmail("email@email.com");
 
             Assert.NotNull(response);
             Assert.AreEqual(response.GetType(), typeof(OkObjectResult));
@@ -88,14 +96,14 @@ namespace User.Test.Controller
         }
 
         [Test]
-        public async Task GetAccountById_InternalServerError()
+        public async Task GetAccountByEmail_InternalServerError()
         {
-            _accountService.Setup(a => a.GetAccount(It.IsAny<long>()))
+            _accountService.Setup(a => a.GetAccount(It.IsAny<string>()))
                 .ThrowsAsync(new Exception());
 
-            var controller = new AccountController(_accountService.Object);
+            var controller = new AccountController(_accountService.Object, _configuration.Object);
 
-            var response = await controller.GetAccountById(1);
+            var response = await controller.GetAccountByEmail("email@email.com");
 
             Assert.NotNull(response);
             Assert.AreEqual(response.GetType(), typeof(ObjectResult));
@@ -108,20 +116,21 @@ namespace User.Test.Controller
         [Test]
         public async Task LogIn_Success()
         {
-            _accountService.Setup(a => a.LogIn(It.IsAny<long>()))
+            _accountService.Setup(a => a.LogIn(It.IsAny<string>(), It.IsAny<string>()))
                 .Returns(Task.CompletedTask);
 
-            var controller = new AccountController(_accountService.Object);
+            var controller = new AccountController(_accountService.Object, _configuration.Object);
 
-            var response = await controller.LogIn(new BaseRequest() 
+            var response = await controller.LogIn(new AccountRequest() 
             { 
-                Id = 1
+                Email = "email@email.com",
+                Password = "password123"
             });
 
             Assert.NotNull(response);
-            Assert.AreEqual(response.GetType(), typeof(OkResult));
+            Assert.AreEqual(response.GetType(), typeof(OkObjectResult));
 
-            var ok = (OkResult)response;
+            var ok = (OkObjectResult)response;
 
             Assert.AreEqual(ok.StatusCode, 200);
         }
@@ -129,14 +138,15 @@ namespace User.Test.Controller
         [Test]
         public async Task LogIn_InternalServerError()
         {
-            _accountService.Setup(a => a.LogIn(It.IsAny<long>()))
+            _accountService.Setup(a => a.LogIn(It.IsAny<string>(), It.IsAny<string>()))
                 .ThrowsAsync(new Exception());
 
-            var controller = new AccountController(_accountService.Object);
+            var controller = new AccountController(_accountService.Object, _configuration.Object);
 
-            var response = await controller.LogIn(new BaseRequest()
+            var response = await controller.LogIn(new AccountRequest()
             {
-                Id = 1
+                Email = "email@email.com",
+                Password= "password123"
             });
 
             Assert.NotNull(response);
@@ -153,7 +163,7 @@ namespace User.Test.Controller
             _accountService.Setup(a => a.LogOut(It.IsAny<long>()))
                 .Returns(Task.CompletedTask);
 
-            var controller = new AccountController(_accountService.Object);
+            var controller = new AccountController(_accountService.Object, _configuration.Object);
 
             var response = await controller.LogOut(new BaseRequest()
             {
@@ -174,7 +184,7 @@ namespace User.Test.Controller
             _accountService.Setup(a => a.LogOut(It.IsAny<long>()))
                 .ThrowsAsync(new Exception());
 
-            var controller = new AccountController(_accountService.Object);
+            var controller = new AccountController(_accountService.Object, _configuration.Object);
 
             var response = await controller.LogOut(new BaseRequest()
             {
@@ -195,7 +205,7 @@ namespace User.Test.Controller
             _accountService.Setup(a => a.UpdatePassword(It.IsAny<long>(), It.IsAny<string>()))
                 .Returns(Task.CompletedTask);
 
-            var controller = new AccountController(_accountService.Object);
+            var controller = new AccountController(_accountService.Object, _configuration.Object);
 
             var response = await controller.UpdatePassword(new PasswordRequest()
             {
@@ -217,7 +227,7 @@ namespace User.Test.Controller
             _accountService.Setup(a => a.UpdatePassword(It.IsAny<long>(), It.IsAny<string>()))
                 .ThrowsAsync(new Exception());
 
-            var controller = new AccountController(_accountService.Object);
+            var controller = new AccountController(_accountService.Object, _configuration.Object);
 
             var response = await controller.UpdatePassword(new PasswordRequest()
             {
@@ -239,7 +249,7 @@ namespace User.Test.Controller
             _accountService.Setup(a => a.UpdateAccountInfo(It.IsAny<long>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<byte[]>()))
                 .Returns(Task.CompletedTask);
 
-            var controller = new AccountController(_accountService.Object);
+            var controller = new AccountController(_accountService.Object, _configuration.Object);
 
             var response = await controller.UpdateAccountInfo(new AccountInfoRequest()
             {
@@ -263,7 +273,7 @@ namespace User.Test.Controller
             _accountService.Setup(a => a.UpdateAccountInfo(It.IsAny<long>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<byte[]>()))
                 .ThrowsAsync(new Exception());
 
-            var controller = new AccountController(_accountService.Object);
+            var controller = new AccountController(_accountService.Object, _configuration.Object);
 
             var response = await controller.UpdateAccountInfo(new AccountInfoRequest()
             {

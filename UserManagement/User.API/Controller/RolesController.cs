@@ -1,13 +1,15 @@
 ﻿using System;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using User.API.Model;
 using User.Domain.Services;
 
 namespace User.API.Controller
 {
-    [Route("api/[controller]")]
+    [Route("api/roles")]
     [ApiController]
+    [Authorize]
     public class RolesController : ControllerBase
     {
         private readonly IRolesService _rolesService;

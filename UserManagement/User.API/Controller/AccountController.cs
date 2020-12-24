@@ -1,6 +1,11 @@
 ﻿using System;
+using System.IdentityModel.Tokens.Jwt;
+using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Tokens;
 using User.API.Model;
 using User.Domain.Services;
 
@@ -8,16 +13,20 @@ namespace User.API.Controller
 {
     [Route("api/account")]
     [ApiController]
+    [Authorize]
     public class AccountController : ControllerBase
     {
         private readonly IAccountService _accountService;
-        public AccountController(IAccountService accountService)
+        private readonly IConfiguration _configuration;
+        public AccountController(IAccountService accountService, IConfiguration configuration)
         {
             _accountService = accountService;
+            _configuration = configuration;
         }
 
         [HttpPost]
         [Route("create")]
+        [AllowAnonymous]
         public async Task<IActionResult> CreateAccount([FromBody] AccountRequest request)
         {
             try
@@ -28,39 +37,42 @@ namespace User.API.Controller
             }
             catch (Exception ex)
             {
-                return StatusCode(500, ex);
+                return StatusCode(500, ex.Message);
             }
         }
 
         [HttpGet]
         [Route("{id}")]
-        public async Task<IActionResult> GetAccountById(long id)
+        public async Task<IActionResult> GetAccountByEmail(string email)
         {
             try
             {
-                var account = await _accountService.GetAccount(id);
+                var account = await _accountService.GetAccount(email);
 
                 return Ok(account);
             }
             catch (Exception ex)
             {
-                return StatusCode(500, ex);
+                return StatusCode(500, ex.Message);
             }
         }
 
         [HttpPatch]
         [Route("login")]
-        public async Task<IActionResult> LogIn([FromBody] BaseRequest request)
+        [AllowAnonymous]
+        public async Task<IActionResult> LogIn([FromBody] AccountRequest request)
         {
             try
             {
-                await _accountService.LogIn(request.Id);
+                await _accountService.LogIn(request.Email, request.Password);
 
-                return Ok();
+                var token = GenerateJSONWebToken();
+
+                return Ok(new { token });
             }
             catch (Exception ex)
             {
-                return StatusCode(500, ex);
+                return StatusCode(500, ex.Message);
             }
         }
 
@@ -76,7 +88,7 @@ namespace User.API.Controller
             }
             catch (Exception ex)
             {
-                return StatusCode(500, ex);
+                return StatusCode(500, ex.Message);
             }
         }
 
@@ -92,7 +104,7 @@ namespace User.API.Controller
             }
             catch(Exception ex)
             {
-                return StatusCode(500, ex);
+                return StatusCode(500, ex.Message);
             }
         }
 
@@ -108,8 +120,22 @@ namespace User.API.Controller
             }
             catch (Exception ex)
             {
-                return StatusCode(500, ex);
+                return StatusCode(500, ex.Message);
             }
+        }
+
+        private string GenerateJSONWebToken()
+        {
+            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration.GetSection("Jwt:Key").Value));
+            var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
+
+            var token = new JwtSecurityToken(_configuration.GetSection("Jwt:Issuer").Value,
+              _configuration.GetSection("Jwt:Issuer").Value,
+              null,
+              expires: DateTime.Now.AddMinutes(120),
+              signingCredentials: credentials);
+
+            return new JwtSecurityTokenHandler().WriteToken(token);
         }
     }
 }

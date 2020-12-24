@@ -87,15 +87,20 @@ namespace User.Infrastructure.Repository
             }
         }
 
-        public async Task UpdateStatus(long id, bool status)
+        public async Task UpdateStatus(string email, string password, bool status)
         {
             using (var context = new TaskManagementContext())
             {
-                var account = await context.Account.FirstOrDefaultAsync(a => a.Id == id);
+                var account = await context.Account.FirstOrDefaultAsync(a => a.Email == email);
 
                 if (account == null)
                 {
                     throw new ArgumentException("Account does not exist.");
+                }
+
+                if(account.Password != password)
+                {
+                    throw new ArgumentException("Incorrect password.");
                 }
 
                 account.Status = status;

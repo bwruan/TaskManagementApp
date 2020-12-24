@@ -7,11 +7,11 @@ namespace User.Domain.Services
     {
         Task CreateAccount(string name, string email, string password, int roleId, byte[] image);
 
-        Task LogIn(long id);
+        Task LogIn(string email, string password);
 
         Task LogOut(long id);
 
-        Task<Account> GetAccount(long id);
+        Task<Account> GetAccount(string email);
 
         Task UpdatePassword(long id, string newPassword);
 

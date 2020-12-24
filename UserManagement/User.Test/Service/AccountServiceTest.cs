@@ -123,57 +123,57 @@ namespace User.Test.Service
         }
 
         [Test]
-        public void GetAccountById_AccountDoesNotExist()
+        public void GetAccountByEmail_AccountDoesNotExist()
         {
-            _accountRepository.Setup(a => a.GetAccountById(It.IsAny<long>()))
+            _accountRepository.Setup(a => a.GetAccountByEmail(It.IsAny<string>()))
                 .ThrowsAsync(new ArgumentException());
 
             var accountService = new AccountService(_accountRepository.Object);
 
-            Assert.ThrowsAsync<ArgumentException>(() => accountService.GetAccount(1));
+            Assert.ThrowsAsync<ArgumentException>(() => accountService.GetAccount("email@email.com"));
         }
 
         [Test]
-        public async Task GetAccountById_Success()
+        public async Task GetAccountByEmail_Success()
         {
-            _accountRepository.Setup(a => a.GetAccountById(It.IsAny<long>()))
+            _accountRepository.Setup(a => a.GetAccountByEmail(It.IsAny<string>()))
                 .ReturnsAsync(new EfAccount());
 
             var accountService = new AccountService(_accountRepository.Object);
 
-            await accountService.GetAccount(1);
+            await accountService.GetAccount("email@email.com");
 
-            _accountRepository.Verify(a => a.GetAccountById(It.IsAny<long>()), Times.Once);
+            _accountRepository.Verify(a => a.GetAccountByEmail(It.IsAny<string>()), Times.Once);
         }
 
         [Test]
         public void LogIn_Fail()
         {
-            _accountRepository.Setup(a => a.GetAccountById(It.IsAny<long>()))
-                .ReturnsAsync(new EfAccount() { Id = 1, Status = true });
+            _accountRepository.Setup(a => a.GetAccountByEmail(It.IsAny<string>()))
+                .ReturnsAsync(new EfAccount() { Email = "email@email.com", Status = true });
 
-            _accountRepository.Setup(a => a.UpdateStatus(It.IsAny<long>(), true))
+            _accountRepository.Setup(a => a.UpdateStatus(It.IsAny<string>(), It.IsAny<string>(), true))
                 .Returns(Task.CompletedTask);
 
             var accountService = new AccountService(_accountRepository.Object);
 
-            Assert.ThrowsAsync<ArgumentException>(() => accountService.LogIn(1));
+            Assert.ThrowsAsync<ArgumentException>(() => accountService.LogIn("email@email.com", "password123"));
         }
 
         [Test]
         public async Task LogIn_Success()
         {
-            _accountRepository.Setup(a => a.GetAccountById(It.IsAny<long>()))
-                .ReturnsAsync(new EfAccount() { Id = 1, Status = false });
+            _accountRepository.Setup(a => a.GetAccountByEmail(It.IsAny<string>()))
+                .ReturnsAsync(new EfAccount() { Email = "email@email.com", Status = false });
 
-            _accountRepository.Setup(a => a.UpdateStatus(It.IsAny<long>(), It.IsAny<bool>()))
+            _accountRepository.Setup(a => a.UpdateStatus(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<bool>()))
                 .Returns(Task.CompletedTask);
 
             var accountService = new AccountService(_accountRepository.Object);
 
-            await accountService.LogIn(1);
+            await accountService.LogIn("email@email.com", "password123");
 
-            _accountRepository.Verify(a => a.UpdateStatus(It.IsAny<long>(), It.IsAny<bool>()), Times.Once);
+            _accountRepository.Verify(a => a.UpdateStatus(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<bool>()), Times.Once);
         }
 
         [Test]
@@ -182,7 +182,7 @@ namespace User.Test.Service
             _accountRepository.Setup(a => a.GetAccountById(It.IsAny<long>()))
                 .ReturnsAsync(new EfAccount() { Id = 1, Status = false });
 
-            _accountRepository.Setup(a => a.UpdateStatus(It.IsAny<long>(), false))
+            _accountRepository.Setup(a => a.UpdateStatus(It.IsAny<string>(), It.IsAny<string>(), false))
                 .Returns(Task.CompletedTask);
 
             var accountService = new AccountService(_accountRepository.Object);
@@ -196,14 +196,14 @@ namespace User.Test.Service
             _accountRepository.Setup(a => a.GetAccountById(It.IsAny<long>()))
                 .ReturnsAsync(new EfAccount() { Id = 1, Status = true });
 
-            _accountRepository.Setup(a => a.UpdateStatus(It.IsAny<long>(), It.IsAny<bool>()))
+            _accountRepository.Setup(a => a.UpdateStatus(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<bool>()))
                 .Returns(Task.CompletedTask);
 
             var accountService = new AccountService(_accountRepository.Object);
 
             await accountService.LogOut(1);
 
-            _accountRepository.Verify(a => a.UpdateStatus(It.IsAny<long>(), It.IsAny<bool>()), Times.Once);
+            _accountRepository.Verify(a => a.UpdateStatus(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<bool>()), Times.Once);
         }
 
         [Test]
