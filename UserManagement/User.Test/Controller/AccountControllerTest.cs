@@ -121,7 +121,7 @@ namespace User.Test.Controller
 
             var controller = new AccountController(_accountService.Object, _configuration.Object);
 
-            var response = await controller.LogIn(new AccountRequest() 
+            var response = await controller.LogIn(new LoginRequest() 
             { 
                 Email = "email@email.com",
                 Password = "password123"
@@ -143,7 +143,7 @@ namespace User.Test.Controller
 
             var controller = new AccountController(_accountService.Object, _configuration.Object);
 
-            var response = await controller.LogIn(new AccountRequest()
+            var response = await controller.LogIn(new LoginRequest()
             {
                 Email = "email@email.com",
                 Password= "password123"

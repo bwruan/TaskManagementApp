@@ -42,8 +42,7 @@ namespace User.API.Controller
         }
 
         [HttpGet]
-        [Route("{id}")]
-        public async Task<IActionResult> GetAccountByEmail(string email)
+        public async Task<IActionResult> GetAccountByEmail([FromQuery] string email)
         {
             try
             {
@@ -60,7 +59,7 @@ namespace User.API.Controller
         [HttpPatch]
         [Route("login")]
         [AllowAnonymous]
-        public async Task<IActionResult> LogIn([FromBody] AccountRequest request)
+        public async Task<IActionResult> LogIn([FromBody] LoginRequest request)
         {
             try
             {
