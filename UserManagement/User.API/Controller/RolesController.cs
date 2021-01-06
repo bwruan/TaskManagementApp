@@ -35,6 +35,7 @@ namespace User.API.Controller
         }
 
         [HttpGet]
+        [AllowAnonymous]
         [Route("roles")]
         public async Task<IActionResult> GetRoles()
         {
