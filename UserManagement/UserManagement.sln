@@ -3,11 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29728.190
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "User.Infrastructure", "User.Infrastructure\User.Infrastructure.csproj", "{DE1A9853-1A02-4054-8A49-9E7491703A98}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "User.Infrastructure", "User.Infrastructure\User.Infrastructure.csproj", "{DE1A9853-1A02-4054-8A49-9E7491703A98}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "User.Domain", "User.Domain\User.Domain.csproj", "{88AA67AD-AACD-4D49-8AED-B0558D437EDA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "User.Domain", "User.Domain\User.Domain.csproj", "{88AA67AD-AACD-4D49-8AED-B0558D437EDA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "User.API", "User.API\User.API.csproj", "{92764A85-7ADF-4373-BA2B-40F0DD70A343}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "User.API", "User.API\User.API.csproj", "{92764A85-7ADF-4373-BA2B-40F0DD70A343}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "User.Test", "User.Test\User.Test.csproj", "{A72F14BF-B907-4DC2-9FB6-53B3D065D876}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +29,10 @@ Global
 		{92764A85-7ADF-4373-BA2B-40F0DD70A343}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{92764A85-7ADF-4373-BA2B-40F0DD70A343}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{92764A85-7ADF-4373-BA2B-40F0DD70A343}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A72F14BF-B907-4DC2-9FB6-53B3D065D876}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A72F14BF-B907-4DC2-9FB6-53B3D065D876}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A72F14BF-B907-4DC2-9FB6-53B3D065D876}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A72F14BF-B907-4DC2-9FB6-53B3D065D876}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
