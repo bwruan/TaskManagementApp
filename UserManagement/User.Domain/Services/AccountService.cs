@@ -47,7 +47,7 @@ namespace User.Domain.Services
             return AccountMapper.DbAccountToCoreAccount(account);
         }
 
-        public async Task LogIn(string email, string password)
+        public async Task<long> LogIn(string email, string password)
         {
             var account = await _accountRepository.GetAccountByEmail(email);
 
@@ -57,6 +57,8 @@ namespace User.Domain.Services
             }
 
             await _accountRepository.UpdateStatus(email, password, true);
+
+            return account.Id;
         }
 
         public async Task LogOut(long id)

@@ -7,7 +7,7 @@ namespace User.Domain.Services
     {
         Task CreateAccount(string name, string email, string password, int roleId, byte[] image);
 
-        Task LogIn(string email, string password);
+        Task<long> LogIn(string email, string password);
 
         Task LogOut(long id);
 

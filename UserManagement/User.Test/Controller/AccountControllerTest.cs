@@ -117,7 +117,7 @@ namespace User.Test.Controller
         public async Task LogIn_Success()
         {
             _accountService.Setup(a => a.LogIn(It.IsAny<string>(), It.IsAny<string>()))
-                .Returns(Task.CompletedTask);
+                .ReturnsAsync(1);
 
             var controller = new AccountController(_accountService.Object, _configuration.Object);
 

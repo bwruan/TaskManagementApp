@@ -63,11 +63,11 @@ namespace User.API.Controller
         {
             try
             {
-                await _accountService.LogIn(request.Email, request.Password);
+                var accountId = await _accountService.LogIn(request.Email, request.Password);
 
                 var token = GenerateJSONWebToken();
 
-                return Ok(new { token });
+                return Ok(new { token, accountId });
             }
             catch (Exception ex)
             {
