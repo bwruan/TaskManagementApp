@@ -16,3 +16,17 @@ UserManagement/User.Infrastructure/obj/
 UserManagement/User.Test/bin/
 
 UserManagement/User.Test/obj/
+
+ProjectManagement/.vs/
+
+ProjectManagement/Project.Api/bin/
+
+ProjectManagement/Project.Domain/bin/
+
+ProjectManagement/Project.Api/obj/
+
+ProjectManagement/Project.Domain/obj/
+
+ProjectManagement/Project.Infrastructure/bin/
+
+ProjectManagement/Project.Infrastructure/obj/
