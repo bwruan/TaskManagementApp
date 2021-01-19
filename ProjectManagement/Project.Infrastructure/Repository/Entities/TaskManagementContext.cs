@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Metadata;
 
 #nullable disable
 
-namespace Project.Infrastructure.Repositories.Entities
+namespace Project.Infrastructure.Repository.Entities
 {
     public partial class TaskManagementContext : DbContext
     {

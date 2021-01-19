@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 #nullable disable
 
-namespace Project.Infrastructure.Repositories.Entities
+namespace Project.Infrastructure.Repository.Entities
 {
     public partial class Project
     {
