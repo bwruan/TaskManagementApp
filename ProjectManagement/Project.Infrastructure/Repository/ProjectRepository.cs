@@ -34,6 +34,7 @@ namespace Project.Infrastructure.Repository
             }
         }
 
+        //can't we update to change owners as well?
         public async Task UpdateProject(long id, string newName, string newDescription)
         {
             using (var context = new TaskManagementContext())
