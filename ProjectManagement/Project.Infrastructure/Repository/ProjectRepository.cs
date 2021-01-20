@@ -1,8 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Project.Infrastructure.Repository.Entities;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Project.Infrastructure.Repository
@@ -34,15 +32,15 @@ namespace Project.Infrastructure.Repository
             }
         }
 
-        //can't we update to change owners as well?
-        public async Task UpdateProject(long id, string newName, string newDescription)
+        public async Task UpdateProject(long projectId, string newName, string newDescription, long newOwnerId)
         {
             using (var context = new TaskManagementContext())
             {
-                var project = await context.Projects.FirstOrDefaultAsync(p => p.ProjectId == id);
+                var project = await context.Projects.FirstOrDefaultAsync(p => p.ProjectId == projectId);
 
                 project.ProjectName = newName;
                 project.ProjectDescription = newDescription;
+                project.OwnerAccountId = newOwnerId;
                 project.UpdatedDate = DateTime.Now;
 
                 await context.SaveChangesAsync();

@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Project.Infrastructure.Repository
@@ -9,6 +7,6 @@ namespace Project.Infrastructure.Repository
     {
         Task<List<Entities.Project>> GetProjectsByAccountId(long accountId);
 
-        Task<long> GetAccountByProjectId(long projectId);
+        Task<List<long>> GetAccountByProjectId(long projectId);
     }
 }
