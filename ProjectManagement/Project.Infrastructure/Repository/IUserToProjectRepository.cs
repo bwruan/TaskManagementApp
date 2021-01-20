@@ -7,6 +7,8 @@ namespace Project.Infrastructure.Repository
 {
     public interface IUserToProjectRepository
     {
-        Task<List<Entities.Project>> GetProjectsByAccountId(long id);
+        Task<List<Entities.Project>> GetProjectsByAccountId(long accountId);
+
+        Task<long> GetAccountByProjectId(long projectId);
     }
 }
