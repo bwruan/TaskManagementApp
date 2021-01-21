@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Project.Domain.Mapper
 {
-    public static class UserToProjectMapper
+    public static class ProjectMapper
     {
     }
 }

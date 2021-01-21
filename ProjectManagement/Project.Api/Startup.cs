@@ -10,6 +10,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Project.Infrastructure.Repository;
+using Project.Infrastructure.UserManagement;
 
 namespace Project.Api
 {
@@ -25,6 +27,10 @@ namespace Project.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddSingleton<IProjectRepository, ProjectRepository>();
+            services.AddSingleton<IUserToProjectRepository, UserToProjectRepository>();
+            services.AddTransient<IUserService, UserService>();
+            
             services.AddControllers();
         }
 

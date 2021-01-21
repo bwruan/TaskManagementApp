@@ -29,16 +29,7 @@ namespace Project.Infrastructure.Repository
         {
             using(var context = new TaskManagementContext())
             {
-                var account = await context.UserToProjects.Include(p => p.Project).Where(p => p.ProjectId == projectId).Select(p => p.AccountId).ToListAsync();
-
-                var accountList = new List<long>();
-
-                foreach(var acc in account)
-                {
-                    accountList.Add(acc);
-                }
-
-                return accountList;
+                return await context.UserToProjects.Where(p => p.ProjectId == projectId).Select(p => p.AccountId).ToListAsync();
             }
         }
     }
