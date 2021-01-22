@@ -10,6 +10,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Project.Domain.Services;
 using Project.Infrastructure.Repository;
 using Project.Infrastructure.UserManagement;
 
@@ -30,6 +31,7 @@ namespace Project.Api
             services.AddSingleton<IProjectRepository, ProjectRepository>();
             services.AddSingleton<IUserToProjectRepository, UserToProjectRepository>();
             services.AddTransient<IUserService, UserService>();
+            services.AddTransient<IRolesService, RolesService>();
             
             services.AddControllers();
         }

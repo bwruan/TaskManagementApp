@@ -22,13 +22,19 @@ namespace Project.Infrastructure.Repository
             }
         }
 
+        public async Task<Entities.Project> GetProjectById(long id)
+        {
+            using(var context = new TaskManagementContext())
+            {
+                return await context.Projects.FirstOrDefaultAsync(p => p.ProjectId == id);
+            }
+        }
+
         public async Task<Entities.Project> GetProjectByName(string name)
         {
             using(var context = new TaskManagementContext())
             {
-                var project = await context.Projects.FirstOrDefaultAsync(p => p.ProjectName == name);
-
-                return project;
+                return await context.Projects.FirstOrDefaultAsync(p => p.ProjectName == name);
             }
         }
 

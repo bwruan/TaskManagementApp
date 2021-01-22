@@ -10,7 +10,12 @@ using System.Threading.Tasks;
 
 namespace Project.Infrastructure.UserManagement
 {
-    public class RolesService
+    public interface IRolesService
+    {
+        Task<List<Roles>> GetRoles();
+    }
+
+    public class RolesService : IRolesService
     {
         private readonly IConfiguration _configuration;
         private readonly string _url;
@@ -27,7 +32,7 @@ namespace Project.Infrastructure.UserManagement
 
             var response = await httpClient.GetAsync(_url + "/api/roles/roles");
 
-            if(response.StatusCode != HttpStatusCode.OK)
+            if (response.StatusCode != HttpStatusCode.OK)
             {
                 throw new Exception(await response.Content.ReadAsStringAsync());
             }

@@ -9,5 +9,7 @@ namespace Project.Infrastructure.Repository
         Task UpdateProject(long projectId, string newName, string newDescription, long newOwnerId);
 
         Task<Entities.Project> GetProjectByName(string name);
+
+        Task<Entities.Project> GetProjectById(long id);
     }
 }
