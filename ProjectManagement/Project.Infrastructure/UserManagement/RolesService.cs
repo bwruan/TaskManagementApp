@@ -29,7 +29,7 @@ namespace Project.Infrastructure.UserManagement
         public async Task<List<Roles>> GetRoles()
         {
             var httpClient = new HttpClient();
-
+            //you are missing things before u send get async. think about what else u are missing.
             var response = await httpClient.GetAsync(_url + "/api/roles/roles");
 
             if (response.StatusCode != HttpStatusCode.OK)

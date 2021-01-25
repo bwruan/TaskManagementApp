@@ -12,7 +12,7 @@ namespace Project.Domain.Mapper
             coreProj.ProjectId = dbProject.ProjectId;
             coreProj.ProjectName = dbProject.ProjectName;
             coreProj.ProjectDescription = dbProject.ProjectDescription;
-
+            //map owner id
             return coreProj;
         }
     }

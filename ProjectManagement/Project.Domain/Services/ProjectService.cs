@@ -25,6 +25,9 @@ namespace Project.Domain.Services
             {
                 throw new ArgumentException("Description field blank");
             }
+
+            //should probably make sure that owner Id is atleast > 0 because in the DB, PK starts at 1. 
+            //so if owner id is <= 0, we know something is wrong.
             
             await _projectRepository.CreateProject(name, description, ownerId);
         }
@@ -37,7 +40,10 @@ namespace Project.Domain.Services
             {
                 throw new ArgumentException("Project does not exist");
             }
+            //this will map DB entity to core model entity.
 
+            //before returning, you should use the USER Service to get user by Id (owner id returned from DB). Then populate the account property of your core model
+            //from what is returned by user service.
             return ProjectMapper.DbProjectToCoreProject(project);
         }
 
@@ -50,6 +56,8 @@ namespace Project.Domain.Services
                 throw new ArgumentException("Project does not exist.");
             }
 
+            //before returning, you should use the USER Service to get user by Id (owner id returned from DB). Then populate the account property of your core model
+            //from what is returned by user service.
             return ProjectMapper.DbProjectToCoreProject(project);
         }
 
@@ -71,6 +79,8 @@ namespace Project.Domain.Services
             {
                 throw new ArgumentException("Project Description field blank");
             }
+
+            //check to make sure newOwnerId is > 0 as well. reason listed above
 
             await _projectRepository.UpdateProject(projectId, newName, newDescription, newOwnerId);
         }
