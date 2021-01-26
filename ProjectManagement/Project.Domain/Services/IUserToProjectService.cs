@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Project.Domain.Models;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,6 +10,6 @@ namespace Project.Domain.Services
     {
         Task<List<Models.Project>> GetProjectsByAccountId(long accountId);
 
-        Task<List<long>> GetAccountByProjectId(long projectId);
+        Task<List<Account>> GetAccountByProjectId(long projectId);
     }
 }

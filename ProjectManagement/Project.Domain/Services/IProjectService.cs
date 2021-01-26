@@ -11,8 +11,8 @@ namespace Project.Domain.Services
 
         Task UpdateProject(long projectId, string newName, string newDescription, long newOwnerId);
 
-        Task<Models.Project> GetProjectByName(string name);
+        Task<Models.Project> GetProjectByName(string name, string token);
 
-        Task<Models.Project> GetProjectById(long id);
+        Task<Models.Project> GetProjectById(long id, string token);
     }
 }

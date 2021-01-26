@@ -32,8 +32,8 @@ namespace Project.Api
             services.AddSingleton<IUserToProjectRepository, UserToProjectRepository>();
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<IRolesService, RolesService>();
-
-            //you forgot to register new services again. remember to always REGISTER them if they will be used later by other classes.
+            services.AddTransient<IProjectService, ProjectService>();
+            services.AddTransient<IUserToProjectService, UserToProjectService>();
             
             services.AddControllers();
         }

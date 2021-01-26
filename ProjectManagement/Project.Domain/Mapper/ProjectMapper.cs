@@ -1,4 +1,6 @@
-﻿using CoreProject = Project.Domain.Models.Project;
+﻿using CoreAccount = Project.Domain.Models.Account;
+using UserAccount = Project.Infrastructure.UserManagement.Models.Account;
+using CoreProject = Project.Domain.Models.Project;
 using DbProject = Project.Infrastructure.Repository.Entities.Project;
 
 namespace Project.Domain.Mapper
@@ -12,8 +14,21 @@ namespace Project.Domain.Mapper
             coreProj.ProjectId = dbProject.ProjectId;
             coreProj.ProjectName = dbProject.ProjectName;
             coreProj.ProjectDescription = dbProject.ProjectDescription;
-            //map owner id
+            coreProj.OwnerAccountId = dbProject.OwnerAccountId;
+            
             return coreProj;
+        }
+
+        public static CoreAccount UserAccountToCoreAccount(UserAccount userAccount)
+        {
+            var coreAccount = new CoreAccount();
+
+            coreAccount.Id = userAccount.Id;
+            coreAccount.Name = userAccount.Name;
+            coreAccount.Email = userAccount.Email;
+            coreAccount.RoleId = userAccount.RoleId;
+
+            return coreAccount;
         }
     }
 }
