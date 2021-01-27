@@ -30,9 +30,11 @@ namespace Project.Domain.Services
                 throw new ArgumentException("Project does not exist.");
             }
 
+            //dont need mapping here.
             var coreProject = ProjectMapper.DbProjectToCoreProject(project);
             var accountList = new List<Account>();
 
+            //u can just get the project id out of project object right? where u are mapping. no need for extra variable
             var accounts = await _userToProjectRepository.GetAccountByProjectId(coreProject.ProjectId);
 
             foreach(var acc in accounts)
@@ -53,7 +55,7 @@ namespace Project.Domain.Services
             foreach(var proj in projects)
             {
                 var account = await _userService.GetAccountById(proj.OwnerAccountId, token);
-                var coreAccount = ProjectMapper.UserAccountToCoreAccount(account);
+                var coreAccount = ProjectMapper.UserAccountToCoreAccount(account); //this account is gray meaning its not used. u gotta use this account. right now its just variable not being used
                 projectList.Add(ProjectMapper.DbProjectToCoreProject(proj));
             }
 
