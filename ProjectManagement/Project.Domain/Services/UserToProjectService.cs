@@ -32,16 +32,12 @@ namespace Project.Domain.Services
 
             var accountList = new List<Account>();
 
-            //its good but i think ur method names should reflect things
-            //this method returns account ids so ur variable name should be accountIds
-            //the repository method name should have been getAccountIdsByProjectIds
-            var accounts = await _userToProjectRepository.GetAccountByProjectId(project.ProjectId);
+            var accountIds = await _userToProjectRepository.GetAccountIdsByProjectId(project.ProjectId);
 
-            //as you loop through accountIds, u should do var id instead
-            foreach(var acc in accounts)
+            foreach(var acc in accountIds)
             {
-                var account = await _userService.GetAccountById(acc, token);
-                accountList.Add(ProjectMapper.UserAccountToCoreAccount(account));
+                var ids = await _userService.GetAccountById(acc, token);
+                accountList.Add(ProjectMapper.UserAccountToCoreAccount(ids));
             }
 
             return accountList;
@@ -56,17 +52,11 @@ namespace Project.Domain.Services
             foreach(var proj in projects)
             {
                 var account = await _userService.GetAccountById(proj.OwnerAccountId, token);
-                var coreAccount = ProjectMapper.UserAccountToCoreAccount(account);
-                
-                //this is not what i mean by using it
-                //think, you did it before in the other service.
-                //u have a core account and a project. what did u do in the other service.
-                if(coreAccount.Id != proj.OwnerAccountId)
-                {
-                    throw new ArgumentException("Account Id does not match Owner Id.");
-                }
+                var corePorject = ProjectMapper.DbProjectToCoreProject(proj);
 
-                projectList.Add(ProjectMapper.DbProjectToCoreProject(proj));
+                corePorject.OwnerAccount = ProjectMapper.UserAccountToCoreAccount(account);
+
+                projectList.Add(corePorject);
             }
 
             return projectList;

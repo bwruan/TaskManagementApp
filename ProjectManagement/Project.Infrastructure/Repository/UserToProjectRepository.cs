@@ -25,7 +25,7 @@ namespace Project.Infrastructure.Repository
             }
         }
 
-        public async Task<List<long>> GetAccountByProjectId(long projectId)
+        public async Task<List<long>> GetAccountIdsByProjectId(long projectId)
         {
             using(var context = new TaskManagementContext())
             {

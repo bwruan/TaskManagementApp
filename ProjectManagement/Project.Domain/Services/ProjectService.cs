@@ -47,9 +47,9 @@ namespace Project.Domain.Services
             }
 
             var coreProject = ProjectMapper.DbProjectToCoreProject(project);
-            var account = await _userService.GetAccountById(coreProject.Account.Id, token);
+            var account = await _userService.GetAccountById(coreProject.OwnerAccount.Id, token);
 
-            coreProject.Account = ProjectMapper.UserAccountToCoreAccount(account);
+            coreProject.OwnerAccount = ProjectMapper.UserAccountToCoreAccount(account);
 
             return coreProject;
 
@@ -65,9 +65,9 @@ namespace Project.Domain.Services
             }
 
             var coreProject = ProjectMapper.DbProjectToCoreProject(project);
-            var account = await _userService.GetAccountById(coreProject.Account.Id, token);
+            var account = await _userService.GetAccountById(coreProject.OwnerAccount.Id, token);
 
-            coreProject.Account = ProjectMapper.UserAccountToCoreAccount(account);
+            coreProject.OwnerAccount = ProjectMapper.UserAccountToCoreAccount(account);
 
             return coreProject;
         }

@@ -14,7 +14,7 @@ namespace Project.Domain.Mapper
             coreProj.ProjectId = dbProject.ProjectId;
             coreProj.ProjectName = dbProject.ProjectName;
             coreProj.ProjectDescription = dbProject.ProjectDescription;
-            coreProj.OwnerAccountId = dbProject.OwnerAccountId;
+            coreProj.OwnerAccount.Id = dbProject.OwnerAccountId;
             
             return coreProj;
         }
