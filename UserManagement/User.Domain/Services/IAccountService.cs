@@ -11,7 +11,9 @@ namespace User.Domain.Services
 
         Task LogOut(long id);
 
-        Task<Account> GetAccount(string email);
+        Task<Account> GetAccountByEmail(string email);
+
+        Task<Account> GetAccountById(long id);
 
         Task UpdatePassword(long id, string newPassword);
 

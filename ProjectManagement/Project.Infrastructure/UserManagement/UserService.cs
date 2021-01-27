@@ -15,6 +15,7 @@ namespace Project.Infrastructure.UserManagement
     {
         Task CreateAccount(CreateAccount newAccount);
         Task<Account> GetAccountByEmail(string email, string token);
+        Task<Account> GetAccountById(long id, string token);
         Task<LoginResponse> LogIn(string email, string password);
     }
 
@@ -36,6 +37,24 @@ namespace Project.Infrastructure.UserManagement
             httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
             var response = await httpClient.GetAsync(_url + "/api/account?email=" + email);
+
+            if (response.StatusCode != HttpStatusCode.OK)
+            {
+                throw new Exception(await response.Content.ReadAsStringAsync());
+            }
+
+            var result = await response.Content.ReadAsStringAsync();
+
+            return JsonConvert.DeserializeObject<Account>(result);
+        }
+
+        public async Task<Account> GetAccountById(long id, string token)
+        {
+            var httpClient = new HttpClient();
+
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+            var response = await httpClient.GetAsync(_url + "/api/account?id=" + id);
 
             if (response.StatusCode != HttpStatusCode.OK)
             {

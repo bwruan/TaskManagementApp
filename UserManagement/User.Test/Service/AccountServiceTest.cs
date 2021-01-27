@@ -130,7 +130,7 @@ namespace User.Test.Service
 
             var accountService = new AccountService(_accountRepository.Object);
 
-            Assert.ThrowsAsync<ArgumentException>(() => accountService.GetAccount("email@email.com"));
+            Assert.ThrowsAsync<ArgumentException>(() => accountService.GetAccountByEmail("email@email.com"));
         }
 
         [Test]
@@ -141,7 +141,7 @@ namespace User.Test.Service
 
             var accountService = new AccountService(_accountRepository.Object);
 
-            await accountService.GetAccount("email@email.com");
+            await accountService.GetAccountByEmail("email@email.com");
 
             _accountRepository.Verify(a => a.GetAccountByEmail(It.IsAny<string>()), Times.Once);
         }

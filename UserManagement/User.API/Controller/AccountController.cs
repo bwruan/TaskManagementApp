@@ -46,7 +46,22 @@ namespace User.API.Controller
         {
             try
             {
-                var account = await _accountService.GetAccount(email);
+                var account = await _accountService.GetAccountByEmail(email);
+
+                return Ok(account);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetAccountById([FromQuery] long id)
+        {
+            try
+            {
+                var account = await _accountService.GetAccountById(id);
 
                 return Ok(account);
             }

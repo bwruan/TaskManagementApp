@@ -8,8 +8,8 @@ namespace Project.Domain.Services
 {
     public interface IUserToProjectService
     {
-        Task<List<Models.Project>> GetProjectsByAccountId(long accountId);
+        Task<List<Models.Project>> GetProjectsByAccountId(long accountId, string token);
 
-        Task<List<Account>> GetAccountByProjectId(long projectId);
+        Task<List<Account>> GetAccountByProjectId(long projectId, string token);
     }
 }
