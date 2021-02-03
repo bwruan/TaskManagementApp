@@ -14,7 +14,7 @@ namespace Project.Api.Controllers
     public class ProjectController : ControllerBase
     {
         private readonly IProjectService _projectService;
-        private readonly IConfiguration _configuration;
+        private readonly IConfiguration _configuration; //not use, remove
 
         public ProjectController(IProjectService projectService, IConfiguration configuration)
         {
@@ -38,6 +38,8 @@ namespace Project.Api.Controllers
             }
         }
 
+        //remember, id is unique. when we have uniqueness, we do route parameters. Also, if you are doing query parameters, it is [FromQuery], not [FromHeader]
+        //token does not come from any query or route parameters - i will show u later how to grab token
         [HttpGet]
         public async Task<IActionResult> GetProjectById([FromHeader] long id, string token)
         {
@@ -53,6 +55,8 @@ namespace Project.Api.Controllers
             }
         }
 
+        //name is not unique so you get it from query, not from header!
+        //token does not come from any query or route parameters - i will show u later how to grab token
         [HttpGet]
         public async Task<IActionResult> GetProjectByName([FromHeader] string name, string token)
         {

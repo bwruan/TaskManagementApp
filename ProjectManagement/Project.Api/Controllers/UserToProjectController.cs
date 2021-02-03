@@ -8,6 +8,7 @@ using Project.Domain.Services;
 
 namespace Project.Api.Controllers
 {
+    //put authorize on this one - this needs to be protected too
     [Route("api/usertoproject")]
     [ApiController]
     public class UserToProjectController : ControllerBase
@@ -19,6 +20,7 @@ namespace Project.Api.Controllers
             _userToProjectService = userToProjectService;
         }
 
+        //same comments as those on project controller
         [HttpGet]
         public async Task<IActionResult> GetAccountByProjectId([FromHeader] long projectId, string token)
         {
@@ -34,6 +36,7 @@ namespace Project.Api.Controllers
             }
         }
 
+        //same comments
         [HttpGet]
         public async Task<IActionResult> GetProjectsByAccountId([FromHeader] long accountId, string token)
         {
