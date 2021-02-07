@@ -2,15 +2,17 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Project.Domain.Services;
 
 namespace Project.Api.Controllers
 {
-    //put authorize on this one - this needs to be protected too
+    
     [Route("api/usertoproject")]
     [ApiController]
+    [Authorize]
     public class UserToProjectController : ControllerBase
     {
         private readonly IUserToProjectService _userToProjectService;
@@ -20,12 +22,25 @@ namespace Project.Api.Controllers
             _userToProjectService = userToProjectService;
         }
 
-        //same comments as those on project controller
         [HttpGet]
-        public async Task<IActionResult> GetAccountByProjectId([FromHeader] long projectId, string token)
+        public async Task<IActionResult> GetAccountByProjectId([FromQuery] long projectId)
         {
             try
             {
+                var token = "";
+
+                if (Request.Headers.ContainsKey("Authorization"))
+                {
+                    var jwt = (Request.Headers.FirstOrDefault(s => s.Key.Equals("Authorization"))).Value;
+
+                    if (jwt.Count <= 0)
+                    {
+                        return StatusCode(400);
+                    }
+
+                    token = jwt[0].Replace("Bearer ", "");
+                }
+
                 var accountList = await _userToProjectService.GetAccountByProjectId(projectId, token);
 
                 return Ok(accountList);
@@ -36,12 +51,25 @@ namespace Project.Api.Controllers
             }
         }
 
-        //same comments
         [HttpGet]
-        public async Task<IActionResult> GetProjectsByAccountId([FromHeader] long accountId, string token)
+        public async Task<IActionResult> GetProjectsByAccountId([FromQuery] long accountId)
         {
             try
             {
+                var token = "";
+
+                if (Request.Headers.ContainsKey("Authorization"))
+                {
+                    var jwt = (Request.Headers.FirstOrDefault(s => s.Key.Equals("Authorization"))).Value;
+
+                    if (jwt.Count <= 0)
+                    {
+                        return StatusCode(400);
+                    }
+
+                    token = jwt[0].Replace("Bearer ", "");
+                }
+
                 var projectList = await _userToProjectService.GetProjectsByAccountId(accountId, token);
 
                 return Ok(projectList);
