@@ -34,12 +34,10 @@ namespace Project.Domain.Services
 
             var accountIds = await _userToProjectRepository.GetAccountIdsByProjectId(project.ProjectId);
 
-            //change acc to id because you are looping through a list of accountIds, not accounts
-            foreach(var acc in accountIds)
+            foreach(var id in accountIds)
             {
-                //this method returns an account, not ids. change this to acc
-                var ids = await _userService.GetAccountById(acc, token);
-                accountList.Add(ProjectMapper.UserAccountToCoreAccount(ids));
+                var acc = await _userService.GetAccountById(id, token);
+                accountList.Add(ProjectMapper.UserAccountToCoreAccount(acc));
             }
 
             return accountList;
