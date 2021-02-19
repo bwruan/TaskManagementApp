@@ -37,6 +37,8 @@ namespace Project.Api.Controllers
             }
         }
 
+        //id can be put in query, but id is unique and for unique thigns, we like to put it as route parameter.
+        //use route parameter for unique things like id. use query parameters for non unique things like name, email..etc
         [HttpGet]
         public async Task<IActionResult> GetProjectById([FromQuery] long id)
         {

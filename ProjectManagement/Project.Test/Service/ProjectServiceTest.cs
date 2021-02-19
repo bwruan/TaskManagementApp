@@ -102,7 +102,7 @@ namespace Project.Test.Service
             Assert.ThrowsAsync<ArgumentException>(() => projectService.GetProjectById(1, It.IsAny<string>()));
         }
 
-        //this didnt pass
+        //this didnt pass -> still didnt pass. you got to debug and fix.
         [Test]
         public async Task GetProjectById_Success()
         {
@@ -131,7 +131,7 @@ namespace Project.Test.Service
             Assert.ThrowsAsync<ArgumentException>(() => projectService.GetProjectByName("Project1", It.IsAny<string>()));
         }
 
-        //this also didnt pass - you have to run ur tests to make sure they pass
+        //this also didnt pass - you have to run ur tests to make sure they pass -> didnt pass!
         [Test]
         public async Task GetProjectByName_Success()
         {

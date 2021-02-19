@@ -22,6 +22,7 @@ namespace Project.Api.Controllers
             _userToProjectService = userToProjectService;
         }
 
+        //is projectId unique?
         [HttpGet]
         public async Task<IActionResult> GetAccountByProjectId([FromQuery] long projectId)
         {
@@ -51,6 +52,7 @@ namespace Project.Api.Controllers
             }
         }
 
+        //is accountId unique?
         [HttpGet]
         public async Task<IActionResult> GetProjectsByAccountId([FromQuery] long accountId)
         {

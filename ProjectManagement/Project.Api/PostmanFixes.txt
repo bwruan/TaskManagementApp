@@ -1,0 +1,2 @@
+﻿1. Not all of your tests have a Authorization header. Remember, all your endpoint in Project is protected by "JWT Token". So all your requests should have a header.
+2. Postman tests with a "Body" should be raw and of type JSON (application/json)
