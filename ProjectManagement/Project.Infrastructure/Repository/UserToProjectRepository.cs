@@ -12,11 +12,11 @@ namespace Project.Infrastructure.Repository
         {
             using (var context = new TaskManagementContext())
             {
-                var project = await context.UserToProjects.Include(p => p.Project).Where(p => p.AccountId == accountId).ToListAsync(); 
+                var project = await context.UserToProjects.Include(p => p.Project).Where(p => p.AccountId == accountId).ToListAsync();
 
                 var projectList = new List<Entities.Project>();
 
-                foreach(var proj in project)
+                foreach (var proj in project)
                 {
                     projectList.Add(proj.Project);
                 }
@@ -27,7 +27,7 @@ namespace Project.Infrastructure.Repository
 
         public async Task<List<long>> GetAccountIdsByProjectId(long projectId)
         {
-            using(var context = new TaskManagementContext())
+            using (var context = new TaskManagementContext())
             {
                 return await context.UserToProjects.Where(p => p.ProjectId == projectId).Select(p => p.AccountId).ToListAsync();
             }
