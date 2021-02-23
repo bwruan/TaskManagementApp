@@ -3,7 +3,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
 using Project.Api.Models;
 using Project.Domain.Services;
 
@@ -37,10 +36,9 @@ namespace Project.Api.Controllers
             }
         }
 
-        //id can be put in query, but id is unique and for unique thigns, we like to put it as route parameter.
-        //use route parameter for unique things like id. use query parameters for non unique things like name, email..etc
         [HttpGet]
-        public async Task<IActionResult> GetProjectById([FromQuery] long id)
+        [Route("{id}")]
+        public async Task<IActionResult> GetProjectById(long id)
         {
             try
             {

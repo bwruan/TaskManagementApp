@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Project.Domain.Services;
 
@@ -22,8 +20,8 @@ namespace Project.Api.Controllers
             _userToProjectService = userToProjectService;
         }
 
-        //is projectId unique?
         [HttpGet]
+        [Route("{projectId}")]
         public async Task<IActionResult> GetAccountByProjectId([FromQuery] long projectId)
         {
             try
@@ -52,9 +50,9 @@ namespace Project.Api.Controllers
             }
         }
 
-        //is accountId unique?
         [HttpGet]
-        public async Task<IActionResult> GetProjectsByAccountId([FromQuery] long accountId)
+        [Route("{accountId}")]
+        public async Task<IActionResult> GetProjectsByAccountId(long accountId)
         {
             try
             {

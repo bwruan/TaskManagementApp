@@ -102,7 +102,6 @@ namespace Project.Test.Service
             Assert.ThrowsAsync<ArgumentException>(() => projectService.GetProjectById(1, It.IsAny<string>()));
         }
 
-        //this didnt pass -> still didnt pass. you got to debug and fix.
         [Test]
         public async Task GetProjectById_Success()
         {
@@ -114,8 +113,7 @@ namespace Project.Test.Service
 
             var projectService = new ProjectService(_projectRepository.Object, _userService.Object);
 
-            //this returns a project right? you should verify that the returned project is not null and verify properties too if you set any
-             await projectService.GetProjectById(1, It.IsAny<string>());
+            await projectService.GetProjectById(1, It.IsAny<string>());
 
             _projectRepository.Verify(p => p.GetProjectById(It.IsAny<long>()), Times.Once);
         }
@@ -131,7 +129,6 @@ namespace Project.Test.Service
             Assert.ThrowsAsync<ArgumentException>(() => projectService.GetProjectByName("Project1", It.IsAny<string>()));
         }
 
-        //this also didnt pass - you have to run ur tests to make sure they pass -> didnt pass!
         [Test]
         public async Task GetProjectByName_Success()
         {
@@ -142,7 +139,7 @@ namespace Project.Test.Service
                 .ReturnsAsync(new Account());
 
             var projectService = new ProjectService(_projectRepository.Object, _userService.Object);
-            //this returns a project right? you should verify that the returned project is not null and verify properties too if you set any
+
             await projectService.GetProjectByName("Project1", It.IsAny<string>());
 
             _projectRepository.Verify(p => p.GetProjectByName(It.IsAny<string>()), Times.Once);

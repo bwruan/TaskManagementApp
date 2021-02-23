@@ -10,6 +10,8 @@ namespace Project.Domain.Models
 
         public string ProjectDescription { get; set; }
 
+        public long AccountId { get; set; }
+
         public Account OwnerAccount { get; set; }
 
         public DateTime CreatedDate { get; set; }
