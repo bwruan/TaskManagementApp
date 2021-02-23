@@ -18,7 +18,6 @@ namespace Project.Infrastructure.Repository.Entities
         }
 
         public virtual DbSet<Project> Projects { get; set; }
-        public virtual DbSet<UserToProject> UserToProjects { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -49,17 +48,6 @@ namespace Project.Infrastructure.Repository.Entities
                     .IsUnicode(false);
 
                 entity.Property(e => e.UpdatedDate).HasDefaultValueSql("(getdate())");
-            });
-
-            modelBuilder.Entity<UserToProject>(entity =>
-            {
-                entity.ToTable("UserToProject");
-
-                entity.HasOne(d => d.Project)
-                    .WithMany(p => p.UserToProjects)
-                    .HasForeignKey(d => d.ProjectId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__UserToPro__Proje__628FA481");
             });
 
             OnModelCreatingPartial(modelBuilder);
