@@ -16,6 +16,7 @@ namespace User.Domain.Mapper
             coreAccount.RoleId = dbAccout.RoleId;
             coreAccount.ProfilePic = dbAccout.ProfilePic;
             coreAccount.Status = dbAccout.Status;
+            coreAccount.RoleName = dbAccout.Role.Name;
 
             return coreAccount;
         }

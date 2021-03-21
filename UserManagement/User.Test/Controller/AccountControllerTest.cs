@@ -80,7 +80,7 @@ namespace User.Test.Controller
         [Test]
         public async Task GetAccountByEmail_Success()
         {
-            _accountService.Setup(a => a.GetAccount(It.IsAny<string>()))
+            _accountService.Setup(a => a.GetAccountByEmail(It.IsAny<string>()))
                 .ReturnsAsync(new Account());
 
             var controller = new AccountController(_accountService.Object, _configuration.Object);
@@ -98,7 +98,7 @@ namespace User.Test.Controller
         [Test]
         public async Task GetAccountByEmail_InternalServerError()
         {
-            _accountService.Setup(a => a.GetAccount(It.IsAny<string>()))
+            _accountService.Setup(a => a.GetAccountByEmail(It.IsAny<string>()))
                 .ThrowsAsync(new Exception());
 
             var controller = new AccountController(_accountService.Object, _configuration.Object);

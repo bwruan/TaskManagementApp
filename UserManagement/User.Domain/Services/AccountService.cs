@@ -40,9 +40,16 @@ namespace User.Domain.Services
             await _accountRepository.CreateAccount(name, email, password, roleId, image);
         }
 
-        public async Task<Account> GetAccount(string email)
+        public async Task<Account> GetAccountByEmail(string email)
         {
             var account = await _accountRepository.GetAccountByEmail(email);
+
+            return AccountMapper.DbAccountToCoreAccount(account);
+        }
+
+        public async Task<Account> GetAccountById(long id)
+        {
+            var account = await _accountRepository.GetAccountById(id);
 
             return AccountMapper.DbAccountToCoreAccount(account);
         }

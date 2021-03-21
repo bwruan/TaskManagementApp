@@ -1,6 +1,10 @@
-﻿namespace User.Domain.Models
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace Project.Infrastructure.UserManagement.Models
 {
-    public class Account
+    public class CreateAccount
     {
         public long Id { get; set; }
 
@@ -12,10 +16,6 @@
 
         public int RoleId { get; set; }
 
-        public string RoleName { get; set; }
-
         public byte[] ProfilePic { get; set; }
-
-        public bool Status { get; set; }
     }
 }
