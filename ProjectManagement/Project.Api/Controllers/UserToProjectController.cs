@@ -21,8 +21,8 @@ namespace Project.Api.Controllers
         }
 
         [HttpGet]
-        [Route("{projectId}")]
-        public async Task<IActionResult> GetAccountByProjectId([FromQuery] long projectId)
+        [Route("project/{projectId}")]
+        public async Task<IActionResult> GetAccountByProjectId(long projectId)
         {
             try
             {
@@ -51,7 +51,7 @@ namespace Project.Api.Controllers
         }
 
         [HttpGet]
-        [Route("{accountId}")]
+        [Route("account/{accountId}")]
         public async Task<IActionResult> GetProjectsByAccountId(long accountId)
         {
             try

@@ -57,7 +57,8 @@ namespace User.API.Controller
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAccountById([FromQuery] long id)
+        [Route("{id}")]
+        public async Task<IActionResult> GetAccountById(long id)
         {
             try
             {

@@ -54,7 +54,7 @@ namespace Project.Infrastructure.UserManagement
 
             httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
-            var response = await httpClient.GetAsync(_url + "/api/account?id=" + id);
+            var response = await httpClient.GetAsync(_url + "/api/account/" + id);
 
             if (response.StatusCode != HttpStatusCode.OK)
             {

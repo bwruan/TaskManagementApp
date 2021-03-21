@@ -12,6 +12,8 @@
 
         public int RoleId { get; set; }
 
+        public string RoleName { get; set; }
+
         public byte[] ProfilePic { get; set; }
 
         public bool Status { get; set; }

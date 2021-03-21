@@ -13,5 +13,9 @@ namespace Project.Domain.Models
         public string Email { get; set; }
 
         public int RoleId { get; set; }
+
+        public string RoleName { get; set; }
+
+        public bool Status { get; set; }
     }
 }

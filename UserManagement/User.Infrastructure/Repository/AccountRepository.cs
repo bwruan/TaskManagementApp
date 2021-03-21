@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using User.Infrastructure.Repository.Entities;
 
@@ -43,7 +44,7 @@ namespace User.Infrastructure.Repository
         {
             using(var context = new TaskManagementContext())
             {
-                var account = await context.Account.FirstOrDefaultAsync(a => a.Id == id);
+                var account = await context.Account.Include(a => a.Role).FirstOrDefaultAsync(a => a.Id == id);
 
                 if (account == null)
                 {
