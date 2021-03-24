@@ -34,3 +34,21 @@ ProjectManagement/Project.Infrastructure/obj/
 ProjectManagement/Project.Test/bin/
 
 ProjectManagement/Project.Test/obj/
+
+ProjectTaskManagement/.vs/
+
+ProjectTaskManagement/ProjectTask.Api/bin/
+
+ProjectTaskManagement/ProjectTask.Api/obj/
+
+ProjectTaskManagement/ProjectTask.Domain/bin/
+
+ProjectTaskManagement/ProjectTask.Domain/obj/
+
+ProjectTaskManagement/ProjectTask.Infrastructure/bin/
+
+ProjectTaskManagement/ProjectTask.Infrastructure/obj/
+
+ProjectTaskManagement/ProjectTask.Test/bin/
+
+ProjectTaskManagement/ProjectTask.Test/obj/
