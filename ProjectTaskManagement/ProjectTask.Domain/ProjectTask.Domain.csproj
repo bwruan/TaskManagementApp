@@ -5,9 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Models\" />
-    <Folder Include="Mapper\" />
-    <Folder Include="Services\" />
+    <ProjectReference Include="..\ProjectTask.Infrastructure\ProjectTask.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>
