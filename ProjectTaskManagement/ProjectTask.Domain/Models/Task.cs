@@ -16,6 +16,10 @@ namespace ProjectTask.Domain.Models
 
         public long ProjectId { get; set; }
 
+        public long TaskerId { get; set; }
+
+        public Account TaskerAccount { get; set; }
+
         public DateTime CreatedDate { get; set; }
 
         public DateTime UpdatedDate { get; set; }

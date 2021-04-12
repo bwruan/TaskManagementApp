@@ -16,6 +16,7 @@ using Microsoft.IdentityModel.Tokens;
 using ProjectTask.Domain.Services;
 using ProjectTask.Infrastructure.ProjectManagement;
 using ProjectTask.Infrastructure.Repositories;
+using ProjectTask.Infrastructure.UserManagement;
 
 namespace ProjectTask.Api
 {
@@ -38,6 +39,7 @@ namespace ProjectTask.Api
             services.AddTransient<ITaskCommentService, TaskCommentService>();
             services.AddTransient<IUserToTaskService, UserToTaskService>();
             services.AddTransient<IProjectService, ProjectService>();
+            services.AddTransient<IUserService, UserService>();
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                  .AddJwtBearer(options =>
                  {

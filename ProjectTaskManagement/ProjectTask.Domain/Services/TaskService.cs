@@ -2,8 +2,6 @@
 using ProjectTask.Infrastructure.ProjectManagement;
 using ProjectTask.Infrastructure.Repositories;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace ProjectTask.Domain.Services
@@ -56,14 +54,48 @@ namespace ProjectTask.Domain.Services
             return coreTask;
         }
 
-        public Task<Models.Task> GetTaskByTaskId(long taskId, string token)
+        public async Task<Models.Task> GetTaskByTaskId(long taskId, string token)
         {
-            throw new NotImplementedException();
+            var task = await _taskRepository.GetTaskByTaskId(taskId);
+
+            if (task == null)
+            {
+                throw new ArgumentException("Task does not exist.");
+            }
+
+            var coreTask = TaskMapper.DbTaskToCoreTask(task);
+            var project = await _projectService.GetProjectById(coreTask.ProjectId, token);
+
+            coreTask.CurrentProject = TaskMapper.CurrentProjectToCoreProject(project);
+
+            return coreTask;
         }
 
-        public Task UpdateTask(long taskId, string newName, string newDescription, DateTime newDueDate)
+        public async Task UpdateTask(long taskId, string newName, string newDescription, DateTime newDueDate)
         {
-            throw new NotImplementedException();
+            var task = await _taskRepository.GetTaskByTaskId(taskId);
+
+            if (task == null)
+            {
+                throw new ArgumentException("Task does not exist.");
+            }
+
+            if (string.IsNullOrEmpty(newName))
+            {
+                throw new ArgumentException("Task Name field blank");
+            }
+
+            if (string.IsNullOrEmpty(newDescription))
+            {
+                throw new ArgumentException("Task Description field blank");
+            }
+
+            if (newDueDate == null)
+            {
+                throw new ArgumentException("Due Date empty.");
+            }
+
+            await _taskRepository.UpdateTask(taskId, newName, newDescription, newDueDate);
         }
     }
 }

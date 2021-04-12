@@ -17,6 +17,7 @@ namespace ProjectTask.Infrastructure.Repositories.Entities
         public string TaskName { get; set; }
         public string TaskDescription { get; set; }
         public long ProjectId { get; set; }
+        public long TaskerId { get; set; }
         public DateTime CreatedDate { get; set; }
         public DateTime UpdatedDate { get; set; }
         public DateTime CompletedDate { get; set; }

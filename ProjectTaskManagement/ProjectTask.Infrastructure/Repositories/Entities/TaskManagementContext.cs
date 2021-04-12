@@ -55,7 +55,7 @@ namespace ProjectTask.Infrastructure.Repositories.Entities
             modelBuilder.Entity<TaskComment>(entity =>
             {
                 entity.HasKey(e => e.CommentId)
-                    .HasName("PK__TaskComm__C3B4DFCA5801D48A");
+                    .HasName("PK__TaskComm__C3B4DFCA6B4CE5AA");
 
                 entity.ToTable("TaskComment");
 
@@ -67,7 +67,7 @@ namespace ProjectTask.Infrastructure.Repositories.Entities
                     .WithMany(p => p.TaskComments)
                     .HasForeignKey(d => d.TaskId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__TaskComme__TaskI__17F790F9");
+                    .HasConstraintName("FK__TaskComme__TaskI__2EDAF651");
             });
 
             modelBuilder.Entity<UserToTask>(entity =>
@@ -78,7 +78,7 @@ namespace ProjectTask.Infrastructure.Repositories.Entities
                     .WithMany(p => p.UserToTasks)
                     .HasForeignKey(d => d.TaskId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__UserToTas__TaskI__1CBC4616");
+                    .HasConstraintName("FK__UserToTas__TaskI__339FAB6E");
             });
 
             OnModelCreatingPartial(modelBuilder);

@@ -2,6 +2,8 @@
 using DbTask = ProjectTask.Infrastructure.Repositories.Entities.Task;
 using CoreProject = ProjectTask.Domain.Models.Project;
 using CurrentProject = ProjectTask.Infrastructure.ProjectManagement.Models.Project;
+using CoreAccount = ProjectTask.Domain.Models.Account;
+using TaskerAccount = ProjectTask.Infrastructure.UserManagement.Models.Account;
 
 namespace ProjectTask.Domain.Mapper
 {
@@ -33,6 +35,20 @@ namespace ProjectTask.Domain.Mapper
             coreProject.ProjectName = currentProject.ProjectName;
 
             return coreProject;
+        }
+
+        public static CoreAccount TaskerAccountToCoreAccount(TaskerAccount taskerAccount)
+        {
+            var coreAccount = new CoreAccount();
+
+            coreAccount.Id = taskerAccount.Id;
+            coreAccount.Name = taskerAccount.Name;
+            coreAccount.RoleId = taskerAccount.RoleId;
+            coreAccount.RoleName = taskerAccount.RoleName;
+            coreAccount.Status = taskerAccount.Status;
+            coreAccount.Email = taskerAccount.Email;
+
+            return coreAccount;
         }
     }
 }
