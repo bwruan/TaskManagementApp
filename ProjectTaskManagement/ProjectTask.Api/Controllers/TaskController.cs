@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using ProjectTask.Api.Models;
+using ProjectTask.Domain.Services;
 
 namespace ProjectTask.Api.Controllers
 {
@@ -13,5 +15,102 @@ namespace ProjectTask.Api.Controllers
     [Authorize]
     public class TaskController : ControllerBase
     {
+        private readonly ITaskService _taskService;
+
+        public TaskController(ITaskService taskService)
+        {
+            _taskService = taskService;
+        }
+
+        [HttpPost]
+        [Route("create")]
+        public async Task<IActionResult> CreateTask([FromBody] TaskRequest request)
+        {
+            try
+            {
+                await _taskService.CreateTask(request.TaskName, request.TaskDescription, request.ProjectId, request.TaskeeId);
+
+                return StatusCode(201);
+            }
+            catch(Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetTaskByName([FromQuery] string taskName)
+        {
+            try
+            {
+                var token = "";
+
+                if (Request.Headers.ContainsKey("Authorization"))
+                {
+                    var jwt = (Request.Headers.FirstOrDefault(s => s.Key.Equals("Authorization"))).Value;
+
+                    if (jwt.Count <= 0)
+                    {
+                        return StatusCode(400);
+                    }
+
+                    token = jwt[0].Replace("Bearer ", "");
+                }
+
+                var task = await _taskService.GetTaskByName(taskName, token);
+
+                return Ok(task);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
+
+        [HttpGet]
+        [Route("{taskId}")]
+        public async Task<IActionResult> GetTaskByTaskId(long taskId)
+        {
+            try
+            {
+                var token = "";
+
+                if (Request.Headers.ContainsKey("Authorization"))
+                {
+                    var jwt = (Request.Headers.FirstOrDefault(s => s.Key.Equals("Authorization"))).Value;
+
+                    if (jwt.Count <= 0)
+                    {
+                        return StatusCode(400);
+                    }
+
+                    token = jwt[0].Replace("Bearer ", "");
+                }
+
+                var task = await _taskService.GetTaskByTaskId(taskId, token);
+
+                return Ok(task);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
+
+        [HttpPut]
+        [Route("update")]
+        public async Task<IActionResult> UpdateTask([FromBody] UpdateTaskRequest request)
+        {
+            try
+            {
+                await _taskService.UpdateTask(request.TaskId, request.NewName, request.NewDescription, request.NewTaskeeId, request.IsCompleted, request.NewDueDate);
+
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
     }
 }

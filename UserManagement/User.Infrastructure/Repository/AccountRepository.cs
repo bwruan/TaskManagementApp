@@ -29,7 +29,7 @@ namespace User.Infrastructure.Repository
         {
             using (var context = new TaskManagementContext())
             {
-                var account = await context.Account.FirstOrDefaultAsync(a => a.Email == email);
+                var account = await context.Account.Include(a => a.Role).FirstOrDefaultAsync(a => a.Email == email);
 
                 if (account == null)
                 {

@@ -1,18 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Linq;
+using System.Threading.Tasks;
 
-namespace ProjectTask.Domain.Models
+namespace ProjectTask.Api.Models
 {
-    public class Task
+    public class TaskRequest
     {
         public long TaskId { get; set; }
 
         public string TaskName { get; set; }
 
         public string TaskDescription { get; set; }
-
-        public Project CurrentProject { get; set; }
 
         public long ProjectId { get; set; }
 
@@ -21,15 +20,5 @@ namespace ProjectTask.Domain.Models
         public long TaskeeId { get; set; }
 
         public bool IsCompleted { get; set; }
-
-        public Account TaskerAccount { get; set; }
-
-        public DateTime CreatedDate { get; set; }
-
-        public DateTime UpdatedDate { get; set; }
-
-        public DateTime CompletedDate { get; set; }
-
-        public DateTime DueDate { get; set; }
     }
 }

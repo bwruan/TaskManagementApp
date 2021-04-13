@@ -7,9 +7,9 @@ namespace ProjectTask.Infrastructure.Repositories
 {
     public interface ITaskRepository
     {
-        Task CreateTask(string name, string description, long projectId);
+        Task CreateTask(string name, string description, long projectId, long taskeeId);
 
-        Task UpdateTask(long taskId, string newName, string newDescription, DateTime newDueDate);
+        Task UpdateTask(long taskId, string newName, string newDescription, long newTaskeeId, bool isComplete, DateTime newDueDate);
 
         Task<Entities.Task> GetTaskByTaskId(long taskId);
 

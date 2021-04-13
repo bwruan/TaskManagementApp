@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using ProjectTask.Api.Models;
+using ProjectTask.Domain.Services;
 
 namespace ProjectTask.Api.Controllers
 {
@@ -13,5 +15,73 @@ namespace ProjectTask.Api.Controllers
     [Authorize]
     public class TaskCommentController : ControllerBase
     {
+        private readonly ITaskCommentService _taskCommentService;
+
+        public TaskCommentController(ITaskCommentService taskCommentService)
+        {
+            _taskCommentService = taskCommentService;
+        }
+
+        [HttpPost]
+        [Route("create")]
+        public async Task<IActionResult> CreateComment([FromBody] CommentRequest request)
+        {
+            try
+            {
+                await _taskCommentService.CreateComment(request.Comment, request.CommenterId);
+
+                return StatusCode(201);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
+
+        [HttpGet]
+        [Route("{commentId}")]
+        public async Task<IActionResult> GetCommentByCommentId(long commentId)
+        {
+            try
+            {
+                var token = "";
+
+                if (Request.Headers.ContainsKey("Authorization"))
+                {
+                    var jwt = (Request.Headers.FirstOrDefault(s => s.Key.Equals("Authorization"))).Value;
+
+                    if (jwt.Count <= 0)
+                    {
+                        return StatusCode(400);
+                    }
+
+                    token = jwt[0].Replace("Bearer ", "");
+                }
+
+                var comment = await _taskCommentService.GetCommentByCommentId(commentId, token);
+
+                return Ok(comment);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
+
+        [HttpPut]
+        [Route("update")]
+        public async Task<IActionResult> UpdateComment([FromBody] UpdateCommentRequest request)
+        {
+            try
+            {
+                await _taskCommentService.UpdateComment(request.CommentId, request.NewComment);
+
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
     }
 }

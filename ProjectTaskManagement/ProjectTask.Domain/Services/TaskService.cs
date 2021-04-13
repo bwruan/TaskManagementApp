@@ -17,7 +17,7 @@ namespace ProjectTask.Domain.Services
             _projectService = projectService;
         }
 
-        public async Task CreateTask(string name, string description, long projectId)
+        public async Task CreateTask(string name, string description, long projectId, long taskeeId)
         {
             if (string.IsNullOrEmpty(name))
             {
@@ -34,7 +34,12 @@ namespace ProjectTask.Domain.Services
                 throw new ArgumentException("Project Id error.");
             }
 
-            await _taskRepository.CreateTask(name, description, projectId);
+            if (taskeeId <= 0)
+            {
+                throw new ArgumentException("Account does not exist");
+            }
+
+            await _taskRepository.CreateTask(name, description, projectId, taskeeId);
         }
 
         public async Task<Models.Task> GetTaskByName(string name, string token)
@@ -71,7 +76,7 @@ namespace ProjectTask.Domain.Services
             return coreTask;
         }
 
-        public async Task UpdateTask(long taskId, string newName, string newDescription, DateTime newDueDate)
+        public async Task UpdateTask(long taskId, string newName, string newDescription, long newTaskeeId, bool isComplete, DateTime newDueDate)
         {
             var task = await _taskRepository.GetTaskByTaskId(taskId);
 
@@ -90,12 +95,17 @@ namespace ProjectTask.Domain.Services
                 throw new ArgumentException("Task Description field blank");
             }
 
+            if (newTaskeeId <= 0)
+            {
+                throw new ArgumentException("Account does not exist");
+            }
+
             if (newDueDate == null)
             {
                 throw new ArgumentException("Due Date empty.");
             }
 
-            await _taskRepository.UpdateTask(taskId, newName, newDescription, newDueDate);
+            await _taskRepository.UpdateTask(taskId, newName, newDescription, newTaskeeId, isComplete, newDueDate);
         }
     }
 }
