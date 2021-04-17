@@ -76,7 +76,24 @@ namespace ProjectTask.Domain.Services
             return coreTask;
         }
 
-        public async Task UpdateTask(long taskId, string newName, string newDescription, long newTaskeeId, bool isComplete, DateTime newDueDate)
+        public async Task MarkComplete(long taskId, bool isComplete)
+        {
+            var task = await _taskRepository.GetTaskByTaskId(taskId);
+
+            if (task == null)
+            {
+                throw new ArgumentException("Task does not exist.");
+            }
+            
+            if(task.IsCompleted == true)
+            {
+                throw new ArgumentException("Task already completed.");
+            }
+
+            await _taskRepository.MarkComplete(taskId, isComplete);
+        }
+
+        public async Task UpdateTask(long taskId, string newName, string newDescription, long newTaskeeId, DateTime newDueDate)
         {
             var task = await _taskRepository.GetTaskByTaskId(taskId);
 
@@ -105,7 +122,7 @@ namespace ProjectTask.Domain.Services
                 throw new ArgumentException("Due Date empty.");
             }
 
-            await _taskRepository.UpdateTask(taskId, newName, newDescription, newTaskeeId, isComplete, newDueDate);
+            await _taskRepository.UpdateTask(taskId, newName, newDescription, newTaskeeId, newDueDate);
         }
     }
 }

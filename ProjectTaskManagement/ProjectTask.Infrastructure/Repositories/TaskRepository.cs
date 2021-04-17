@@ -38,7 +38,20 @@ namespace ProjectTask.Infrastructure.Repositories
             }
         }
 
-        public async Task UpdateTask(long taskId, string newName, string newDescription, long newTaskeeId, bool isComplete, DateTime newDueDate)
+        public async Task MarkComplete(long taskId, bool isComplete)
+        {
+            using (var context = new Entities.TaskManagementContext())
+            {
+                var task = await context.Tasks.FirstOrDefaultAsync(t => t.TaskId == taskId);
+
+                task.IsCompleted = isComplete;
+                task.CompletedDate = DateTime.Now;
+
+                await context.SaveChangesAsync();
+            }
+        }
+
+        public async Task UpdateTask(long taskId, string newName, string newDescription, long newTaskeeId, DateTime newDueDate)
         {
             using (var context = new Entities.TaskManagementContext())
             {
@@ -48,7 +61,6 @@ namespace ProjectTask.Infrastructure.Repositories
                 task.TaskDescription = newDescription;
                 task.DueDate = newDueDate;
                 task.TaskeeId = newTaskeeId;
-                task.IsCompleted = isComplete;
                 task.UpdatedDate = DateTime.Now;
 
                 await context.SaveChangesAsync();

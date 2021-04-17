@@ -103,7 +103,23 @@ namespace ProjectTask.Api.Controllers
         {
             try
             {
-                await _taskService.UpdateTask(request.TaskId, request.NewName, request.NewDescription, request.NewTaskeeId, request.IsCompleted, request.NewDueDate);
+                await _taskService.UpdateTask(request.TaskId, request.NewName, request.NewDescription, request.NewTaskeeId, request.NewDueDate);
+
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
+
+        [HttpPatch]
+        [Route("complete")]
+        public async Task<IActionResult> MarkComplete([FromBody] CompleteRequest request)
+        {
+            try
+            {
+                await _taskService.MarkComplete(request.TaskId, request.IsComplete);
 
                 return Ok();
             }

@@ -9,7 +9,9 @@ namespace ProjectTask.Domain.Services
     {
         Task CreateTask(string name, string description, long projectId, long taskeeId);
 
-        Task UpdateTask(long taskId, string newName, string newDescription, long newTaskeeId, bool isComplete, DateTime newDueDate);
+        Task UpdateTask(long taskId, string newName, string newDescription, long newTaskeeId, DateTime newDueDate);
+
+        Task MarkComplete(long taskId, bool isComplete);
 
         Task<Models.Task> GetTaskByTaskId(long taskId, string token);
 
