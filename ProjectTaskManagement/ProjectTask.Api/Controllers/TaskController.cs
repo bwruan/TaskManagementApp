@@ -67,7 +67,7 @@ namespace ProjectTask.Api.Controllers
             }
         }
 
-        [HttpGet]
+        [HttpGet] 
         [Route("{taskId}")]
         public async Task<IActionResult> GetTaskByTaskId(long taskId)
         {
@@ -90,6 +90,36 @@ namespace ProjectTask.Api.Controllers
                 var task = await _taskService.GetTaskByTaskId(taskId, token);
 
                 return Ok(task);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
+
+        [HttpGet]
+        [Route("{projectId}")]
+        public async Task<IActionResult> GetTasksByProjectId(long projectId)
+        {
+            try
+            {
+                var token = "";
+
+                if (Request.Headers.ContainsKey("Authorization"))
+                {
+                    var jwt = (Request.Headers.FirstOrDefault(s => s.Key.Equals("Authorization"))).Value;
+
+                    if (jwt.Count <= 0)
+                    {
+                        return StatusCode(400);
+                    }
+
+                    token = jwt[0].Replace("Bearer ", "");
+                }
+
+                var taskList = await _taskService.GetTasksByProjectId(projectId, token);
+
+                return Ok(taskList);
             }
             catch (Exception ex)
             {

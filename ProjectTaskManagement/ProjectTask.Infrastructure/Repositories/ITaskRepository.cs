@@ -16,5 +16,7 @@ namespace ProjectTask.Infrastructure.Repositories
         Task<Entities.Task> GetTaskByTaskId(long taskId);
 
         Task<Entities.Task> GetTaskByName(string name);
+
+        Task <List<Entities.Task>> GetTasksByProjectId(long projectId);
     }
 }

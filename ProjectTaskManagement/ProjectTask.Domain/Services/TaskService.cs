@@ -2,6 +2,7 @@
 using ProjectTask.Infrastructure.ProjectManagement;
 using ProjectTask.Infrastructure.Repositories;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace ProjectTask.Domain.Services
@@ -17,7 +18,7 @@ namespace ProjectTask.Domain.Services
             _projectService = projectService;
         }
 
-        public async Task CreateTask(string name, string description, long projectId, long taskeeId)
+        public async System.Threading.Tasks.Task CreateTask(string name, string description, long projectId, long taskeeId)
         {
             if (string.IsNullOrEmpty(name))
             {
@@ -76,7 +77,26 @@ namespace ProjectTask.Domain.Services
             return coreTask;
         }
 
-        public async Task MarkComplete(long taskId, bool isComplete)
+        public async Task<List<Models.Task>> GetTasksByProjectId(long projectId, string token)
+        {
+            var taskList = new List<Models.Task>();
+
+            var tasks = await _taskRepository.GetTasksByProjectId(projectId);
+
+            foreach (var task in tasks)
+            {
+                var project = await _projectService.GetProjectById(task.ProjectId, token);
+                var coreTask = TaskMapper.DbTaskToCoreTask(task);
+
+                coreTask.CurrentProject = TaskMapper.CurrentProjectToCoreProject(project);
+
+                taskList.Add(coreTask);
+            }
+
+            return taskList;
+        }
+
+        public async System.Threading.Tasks.Task MarkComplete(long taskId, bool isComplete)
         {
             var task = await _taskRepository.GetTaskByTaskId(taskId);
 
@@ -93,7 +113,7 @@ namespace ProjectTask.Domain.Services
             await _taskRepository.MarkComplete(taskId, isComplete);
         }
 
-        public async Task UpdateTask(long taskId, string newName, string newDescription, long newTaskeeId, DateTime newDueDate)
+        public async System.Threading.Tasks.Task UpdateTask(long taskId, string newName, string newDescription, long newTaskeeId, DateTime newDueDate)
         {
             var task = await _taskRepository.GetTaskByTaskId(taskId);
 

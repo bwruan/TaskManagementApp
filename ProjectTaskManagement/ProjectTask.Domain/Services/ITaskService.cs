@@ -16,5 +16,7 @@ namespace ProjectTask.Domain.Services
         Task<Models.Task> GetTaskByTaskId(long taskId, string token);
 
         Task<Models.Task> GetTaskByName(string name, string token);
+
+        Task<List<Models.Task>> GetTasksByProjectId(long projectId, string token);
     }
 }

@@ -1,12 +1,14 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace ProjectTask.Infrastructure.Repositories
 {
     public class TaskRepository : ITaskRepository
     {
-        public async Task CreateTask(string name, string description, long projectId, long taskeeId)
+        public async System.Threading.Tasks.Task CreateTask(string name, string description, long projectId, long taskeeId)
         {
             using (var context = new Entities.TaskManagementContext())
             {
@@ -38,7 +40,24 @@ namespace ProjectTask.Infrastructure.Repositories
             }
         }
 
-        public async Task MarkComplete(long taskId, bool isComplete)
+        public async Task<List<Entities.Task>> GetTasksByProjectId(long projectId)
+        {
+            using (var context = new Entities.TaskManagementContext())
+            {
+                var tasks = await context.Tasks.Where(t => t.ProjectId == projectId).ToListAsync();
+
+                var taskList = new List<Entities.Task>();
+
+                foreach (var task in tasks)
+                {
+                    taskList.Add(task);
+                }
+
+                return taskList;
+            }
+        }
+
+        public async System.Threading.Tasks.Task MarkComplete(long taskId, bool isComplete)
         {
             using (var context = new Entities.TaskManagementContext())
             {
@@ -51,7 +70,7 @@ namespace ProjectTask.Infrastructure.Repositories
             }
         }
 
-        public async Task UpdateTask(long taskId, string newName, string newDescription, long newTaskeeId, DateTime newDueDate)
+        public async System.Threading.Tasks.Task UpdateTask(long taskId, string newName, string newDescription, long newTaskeeId, DateTime newDueDate)
         {
             using (var context = new Entities.TaskManagementContext())
             {

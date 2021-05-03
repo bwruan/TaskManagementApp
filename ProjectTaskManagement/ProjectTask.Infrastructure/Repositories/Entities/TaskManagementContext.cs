@@ -38,6 +38,8 @@ namespace ProjectTask.Infrastructure.Repositories.Entities
             {
                 entity.ToTable("Task");
 
+                entity.Property(e => e.CompletedDate).HasDefaultValueSql("(getdate())");
+
                 entity.Property(e => e.CreatedDate).HasDefaultValueSql("(getdate())");
 
                 entity.Property(e => e.TaskDescription)
@@ -55,7 +57,7 @@ namespace ProjectTask.Infrastructure.Repositories.Entities
             modelBuilder.Entity<TaskComment>(entity =>
             {
                 entity.HasKey(e => e.CommentId)
-                    .HasName("PK__TaskComm__C3B4DFCAA9C9990E");
+                    .HasName("PK__TaskComm__C3B4DFCAD9E5DF71");
 
                 entity.ToTable("TaskComment");
 
@@ -67,7 +69,7 @@ namespace ProjectTask.Infrastructure.Repositories.Entities
                     .WithMany(p => p.TaskComments)
                     .HasForeignKey(d => d.TaskId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__TaskComme__TaskI__3E1D39E1");
+                    .HasConstraintName("FK__TaskComme__TaskI__57DD0BE4");
             });
 
             modelBuilder.Entity<UserToTask>(entity =>
@@ -78,7 +80,7 @@ namespace ProjectTask.Infrastructure.Repositories.Entities
                     .WithMany(p => p.UserToTasks)
                     .HasForeignKey(d => d.TaskId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__UserToTas__TaskI__42E1EEFE");
+                    .HasConstraintName("FK__UserToTas__TaskI__5CA1C101");
             });
 
             OnModelCreatingPartial(modelBuilder);

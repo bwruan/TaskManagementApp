@@ -183,6 +183,62 @@ namespace ProjectTask.Test.Controller
         }
 
         [Test]
+        public async Task GetTasksByProjectId_Success()
+        {
+            var httpContext = new DefaultHttpContext();
+
+            httpContext.Request.Headers["Authorization"] = "Bearer testtoken";
+
+            _taskService.Setup(t => t.GetTasksByProjectId(It.IsAny<long>(), It.IsAny<string>()))
+                .ReturnsAsync(new List<CoreTask>());
+
+            var controller = new TaskController(_taskService.Object)
+            {
+                ControllerContext = new ControllerContext()
+                {
+                    HttpContext = httpContext
+                }
+            };            
+
+            var response = await controller.GetTasksByProjectId(1);
+
+            Assert.NotNull(response);
+            Assert.AreEqual(response.GetType(), typeof(OkObjectResult));
+
+            var okObj = (OkObjectResult)response;
+
+            Assert.AreEqual(okObj.StatusCode, 200);
+        }
+
+        [Test]
+        public async Task GetTasksByProjectId_InternalServerError()
+        {
+            var httpContext = new DefaultHttpContext();
+
+            httpContext.Request.Headers["Authorization"] = "Bearer testtoken";
+
+            _taskService.Setup(t => t.GetTasksByProjectId(It.IsAny<long>(), It.IsAny<string>()))
+                .ThrowsAsync(new Exception());
+
+            var controller = new TaskController(_taskService.Object)
+            {
+                ControllerContext = new ControllerContext()
+                {
+                    HttpContext = httpContext
+                }
+            };
+
+            var response = await controller.GetTasksByProjectId(1);
+
+            Assert.NotNull(response);
+            Assert.AreEqual(response.GetType(), typeof(ObjectResult));
+
+            var obj = (ObjectResult)response;
+
+            Assert.AreEqual(obj.StatusCode, 500);
+        }
+
+        [Test]
         public async Task MarkComplete_Success()
         {
             _taskService.Setup(t => t.MarkComplete(It.IsAny<long>(), It.IsAny<bool>()))
