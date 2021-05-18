@@ -12,6 +12,7 @@ namespace ProjectTask.Infrastructure.Repositories.Entities
         public long TaskId { get; set; }
         public long CommenterId { get; set; }
 
+        public virtual Account Commenter { get; set; }
         public virtual Task Task { get; set; }
     }
 }

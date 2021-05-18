@@ -36,7 +36,7 @@ namespace ProjectTask.Infrastructure.Repositories
         {
             using (var context = new Entities.TaskManagementContext())
             {
-                return await context.Tasks.FirstOrDefaultAsync(t => t.TaskId == taskId);
+                return await context.Tasks.Include(t => t.TaskComments).Include(t => t.Taskee).FirstOrDefaultAsync(t => t.TaskId == taskId);
             }
         }
 
@@ -44,7 +44,7 @@ namespace ProjectTask.Infrastructure.Repositories
         {
             using (var context = new Entities.TaskManagementContext())
             {
-                var tasks = await context.Tasks.Where(t => t.ProjectId == projectId).ToListAsync();
+                var tasks = await context.Tasks.Include(t => t.Taskee).Where(t => t.ProjectId == projectId).ToListAsync();
 
                 var taskList = new List<Entities.Task>();
 

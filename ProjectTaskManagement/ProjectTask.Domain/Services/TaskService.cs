@@ -18,7 +18,7 @@ namespace ProjectTask.Domain.Services
             _projectService = projectService;
         }
 
-        public async System.Threading.Tasks.Task CreateTask(string name, string description, long projectId, long taskeeId)
+        public async Task CreateTask(string name, string description, long projectId, long taskeeId)
         {
             if (string.IsNullOrEmpty(name))
             {
@@ -96,7 +96,7 @@ namespace ProjectTask.Domain.Services
             return taskList;
         }
 
-        public async System.Threading.Tasks.Task MarkComplete(long taskId, bool isComplete)
+        public async Task MarkComplete(long taskId, bool isComplete)
         {
             var task = await _taskRepository.GetTaskByTaskId(taskId);
 
@@ -113,7 +113,7 @@ namespace ProjectTask.Domain.Services
             await _taskRepository.MarkComplete(taskId, isComplete);
         }
 
-        public async System.Threading.Tasks.Task UpdateTask(long taskId, string newName, string newDescription, long newTaskeeId, DateTime newDueDate)
+        public async Task UpdateTask(long taskId, string newName, string newDescription, long newTaskeeId, DateTime newDueDate)
         {
             var task = await _taskRepository.GetTaskByTaskId(taskId);
 

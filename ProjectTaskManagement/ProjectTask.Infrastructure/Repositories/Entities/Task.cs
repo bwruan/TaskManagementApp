@@ -16,14 +16,14 @@ namespace ProjectTask.Infrastructure.Repositories.Entities
         public string TaskName { get; set; }
         public string TaskDescription { get; set; }
         public long ProjectId { get; set; }
-        public long TaskerId { get; set; }
         public long TaskeeId { get; set; }
         public bool IsCompleted { get; set; }
         public DateTime CreatedDate { get; set; }
         public DateTime UpdatedDate { get; set; }
-        public DateTime CompletedDate { get; set; }
+        public DateTime? CompletedDate { get; set; }
         public DateTime DueDate { get; set; }
 
+        public virtual Account Taskee { get; set; }
         public virtual ICollection<TaskComment> TaskComments { get; set; }
     }
 }

@@ -17,6 +17,7 @@ namespace ProjectTask.Infrastructure.Repositories.Entities
         {
         }
 
+        public virtual DbSet<Account> Accounts { get; set; }
         public virtual DbSet<Task> Tasks { get; set; }
         public virtual DbSet<TaskComment> TaskComments { get; set; }
 
@@ -33,11 +34,35 @@ namespace ProjectTask.Infrastructure.Repositories.Entities
         {
             modelBuilder.HasAnnotation("Relational:Collation", "SQL_Latin1_General_CP1_CI_AS");
 
+            modelBuilder.Entity<Account>(entity =>
+            {
+                entity.ToTable("Account");
+
+                entity.Property(e => e.Active)
+                    .IsRequired()
+                    .HasDefaultValueSql("((1))");
+
+                entity.Property(e => e.CreatedDate).HasDefaultValueSql("(getdate())");
+
+                entity.Property(e => e.Email)
+                    .IsRequired()
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Name)
+                    .IsRequired()
+                    .HasMaxLength(25)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Password)
+                    .IsRequired()
+                    .HasMaxLength(32)
+                    .IsUnicode(false);
+            });
+
             modelBuilder.Entity<Task>(entity =>
             {
                 entity.ToTable("Task");
-
-                entity.Property(e => e.CompletedDate).HasDefaultValueSql("(getdate())");
 
                 entity.Property(e => e.CreatedDate).HasDefaultValueSql("(getdate())");
 
@@ -51,12 +76,18 @@ namespace ProjectTask.Infrastructure.Repositories.Entities
                     .IsUnicode(false);
 
                 entity.Property(e => e.UpdatedDate).HasDefaultValueSql("(getdate())");
+
+                entity.HasOne(d => d.Taskee)
+                    .WithMany(p => p.Tasks)
+                    .HasForeignKey(d => d.TaskeeId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK__Task__TaskeeId__6DCC4D03");
             });
 
             modelBuilder.Entity<TaskComment>(entity =>
             {
                 entity.HasKey(e => e.CommentId)
-                    .HasName("PK__TaskComm__C3B4DFCAD9E5DF71");
+                    .HasName("PK__TaskComm__C3B4DFCAD3403796");
 
                 entity.ToTable("TaskComment");
 
@@ -64,11 +95,17 @@ namespace ProjectTask.Infrastructure.Repositories.Entities
                     .IsRequired()
                     .IsUnicode(false);
 
+                entity.HasOne(d => d.Commenter)
+                    .WithMany(p => p.TaskComments)
+                    .HasForeignKey(d => d.CommenterId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK__TaskComme__Comme__74794A92");
+
                 entity.HasOne(d => d.Task)
                     .WithMany(p => p.TaskComments)
                     .HasForeignKey(d => d.TaskId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__TaskComme__TaskI__57DD0BE4");
+                    .HasConstraintName("FK__TaskComme__TaskI__73852659");
             });
 
             OnModelCreatingPartial(modelBuilder);
