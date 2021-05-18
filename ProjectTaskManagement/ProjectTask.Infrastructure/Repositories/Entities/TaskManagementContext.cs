@@ -19,7 +19,6 @@ namespace ProjectTask.Infrastructure.Repositories.Entities
 
         public virtual DbSet<Task> Tasks { get; set; }
         public virtual DbSet<TaskComment> TaskComments { get; set; }
-        public virtual DbSet<UserToTask> UserToTasks { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -70,17 +69,6 @@ namespace ProjectTask.Infrastructure.Repositories.Entities
                     .HasForeignKey(d => d.TaskId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK__TaskComme__TaskI__57DD0BE4");
-            });
-
-            modelBuilder.Entity<UserToTask>(entity =>
-            {
-                entity.ToTable("UserToTask");
-
-                entity.HasOne(d => d.Task)
-                    .WithMany(p => p.UserToTasks)
-                    .HasForeignKey(d => d.TaskId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__UserToTas__TaskI__5CA1C101");
             });
 
             OnModelCreatingPartial(modelBuilder);

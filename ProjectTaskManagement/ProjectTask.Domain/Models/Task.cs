@@ -24,6 +24,8 @@ namespace ProjectTask.Domain.Models
 
         public Account TaskerAccount { get; set; }
 
+        public Account TaskeeAccount { get; set; }
+
         public DateTime CreatedDate { get; set; }
 
         public DateTime UpdatedDate { get; set; }

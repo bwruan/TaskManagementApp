@@ -16,7 +16,9 @@ namespace ProjectTask.Domain.Mapper
             coreTask.TaskId = dbTask.TaskId;
             coreTask.TaskName = dbTask.TaskName;
             coreTask.TaskDescription = dbTask.TaskDescription;
-            coreTask.ProjectId = dbTask.ProjectId;
+            coreTask.ProjectId = dbTask.ProjectId;            
+            coreTask.TaskerId = dbTask.TaskerId;
+            coreTask.TaskeeId = dbTask.TaskeeId;
             coreTask.DueDate = dbTask.DueDate;
             coreTask.CompletedDate = dbTask.CompletedDate;
             coreTask.CreatedDate = dbTask.CreatedDate;

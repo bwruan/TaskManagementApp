@@ -34,10 +34,8 @@ namespace ProjectTask.Api
         {
             services.AddSingleton<ITaskRepository, TaskRepository>();
             services.AddSingleton<ITaskCommentRepository, TaskCommentRepository>();
-            services.AddSingleton<IUserToTaskRepository, UserToTaskRepository>();
             services.AddTransient<ITaskService, TaskService>();
             services.AddTransient<ITaskCommentService, TaskCommentService>();
-            services.AddTransient<IUserToTaskService, UserToTaskService>();
             services.AddTransient<IProjectService, ProjectService>();
             services.AddTransient<IUserService, UserService>();
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)

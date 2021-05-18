@@ -68,7 +68,7 @@ namespace ProjectTask.Api.Controllers
         }
 
         [HttpGet] 
-        [Route("{taskId}")]
+        [Route("task/{taskId}")]
         public async Task<IActionResult> GetTaskByTaskId(long taskId)
         {
             try
@@ -98,7 +98,7 @@ namespace ProjectTask.Api.Controllers
         }
 
         [HttpGet]
-        [Route("{projectId}")]
+        [Route("project/{projectId}")]
         public async Task<IActionResult> GetTasksByProjectId(long projectId)
         {
             try

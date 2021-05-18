@@ -10,7 +10,6 @@ namespace ProjectTask.Infrastructure.Repositories.Entities
         public Task()
         {
             TaskComments = new HashSet<TaskComment>();
-            UserToTasks = new HashSet<UserToTask>();
         }
 
         public long TaskId { get; set; }
@@ -26,6 +25,5 @@ namespace ProjectTask.Infrastructure.Repositories.Entities
         public DateTime DueDate { get; set; }
 
         public virtual ICollection<TaskComment> TaskComments { get; set; }
-        public virtual ICollection<UserToTask> UserToTasks { get; set; }
     }
 }
