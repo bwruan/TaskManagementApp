@@ -96,7 +96,7 @@ namespace ProjectTask.Domain.Services
             return taskList;
         }
 
-        public async Task MarkComplete(long taskId, bool isComplete)
+        public async Task MarkComplete(long taskId)
         {
             var task = await _taskRepository.GetTaskByTaskId(taskId);
 
@@ -110,7 +110,7 @@ namespace ProjectTask.Domain.Services
                 throw new ArgumentException("Task already completed.");
             }
 
-            await _taskRepository.MarkComplete(taskId, isComplete);
+            await _taskRepository.MarkComplete(taskId, true);
         }
 
         public async Task UpdateTask(long taskId, string newName, string newDescription, long newTaskeeId, DateTime newDueDate)

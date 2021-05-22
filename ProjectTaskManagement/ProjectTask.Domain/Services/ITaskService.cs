@@ -11,7 +11,7 @@ namespace ProjectTask.Domain.Services
 
         Task UpdateTask(long taskId, string newName, string newDescription, long newTaskeeId, DateTime newDueDate);
 
-        Task MarkComplete(long taskId, bool isComplete);
+        Task MarkComplete(long taskId);
 
         Task<Models.Task> GetTaskByTaskId(long taskId, string token);
 

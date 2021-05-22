@@ -169,7 +169,7 @@ namespace ProjectTask.Test.Service
 
             var taskService = new TaskService(_taskRepository.Object, _projectService.Object);
 
-            Assert.ThrowsAsync<ArgumentException>(() => taskService.MarkComplete(1, true));
+            Assert.ThrowsAsync<ArgumentException>(() => taskService.MarkComplete(1));
         }
 
         [Test]
@@ -183,7 +183,7 @@ namespace ProjectTask.Test.Service
 
             var taskService = new TaskService(_taskRepository.Object, _projectService.Object);
 
-            await taskService.MarkComplete(1, true);
+            await taskService.MarkComplete(1);
 
             _taskRepository.Verify(t => t.MarkComplete(It.IsAny<long>(), It.IsAny<bool>()), Times.Once);
         }

@@ -241,15 +241,14 @@ namespace ProjectTask.Test.Controller
         [Test]
         public async Task MarkComplete_Success()
         {
-            _taskService.Setup(t => t.MarkComplete(It.IsAny<long>(), It.IsAny<bool>()))
+            _taskService.Setup(t => t.MarkComplete(It.IsAny<long>()))
                 .Returns(Task.CompletedTask);
 
             var controller = new TaskController(_taskService.Object);
 
             var response = await controller.MarkComplete(new CompleteRequest()
             {
-                TaskId = 1,
-                IsComplete = true
+                TaskId = 1
             });
 
             Assert.NotNull(response);
@@ -263,15 +262,14 @@ namespace ProjectTask.Test.Controller
         [Test]
         public async Task MarkComplete_InternalServerError()
         {
-            _taskService.Setup(t => t.MarkComplete(It.IsAny<long>(), It.IsAny<bool>()))
+            _taskService.Setup(t => t.MarkComplete(It.IsAny<long>()))
                 .ThrowsAsync(new Exception());
 
             var controller = new TaskController(_taskService.Object);
 
             var response = await controller.MarkComplete(new CompleteRequest()
             {
-                TaskId = 1,
-                IsComplete = true
+                TaskId = 1
             });
 
             Assert.NotNull(response);

@@ -149,7 +149,7 @@ namespace ProjectTask.Api.Controllers
         {
             try
             {
-                await _taskService.MarkComplete(request.TaskId, request.IsComplete);
+                await _taskService.MarkComplete(request.TaskId);
 
                 return Ok();
             }
