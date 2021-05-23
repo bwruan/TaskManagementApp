@@ -96,7 +96,7 @@ namespace ProjectTask.Domain.Services
             return taskList;
         }
 
-        public async Task MarkComplete(long taskId)
+        public async Task<DateTime?> MarkComplete(long taskId)
         {
             var task = await _taskRepository.GetTaskByTaskId(taskId);
 
@@ -111,6 +111,8 @@ namespace ProjectTask.Domain.Services
             }
 
             await _taskRepository.MarkComplete(taskId, true);
+
+            return task.CompletedDate;
         }
 
         public async Task UpdateTask(long taskId, string newName, string newDescription, long newTaskeeId, DateTime newDueDate)

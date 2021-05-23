@@ -242,7 +242,7 @@ namespace ProjectTask.Test.Controller
         public async Task MarkComplete_Success()
         {
             _taskService.Setup(t => t.MarkComplete(It.IsAny<long>()))
-                .Returns(Task.CompletedTask);
+                .ReturnsAsync(new DateTime?());
 
             var controller = new TaskController(_taskService.Object);
 
@@ -252,9 +252,9 @@ namespace ProjectTask.Test.Controller
             });
 
             Assert.NotNull(response);
-            Assert.AreEqual(response.GetType(), typeof(OkResult));
+            Assert.AreEqual(response.GetType(), typeof(OkObjectResult));
 
-            var ok = (OkResult)response;
+            var ok = (OkObjectResult)response;
 
             Assert.AreEqual(ok.StatusCode, 200);
         }

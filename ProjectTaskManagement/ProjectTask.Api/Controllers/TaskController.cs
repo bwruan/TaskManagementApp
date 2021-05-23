@@ -149,9 +149,9 @@ namespace ProjectTask.Api.Controllers
         {
             try
             {
-                await _taskService.MarkComplete(request.TaskId);
+                var completedDate = await _taskService.MarkComplete(request.TaskId);
 
-                return Ok();
+                return Ok(new { completedDate });
             }
             catch (Exception ex)
             {
