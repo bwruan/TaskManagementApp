@@ -57,16 +57,19 @@ namespace ProjectTask.Infrastructure.Repositories
             }
         }
 
-        public async System.Threading.Tasks.Task MarkComplete(long taskId, bool isComplete)
+        public async Task<DateTime> MarkComplete(long taskId, bool isComplete)
         {
             using (var context = new Entities.TaskManagementContext())
             {
                 var task = await context.Tasks.FirstOrDefaultAsync(t => t.TaskId == taskId);
+                var completeDate = DateTime.Now;
 
                 task.IsCompleted = isComplete;
-                task.CompletedDate = DateTime.Now;
+                task.CompletedDate = completeDate;
 
                 await context.SaveChangesAsync();
+
+                return completeDate;
             }
         }
 

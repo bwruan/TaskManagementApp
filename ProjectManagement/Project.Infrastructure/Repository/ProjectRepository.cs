@@ -7,7 +7,7 @@ namespace Project.Infrastructure.Repository
 {
     public class ProjectRepository : IProjectRepository
     {
-        public async Task CreateProject(string name, string description, long ownerId)
+        public async Task CreateProject(string name, string description, long ownerId, DateTime startDate, DateTime endDate)
         {
             using(var context = new TaskManagementContext())
             {
@@ -15,7 +15,9 @@ namespace Project.Infrastructure.Repository
                 {
                     ProjectName = name,
                     ProjectDescription = description,
-                    OwnerAccountId = ownerId
+                    OwnerAccountId = ownerId,
+                    StartDate = startDate,
+                    EndDate = endDate
                 });
 
                 await context.SaveChangesAsync();

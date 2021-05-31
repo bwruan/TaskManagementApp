@@ -11,7 +11,7 @@ namespace ProjectTask.Infrastructure.Repositories
 
         Task UpdateTask(long taskId, string newName, string newDescription, long newTaskeeId, DateTime newDueDate);
 
-        Task MarkComplete(long taskId, bool isComplete);
+        Task<DateTime> MarkComplete(long taskId, bool isComplete);
 
         Task<Entities.Task> GetTaskByTaskId(long taskId);
 

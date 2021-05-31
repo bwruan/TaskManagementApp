@@ -26,7 +26,7 @@ namespace Project.Api.Controllers
         {
             try
             {
-                await _projectService.CreateProject(request.ProjectName, request.ProjectDescription, request.OwnerId);
+                await _projectService.CreateProject(request.ProjectName, request.ProjectDescription, request.OwnerId, request.StartDate, request.EndDate);
 
                 return StatusCode(201);
             }

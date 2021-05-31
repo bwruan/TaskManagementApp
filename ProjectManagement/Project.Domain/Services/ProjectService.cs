@@ -17,7 +17,7 @@ namespace Project.Domain.Services
             _userService = userService;
         }
 
-        public async Task CreateProject(string name, string description, long ownerId)
+        public async Task CreateProject(string name, string description, long ownerId, DateTime startDate, DateTime endDate)
         {
             if (string.IsNullOrEmpty(name))
             {
@@ -34,7 +34,7 @@ namespace Project.Domain.Services
                 throw new ArgumentException("Owner Id error.");
             }
             
-            await _projectRepository.CreateProject(name, description, ownerId);
+            await _projectRepository.CreateProject(name, description, ownerId, startDate, endDate);
         }
 
         public async Task<Models.Project> GetProjectById(long id, string token)

@@ -96,9 +96,9 @@ namespace ProjectTask.Domain.Services
             return taskList;
         }
 
-        public async Task<DateTime?> MarkComplete(long taskId)
+        public async Task<DateTime> MarkComplete(long taskId)
         {
-            var task = await _taskRepository.GetTaskByTaskId(taskId);
+            var task = await _taskRepository.GetTaskByTaskId(taskId); 
 
             if (task == null)
             {
@@ -110,9 +110,7 @@ namespace ProjectTask.Domain.Services
                 throw new ArgumentException("Task already completed.");
             }
 
-            await _taskRepository.MarkComplete(taskId, true);
-
-            return task.CompletedDate;
+            return await _taskRepository.MarkComplete(taskId, true);
         }
 
         public async Task UpdateTask(long taskId, string newName, string newDescription, long newTaskeeId, DateTime newDueDate)

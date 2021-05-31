@@ -26,69 +26,69 @@ namespace Project.Test.Service
         [Test]
         public void CreateProject_NameEmpty()
         {
-            _projectRepository.Setup(p => p.CreateProject(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<long>()))
+            _projectRepository.Setup(p => p.CreateProject(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<long>(), It.IsAny<DateTime>(), It.IsAny<DateTime>()))
                 .ThrowsAsync(new ArgumentException());
 
             var projectService = new ProjectService(_projectRepository.Object, _userService.Object);
 
-            Assert.ThrowsAsync<ArgumentException>(() => projectService.CreateProject("", "Description", 1));
+            Assert.ThrowsAsync<ArgumentException>(() => projectService.CreateProject("", "Description", 1, Convert.ToDateTime("05/30/2021"), Convert.ToDateTime("12/18/2021")));
         }
 
         [Test]
         public void CreateProject_NameNull()
         {
-            _projectRepository.Setup(p => p.CreateProject(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<long>()))
+            _projectRepository.Setup(p => p.CreateProject(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<long>(), It.IsAny<DateTime>(), It.IsAny<DateTime>()))
                 .ThrowsAsync(new ArgumentException());
 
             var projectService = new ProjectService(_projectRepository.Object, _userService.Object);
 
-            Assert.ThrowsAsync<ArgumentException>(() => projectService.CreateProject(null, "Description", 1));
+            Assert.ThrowsAsync<ArgumentException>(() => projectService.CreateProject(null, "Description", 1, Convert.ToDateTime("05/30/2021"), Convert.ToDateTime("12/18/2021")));
         }
 
         [Test]
         public void CreateProject_DescriptionEmpty()
         {
-            _projectRepository.Setup(p => p.CreateProject(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<long>()))
+            _projectRepository.Setup(p => p.CreateProject(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<long>(), It.IsAny<DateTime>(), It.IsAny<DateTime>()))
                 .ThrowsAsync(new ArgumentException());
 
             var projectService = new ProjectService(_projectRepository.Object, _userService.Object);
 
-            Assert.ThrowsAsync<ArgumentException>(() => projectService.CreateProject("Project1", "", 1));
+            Assert.ThrowsAsync<ArgumentException>(() => projectService.CreateProject("Project1", "", 1, Convert.ToDateTime("05/30/2021"), Convert.ToDateTime("12/18/2021")));
         }
 
         [Test]
         public void CreateProject_DescriptionNull()
         {
-            _projectRepository.Setup(p => p.CreateProject(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<long>()))
+            _projectRepository.Setup(p => p.CreateProject(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<long>(), It.IsAny<DateTime>(), It.IsAny<DateTime>()))
                 .ThrowsAsync(new ArgumentException());
 
             var projectService = new ProjectService(_projectRepository.Object, _userService.Object);
 
-            Assert.ThrowsAsync<ArgumentException>(() => projectService.CreateProject("Project1", null, 1));
+            Assert.ThrowsAsync<ArgumentException>(() => projectService.CreateProject("Project1", null, 1, Convert.ToDateTime("05/30/2021"), Convert.ToDateTime("12/18/2021")));
         }
 
         [Test]
         public void CreateProject_OwnerIdError()
         {
-            _projectRepository.Setup(p => p.CreateProject(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<long>()))
+            _projectRepository.Setup(p => p.CreateProject(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<long>(), It.IsAny<DateTime>(), It.IsAny<DateTime>()))
                 .ThrowsAsync(new ArgumentException());
 
             var projectService = new ProjectService(_projectRepository.Object, _userService.Object);
 
-            Assert.ThrowsAsync<ArgumentException>(() => projectService.CreateProject("Project1", "Description", 0));
+            Assert.ThrowsAsync<ArgumentException>(() => projectService.CreateProject("Project1", "Description", 0, Convert.ToDateTime("05/30/2021"), Convert.ToDateTime("12/18/2021")));
         }
 
         [Test]
         public async Task CreateProject_Success()
         {
-            _projectRepository.Setup(p => p.CreateProject(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<long>()))
+            _projectRepository.Setup(p => p.CreateProject(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<long>(), It.IsAny<DateTime>(), It.IsAny<DateTime>()))
                 .Returns(Task.CompletedTask);
 
             var projectService = new ProjectService(_projectRepository.Object, _userService.Object);
 
-            await projectService.CreateProject("Project1", "Description", 1);
+            await projectService.CreateProject("Project1", "Description", 1, Convert.ToDateTime("05/30/2021"), Convert.ToDateTime("12/18/2021"));
 
-            _projectRepository.Verify(p => p.CreateProject(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<long>()), Times.Once);
+            _projectRepository.Verify(p => p.CreateProject(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<long>(), It.IsAny<DateTime>(), It.IsAny<DateTime>()), Times.Once);
         }
 
         [Test]

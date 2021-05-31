@@ -242,7 +242,7 @@ namespace ProjectTask.Test.Controller
         public async Task MarkComplete_Success()
         {
             _taskService.Setup(t => t.MarkComplete(It.IsAny<long>()))
-                .ReturnsAsync(new DateTime?());
+                .ReturnsAsync(new DateTime());
 
             var controller = new TaskController(_taskService.Object);
 
