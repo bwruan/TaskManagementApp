@@ -7,8 +7,6 @@ namespace Project.Api.Models
 {
     public class ProjectRequest
     {
-        public long ProjectId { get; set; }
-
         public string ProjectName { get; set; }
 
         public string ProjectDescription { get; set; }
