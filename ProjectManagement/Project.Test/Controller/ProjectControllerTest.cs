@@ -16,6 +16,7 @@ namespace Project.Test.Controller
     {
         private Mock<IProjectService> _projectService;
 
+
         [SetUp]
         public void Setup()
         {
@@ -25,8 +26,8 @@ namespace Project.Test.Controller
         [Test]
         public async Task CreateProject_Success()
         {
-            _projectService.Setup(p => p.CreateProject(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<long>()))
-                .Returns(Task.CompletedTask);
+            _projectService.Setup(p => p.CreateProject(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<long>(), It.IsAny<DateTime>(), It.IsAny<DateTime>()))
+                .ReturnsAsync(1);
 
             var controller = new ProjectController(_projectService.Object);
 
@@ -34,7 +35,9 @@ namespace Project.Test.Controller
             {
                 ProjectName = "Project1",
                 ProjectDescription = "Description",
-                OwnerId = 1
+                OwnerId = 1,
+                StartDate = Convert.ToDateTime("05/30/2021"),
+                EndDate = Convert.ToDateTime("12/18/2021")
             });
 
             Assert.NotNull(response);
@@ -48,7 +51,7 @@ namespace Project.Test.Controller
         [Test]
         public async Task CreateProject_InternalServerError()
         {
-            _projectService.Setup(p => p.CreateProject(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<long>()))
+            _projectService.Setup(p => p.CreateProject(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<long>(), It.IsAny<DateTime>(), It.IsAny<DateTime>()))
                 .ThrowsAsync(new Exception());
 
             var controller = new ProjectController(_projectService.Object);
@@ -57,7 +60,9 @@ namespace Project.Test.Controller
             {
                 ProjectName = "Project1",
                 ProjectDescription = "Description",
-                OwnerId = 1
+                OwnerId = 1,
+                StartDate = Convert.ToDateTime("05/30/2021"),
+                EndDate = Convert.ToDateTime("12/18/2021")
             });
 
             Assert.NotNull(response);

@@ -15,80 +15,82 @@ namespace Project.Test.Service
     {
         private Mock<IProjectRepository> _projectRepository;
         private Mock<IUserService> _userService;
+        private Mock<IUserToProjectRepository> _userToProjectRepository;
 
         [SetUp]
         public void Setup()
         {
             _projectRepository = new Mock<IProjectRepository>();
             _userService = new Mock<IUserService>();
+            _userToProjectRepository = new Mock<IUserToProjectRepository>();
         }
 
         [Test]
         public void CreateProject_NameEmpty()
         {
-            _projectRepository.Setup(p => p.CreateProject(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<long>()))
+            _projectRepository.Setup(p => p.CreateProject(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<long>(), It.IsAny<DateTime>(), It.IsAny<DateTime>()))
                 .ThrowsAsync(new ArgumentException());
 
-            var projectService = new ProjectService(_projectRepository.Object, _userService.Object);
+            var projectService = new ProjectService(_projectRepository.Object, _userService.Object, _userToProjectRepository.Object);
 
-            Assert.ThrowsAsync<ArgumentException>(() => projectService.CreateProject("", "Description", 1));
+            Assert.ThrowsAsync<ArgumentException>(() => projectService.CreateProject("", "Description", 1, Convert.ToDateTime("05/30/2021"), Convert.ToDateTime("12/18/2021")));
         }
 
         [Test]
         public void CreateProject_NameNull()
         {
-            _projectRepository.Setup(p => p.CreateProject(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<long>()))
+            _projectRepository.Setup(p => p.CreateProject(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<long>(), It.IsAny<DateTime>(), It.IsAny<DateTime>()))
                 .ThrowsAsync(new ArgumentException());
 
-            var projectService = new ProjectService(_projectRepository.Object, _userService.Object);
+            var projectService = new ProjectService(_projectRepository.Object, _userService.Object, _userToProjectRepository.Object);
 
-            Assert.ThrowsAsync<ArgumentException>(() => projectService.CreateProject(null, "Description", 1));
+            Assert.ThrowsAsync<ArgumentException>(() => projectService.CreateProject(null, "Description", 1, Convert.ToDateTime("05/30/2021"), Convert.ToDateTime("12/18/2021")));
         }
 
         [Test]
         public void CreateProject_DescriptionEmpty()
         {
-            _projectRepository.Setup(p => p.CreateProject(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<long>()))
+            _projectRepository.Setup(p => p.CreateProject(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<long>(), It.IsAny<DateTime>(), It.IsAny<DateTime>()))
                 .ThrowsAsync(new ArgumentException());
 
-            var projectService = new ProjectService(_projectRepository.Object, _userService.Object);
+            var projectService = new ProjectService(_projectRepository.Object, _userService.Object, _userToProjectRepository.Object);
 
-            Assert.ThrowsAsync<ArgumentException>(() => projectService.CreateProject("Project1", "", 1));
+            Assert.ThrowsAsync<ArgumentException>(() => projectService.CreateProject("Project1", "", 1, Convert.ToDateTime("05/30/2021"), Convert.ToDateTime("12/18/2021")));
         }
 
         [Test]
         public void CreateProject_DescriptionNull()
         {
-            _projectRepository.Setup(p => p.CreateProject(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<long>()))
+            _projectRepository.Setup(p => p.CreateProject(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<long>(), It.IsAny<DateTime>(), It.IsAny<DateTime>()))
                 .ThrowsAsync(new ArgumentException());
 
-            var projectService = new ProjectService(_projectRepository.Object, _userService.Object);
+            var projectService = new ProjectService(_projectRepository.Object, _userService.Object, _userToProjectRepository.Object);
 
-            Assert.ThrowsAsync<ArgumentException>(() => projectService.CreateProject("Project1", null, 1));
+            Assert.ThrowsAsync<ArgumentException>(() => projectService.CreateProject("Project1", null, 1, Convert.ToDateTime("05/30/2021"), Convert.ToDateTime("12/18/2021")));
         }
 
         [Test]
         public void CreateProject_OwnerIdError()
         {
-            _projectRepository.Setup(p => p.CreateProject(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<long>()))
+            _projectRepository.Setup(p => p.CreateProject(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<long>(), It.IsAny<DateTime>(), It.IsAny<DateTime>()))
                 .ThrowsAsync(new ArgumentException());
 
-            var projectService = new ProjectService(_projectRepository.Object, _userService.Object);
+            var projectService = new ProjectService(_projectRepository.Object, _userService.Object, _userToProjectRepository.Object);
 
-            Assert.ThrowsAsync<ArgumentException>(() => projectService.CreateProject("Project1", "Description", 0));
+            Assert.ThrowsAsync<ArgumentException>(() => projectService.CreateProject("Project1", "Description", 0, Convert.ToDateTime("05/30/2021"), Convert.ToDateTime("12/18/2021")));
         }
 
         [Test]
         public async Task CreateProject_Success()
         {
-            _projectRepository.Setup(p => p.CreateProject(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<long>()))
-                .Returns(Task.CompletedTask);
+            _projectRepository.Setup(p => p.CreateProject(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<long>(), It.IsAny<DateTime>(), It.IsAny<DateTime>()))
+                .ReturnsAsync(1);
 
-            var projectService = new ProjectService(_projectRepository.Object, _userService.Object);
+            var projectService = new ProjectService(_projectRepository.Object, _userService.Object, _userToProjectRepository.Object);
 
-            await projectService.CreateProject("Project1", "Description", 1);
+            await projectService.CreateProject("Project1", "Description", 1, Convert.ToDateTime("05/30/2021"), Convert.ToDateTime("12/18/2021"));
 
-            _projectRepository.Verify(p => p.CreateProject(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<long>()), Times.Once);
+            _projectRepository.Verify(p => p.CreateProject(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<long>(), It.IsAny<DateTime>(), It.IsAny<DateTime>()), Times.Once);
         }
 
         [Test]
@@ -97,7 +99,7 @@ namespace Project.Test.Service
             _projectRepository.Setup(p => p.GetProjectById(It.IsAny<long>()))
                 .ThrowsAsync(new ArgumentException());
 
-            var projectService = new ProjectService(_projectRepository.Object, _userService.Object);
+            var projectService = new ProjectService(_projectRepository.Object, _userService.Object, _userToProjectRepository.Object);
 
             Assert.ThrowsAsync<ArgumentException>(() => projectService.GetProjectById(1, It.IsAny<string>()));
         }
@@ -111,7 +113,7 @@ namespace Project.Test.Service
             _userService.Setup(a => a.GetAccountById(It.IsAny<long>(), It.IsAny<string>()))
                 .ReturnsAsync(new Account());
 
-            var projectService = new ProjectService(_projectRepository.Object, _userService.Object);
+            var projectService = new ProjectService(_projectRepository.Object, _userService.Object, _userToProjectRepository.Object);
 
             await projectService.GetProjectById(1, It.IsAny<string>());
 
@@ -124,7 +126,7 @@ namespace Project.Test.Service
             _projectRepository.Setup(p => p.GetProjectByName(It.IsAny<string>()))
                 .ThrowsAsync(new ArgumentException());
 
-            var projectService = new ProjectService(_projectRepository.Object, _userService.Object);
+            var projectService = new ProjectService(_projectRepository.Object, _userService.Object, _userToProjectRepository.Object);
 
             Assert.ThrowsAsync<ArgumentException>(() => projectService.GetProjectByName("Project1", It.IsAny<string>()));
         }
@@ -138,7 +140,7 @@ namespace Project.Test.Service
             _userService.Setup(a => a.GetAccountById(It.IsAny<long>(), It.IsAny<string>()))
                 .ReturnsAsync(new Account());
 
-            var projectService = new ProjectService(_projectRepository.Object, _userService.Object);
+            var projectService = new ProjectService(_projectRepository.Object, _userService.Object, _userToProjectRepository.Object);
 
             await projectService.GetProjectByName("Project1", It.IsAny<string>());
 
@@ -151,7 +153,7 @@ namespace Project.Test.Service
             _projectRepository.Setup(p => p.UpdateProject(It.IsAny<long>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<long>()))
                 .ThrowsAsync(new ArgumentException());
 
-            var projectService = new ProjectService(_projectRepository.Object, _userService.Object);
+            var projectService = new ProjectService(_projectRepository.Object, _userService.Object, _userToProjectRepository.Object);
 
             Assert.ThrowsAsync<ArgumentException>(() => projectService.UpdateProject(1, "NewName", "NewDescription", 2));
         }
@@ -162,7 +164,7 @@ namespace Project.Test.Service
             _projectRepository.Setup(p => p.UpdateProject(It.IsAny<long>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<long>()))
                 .ThrowsAsync(new ArgumentException());
 
-            var projectService = new ProjectService(_projectRepository.Object, _userService.Object);
+            var projectService = new ProjectService(_projectRepository.Object, _userService.Object, _userToProjectRepository.Object);
 
             Assert.ThrowsAsync<ArgumentException>(() => projectService.UpdateProject(1, "", "NewDescription", 2));
         }
@@ -173,7 +175,7 @@ namespace Project.Test.Service
             _projectRepository.Setup(p => p.UpdateProject(It.IsAny<long>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<long>()))
                 .ThrowsAsync(new ArgumentException());
 
-            var projectService = new ProjectService(_projectRepository.Object, _userService.Object);
+            var projectService = new ProjectService(_projectRepository.Object, _userService.Object, _userToProjectRepository.Object);
 
             Assert.ThrowsAsync<ArgumentException>(() => projectService.UpdateProject(1, null, "NewDescription", 2));
         }
@@ -184,7 +186,7 @@ namespace Project.Test.Service
             _projectRepository.Setup(p => p.UpdateProject(It.IsAny<long>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<long>()))
                 .ThrowsAsync(new ArgumentException());
 
-            var projectService = new ProjectService(_projectRepository.Object, _userService.Object);
+            var projectService = new ProjectService(_projectRepository.Object, _userService.Object, _userToProjectRepository.Object);
 
             Assert.ThrowsAsync<ArgumentException>(() => projectService.UpdateProject(1, "NewName", "", 2));
         }
@@ -195,7 +197,7 @@ namespace Project.Test.Service
             _projectRepository.Setup(p => p.UpdateProject(It.IsAny<long>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<long>()))
                 .ThrowsAsync(new ArgumentException());
 
-            var projectService = new ProjectService(_projectRepository.Object, _userService.Object);
+            var projectService = new ProjectService(_projectRepository.Object, _userService.Object, _userToProjectRepository.Object);
 
             Assert.ThrowsAsync<ArgumentException>(() => projectService.UpdateProject(1, "NewName", null, 2));
         }
@@ -206,7 +208,7 @@ namespace Project.Test.Service
             _projectRepository.Setup(p => p.UpdateProject(It.IsAny<long>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<long>()))
                 .ThrowsAsync(new ArgumentException());
 
-            var projectService = new ProjectService(_projectRepository.Object, _userService.Object);
+            var projectService = new ProjectService(_projectRepository.Object, _userService.Object, _userToProjectRepository.Object);
 
             Assert.ThrowsAsync<ArgumentException>(() => projectService.UpdateProject(1, "NewName", "NewDescription", 0));
         }
@@ -220,7 +222,7 @@ namespace Project.Test.Service
             _projectRepository.Setup(p => p.UpdateProject(It.Is<long>(a => a.Equals(1)), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<long>()))
                 .Returns(Task.CompletedTask);
 
-            var projectService = new ProjectService(_projectRepository.Object, _userService.Object);
+            var projectService = new ProjectService(_projectRepository.Object, _userService.Object, _userToProjectRepository.Object);
 
             await projectService.UpdateProject(1, "NewName", "NewDescription", 2);
 

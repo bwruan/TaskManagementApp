@@ -21,6 +21,7 @@ namespace ProjectTask.Domain.Mapper
             coreTask.CreatedDate = dbTask.CreatedDate;
             coreTask.UpdatedDate = dbTask.UpdatedDate;
             coreTask.CompletedDate = dbTask.CompletedDate;
+            coreTask.IsCompleted = dbTask.IsCompleted;
 
             return coreTask;
         }

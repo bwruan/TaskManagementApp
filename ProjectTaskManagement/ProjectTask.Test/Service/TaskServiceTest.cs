@@ -165,7 +165,7 @@ namespace ProjectTask.Test.Service
                 .ReturnsAsync(new DbTask() { TaskId = 1, IsCompleted = true });
 
             _taskRepository.Setup(t => t.MarkComplete(It.IsAny<long>(), It.IsAny<bool>()))
-                .Returns(Task.CompletedTask);
+                .ReturnsAsync(new DateTime());
 
             var taskService = new TaskService(_taskRepository.Object, _projectService.Object);
 
@@ -179,7 +179,7 @@ namespace ProjectTask.Test.Service
                 .ReturnsAsync(new DbTask() { TaskId = 1, IsCompleted = false});
             
             _taskRepository.Setup(t => t.MarkComplete(It.IsAny<long>(), It.IsAny<bool>()))
-                .Returns(Task.CompletedTask);
+                .ReturnsAsync(new DateTime());
 
             var taskService = new TaskService(_taskRepository.Object, _projectService.Object);
 

@@ -7,12 +7,14 @@ namespace Project.Api.Models
 {
     public class ProjectRequest
     {
-        public long ProjectId { get; set; }
-
         public string ProjectName { get; set; }
 
         public string ProjectDescription { get; set; }
 
         public long OwnerId { get; set; }
+
+        public DateTime StartDate { get; set; }
+
+        public DateTime EndDate { get; set; }
     }
 }

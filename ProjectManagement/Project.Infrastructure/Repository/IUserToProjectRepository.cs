@@ -8,5 +8,7 @@ namespace Project.Infrastructure.Repository
         Task<List<Entities.Project>> GetProjectsByAccountId(long accountId);
 
         Task<List<long>> GetAccountIdsByProjectId(long projectId);
+
+        Task AddProject(long accountId, long projectId);
     }
 }

@@ -7,7 +7,7 @@ namespace Project.Domain.Services
 {
     public interface IProjectService
     {
-        Task CreateProject(string name, string description, long ownerId);
+        Task<long> CreateProject(string name, string description, long ownerId, DateTime startDate, DateTime endDate);
 
         Task UpdateProject(long projectId, string newName, string newDescription, long newOwnerId);
 

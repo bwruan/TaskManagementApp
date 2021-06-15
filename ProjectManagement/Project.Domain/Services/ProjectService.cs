@@ -10,14 +10,16 @@ namespace Project.Domain.Services
     {
         private readonly IProjectRepository _projectRepository;
         private readonly IUserService _userService;
+        private readonly IUserToProjectRepository _userToProjectRepository;
 
-        public ProjectService(IProjectRepository projectRepository, IUserService userService)
+        public ProjectService(IProjectRepository projectRepository, IUserService userService, IUserToProjectRepository userToProjectRepository)
         {
             _projectRepository = projectRepository;
             _userService = userService;
+            _userToProjectRepository = userToProjectRepository;
         }
 
-        public async Task CreateProject(string name, string description, long ownerId)
+        public async Task<long> CreateProject(string name, string description, long ownerId, DateTime startDate, DateTime endDate)
         {
             if (string.IsNullOrEmpty(name))
             {
@@ -34,7 +36,10 @@ namespace Project.Domain.Services
                 throw new ArgumentException("Owner Id error.");
             }
             
-            await _projectRepository.CreateProject(name, description, ownerId);
+            var projectId = await _projectRepository.CreateProject(name, description, ownerId, startDate, endDate);
+            await _userToProjectRepository.AddProject(ownerId, projectId);
+
+            return projectId;
         }
 
         public async Task<Models.Project> GetProjectById(long id, string token)
