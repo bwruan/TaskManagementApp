@@ -32,5 +32,19 @@ namespace Project.Infrastructure.Repository
                 return await context.UserToProjects.Where(p => p.ProjectId == projectId).Select(p => p.AccountId).ToListAsync();
             }
         }
+
+        public async Task AddProject(long accountId, long projectId)
+        {
+            using (var context = new TaskManagementContext())
+            {
+                context.UserToProjects.Add(new UserToProject()
+                {
+                    AccountId = accountId,
+                    ProjectId = projectId
+                });
+
+                await context.SaveChangesAsync();
+            }
+        }
     }
 }

@@ -16,6 +16,7 @@ namespace Project.Test.Controller
     {
         private Mock<IProjectService> _projectService;
 
+
         [SetUp]
         public void Setup()
         {
@@ -26,7 +27,7 @@ namespace Project.Test.Controller
         public async Task CreateProject_Success()
         {
             _projectService.Setup(p => p.CreateProject(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<long>(), It.IsAny<DateTime>(), It.IsAny<DateTime>()))
-                .Returns(Task.CompletedTask);
+                .ReturnsAsync(1);
 
             var controller = new ProjectController(_projectService.Object);
 

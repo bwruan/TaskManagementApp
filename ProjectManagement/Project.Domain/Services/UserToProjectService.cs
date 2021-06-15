@@ -21,6 +21,13 @@ namespace Project.Domain.Services
             _userService = userService;
         }
 
+        public async Task AddProject(string name, string description, long ownerId, DateTime startDate, DateTime endDate, long projectId)
+        {
+            await _projectRepository.CreateProject(name, description, ownerId, startDate, endDate);
+
+            await _userToProjectRepository.AddProject(ownerId, projectId);
+        }
+
         public async Task<List<Account>> GetAccountByProjectId(long projectId, string token)
         {
             var project = await _projectRepository.GetProjectById(projectId);

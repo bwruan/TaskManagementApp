@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Project.Api.Models;
 using Project.Domain.Services;
+using Project.Infrastructure.UserManagement;
 
 namespace Project.Api.Controllers
 {
@@ -26,9 +27,9 @@ namespace Project.Api.Controllers
         {
             try
             {
-                await _projectService.CreateProject(request.ProjectName, request.ProjectDescription, request.OwnerId, request.StartDate, request.EndDate);
+                var projectId = await _projectService.CreateProject(request.ProjectName, request.ProjectDescription, request.OwnerId, request.StartDate, request.EndDate);
 
-                return StatusCode(201);
+                return StatusCode(201, new { projectId});
             }
             catch(Exception ex)
             {

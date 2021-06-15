@@ -11,5 +11,7 @@ namespace Project.Domain.Services
         Task<List<Models.Project>> GetProjectsByAccountId(long accountId, string token);
 
         Task<List<Account>> GetAccountByProjectId(long projectId, string token);
+
+        Task AddProject(string name, string description, long ownerId, DateTime startDate, DateTime endDate, long projectId);
     }
 }
