@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace ProjectTask.Api.Models
 {
-    public class CompleteRequest
+    public class BaseTaskRequest
     {
         public long TaskId { get; set; }
     }

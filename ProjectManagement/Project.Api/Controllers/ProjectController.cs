@@ -29,7 +29,7 @@ namespace Project.Api.Controllers
             {
                 var projectId = await _projectService.CreateProject(request.ProjectName, request.ProjectDescription, request.OwnerId, request.StartDate, request.EndDate);
 
-                return StatusCode(201, new { projectId});
+                return Ok( new { projectId});
             }
             catch(Exception ex)
             {

@@ -21,6 +21,21 @@ namespace Project.Domain.Services
             _userService = userService;
         }
 
+        public async Task<Account> AddMember(long projectId, string email, string token)
+        {
+            var project = await _projectRepository.GetProjectById(projectId);
+            var account = await _userService.GetAccountByEmail(email, token);
+
+            if(account == null)
+            {
+                throw new ArgumentException("Account does not exist");
+            }
+
+            await _userToProjectRepository.AddMember(project.ProjectId, account.Id);
+
+            return ProjectMapper.UserAccountToCoreAccount(account);
+        }
+
         public async Task AddProject(string name, string description, long ownerId, DateTime startDate, DateTime endDate, long projectId)
         {
             await _projectRepository.CreateProject(name, description, ownerId, startDate, endDate);

@@ -9,6 +9,8 @@ namespace Project.Infrastructure.Repository
 
         Task<List<long>> GetAccountIdsByProjectId(long projectId);
 
-        Task AddProject(long accountId, long projectId);
+        Task AddProject(long ownerId, long projectId);
+
+        Task AddMember(long projectId, long accountId);
     }
 }

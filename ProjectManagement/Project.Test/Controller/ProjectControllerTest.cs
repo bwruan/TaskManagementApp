@@ -41,11 +41,11 @@ namespace Project.Test.Controller
             });
 
             Assert.NotNull(response);
-            Assert.AreEqual(response.GetType(), typeof(StatusCodeResult));
+            Assert.AreEqual(response.GetType(), typeof(OkObjectResult));
 
-            var statusCode = (StatusCodeResult)response;
+            var okObj = (OkObjectResult)response;
 
-            Assert.AreEqual(statusCode.StatusCode, 201);
+            Assert.AreEqual(okObj.StatusCode, 200);
         }
 
         [Test]

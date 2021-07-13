@@ -33,14 +33,28 @@ namespace Project.Infrastructure.Repository
             }
         }
 
-        public async Task AddProject(long accountId, long projectId)
+        public async Task AddProject(long ownerId, long projectId)
         {
             using (var context = new TaskManagementContext())
             {
                 context.UserToProjects.Add(new UserToProject()
                 {
-                    AccountId = accountId,
+                    AccountId = ownerId,
                     ProjectId = projectId
+                });
+
+                await context.SaveChangesAsync();
+            }
+        }
+
+        public async Task AddMember(long projectId, long accountId)
+        {
+            using (var context = new TaskManagementContext())
+            {
+                context.UserToProjects.Add(new UserToProject()
+                {
+                    ProjectId = projectId,
+                    AccountId = accountId
                 });
 
                 await context.SaveChangesAsync();

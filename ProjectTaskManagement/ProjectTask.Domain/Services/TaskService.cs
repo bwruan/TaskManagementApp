@@ -1,6 +1,7 @@
 ﻿using ProjectTask.Domain.Mapper;
 using ProjectTask.Infrastructure.ProjectManagement;
 using ProjectTask.Infrastructure.Repositories;
+using ProjectTask.Infrastructure.UserManagement;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -11,14 +12,16 @@ namespace ProjectTask.Domain.Services
     {
         private readonly ITaskRepository _taskRepository;
         private readonly IProjectService _projectService;
+        private readonly IUserService _userService;
 
-        public TaskService(ITaskRepository taskRepository, IProjectService projectService)
+        public TaskService(ITaskRepository taskRepository, IProjectService projectService, IUserService userService)
         {
             _taskRepository = taskRepository;
             _projectService = projectService;
+            _userService = userService;
         }
 
-        public async Task CreateTask(string name, string description, long projectId, long taskeeId)
+        public async Task<long> CreateTask(string name, string description, long projectId, long taskeeId, DateTime dueDate, string token)
         {
             if (string.IsNullOrEmpty(name))
             {
@@ -35,12 +38,16 @@ namespace ProjectTask.Domain.Services
                 throw new ArgumentException("Project Id error.");
             }
 
-            if (taskeeId <= 0)
+            var taskeeAccount = await _userService.GetAccountById(taskeeId, token);
+
+            if (taskeeAccount == null)
             {
                 throw new ArgumentException("Account does not exist");
             }
 
-            await _taskRepository.CreateTask(name, description, projectId, taskeeId);
+            var taskId = await _taskRepository.CreateTask(name, description, projectId, taskeeAccount.Id, dueDate);
+
+            return taskId;
         }
 
         public async Task<Models.Task> GetTaskByName(string name, string token)
@@ -110,7 +117,19 @@ namespace ProjectTask.Domain.Services
                 throw new ArgumentException("Task already completed.");
             }
 
-            return await _taskRepository.MarkComplete(taskId, true);
+            return await _taskRepository.MarkComplete(task.TaskId, true);
+        }
+
+        public async Task RemoveTask(long taskId)
+        {
+            var task = await _taskRepository.GetTaskByTaskId(taskId);
+
+            if (task == null)
+            {
+                throw new ArgumentException("Task does not exist.");
+            }
+
+            await _taskRepository.RemoveTask(task.TaskId);
         }
 
         public async Task UpdateTask(long taskId, string newName, string newDescription, long newTaskeeId, DateTime newDueDate)

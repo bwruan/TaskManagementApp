@@ -8,19 +8,24 @@ namespace ProjectTask.Infrastructure.Repositories
 {
     public class TaskRepository : ITaskRepository
     {
-        public async System.Threading.Tasks.Task CreateTask(string name, string description, long projectId, long taskeeId)
+        public async Task<long> CreateTask(string name, string description, long projectId, long taskeeId, DateTime dueDate)
         {
             using (var context = new Entities.TaskManagementContext())
             {
-                context.Tasks.Add(new Entities.Task()
+                var task = new Entities.Task()
                 {
                     TaskName = name,
                     TaskDescription = description,
                     ProjectId = projectId,
-                    TaskeeId = taskeeId                    
-                });
+                    TaskeeId = taskeeId,
+                    DueDate = dueDate
+                };
+
+                context.Tasks.Add(task);
 
                 await context.SaveChangesAsync();
+
+                return task.TaskId;
             }
         }
 
@@ -70,6 +75,18 @@ namespace ProjectTask.Infrastructure.Repositories
                 await context.SaveChangesAsync();
 
                 return completeDate;
+            }
+        }
+
+        public async Task RemoveTask(long taskId)
+        {
+            using (var context = new Entities.TaskManagementContext())
+            {
+                var task = await context.Tasks.FirstOrDefaultAsync(t => t.TaskId == taskId);
+
+                context.Tasks.Remove(task);
+
+                await context.SaveChangesAsync();
             }
         }
 

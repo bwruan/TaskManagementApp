@@ -19,6 +19,6 @@ namespace ProjectTask.Api.Models
 
         public long TaskeeId { get; set; }
 
-        public bool IsCompleted { get; set; }
+        public DateTime DueDate { get; set; }
     }
 }
