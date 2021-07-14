@@ -279,5 +279,35 @@ namespace ProjectTask.Test.Service
 
             _taskRepository.Verify(t => t.UpdateTask(It.IsAny<long>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<long>(), It.IsAny<DateTime>()), Times.Once);
         }
+
+        [Test]
+        public void DeleteTask_Fail()
+        {
+            _taskRepository.Setup(t => t.GetTaskByTaskId(It.IsAny<long>()))
+                .ThrowsAsync(new ArgumentException());
+
+            _taskRepository.Setup(t => t.RemoveTask(It.IsAny<long>()))
+                .Returns(Task.CompletedTask);
+
+            var taskService = new TaskService(_taskRepository.Object, _projectService.Object, _userService.Object);
+
+            Assert.ThrowsAsync<ArgumentException>(() => taskService.RemoveTask(1));
+        }
+
+        [Test]
+        public async Task DeleteTask_Success()
+        {
+            _taskRepository.Setup(t => t.GetTaskByTaskId(It.IsAny<long>()))
+                .ReturnsAsync(new DbTask());
+
+            _taskRepository.Setup(t => t.RemoveTask(It.IsAny<long>()))
+                .Returns(Task.CompletedTask);
+
+            var taskService = new TaskService(_taskRepository.Object, _projectService.Object, _userService.Object);
+
+            await taskService.RemoveTask(1);
+
+            _taskRepository.Verify(t => t.RemoveTask(It.IsAny<long>()), Times.Once);
+        }
     }
 }

@@ -176,12 +176,12 @@ namespace ProjectTask.Api.Controllers
         }
 
         [HttpDelete]
-        [Route("delete")]
-        public async Task<IActionResult> RemoveTask([FromBody] BaseTaskRequest request)
+        [Route("delete/{taskId}")]
+        public async Task<IActionResult> RemoveTask(long taskId)
         {
             try
             {
-                await _taskService.RemoveTask(request.TaskId);
+                await _taskService.RemoveTask(taskId);
 
                 return Ok();
             }

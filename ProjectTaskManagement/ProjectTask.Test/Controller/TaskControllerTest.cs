@@ -344,5 +344,47 @@ namespace ProjectTask.Test.Controller
 
             Assert.AreEqual(obj.StatusCode, 500);
         }
+
+        [Test]
+        public async Task DeleteTask_Success()
+        {
+            _taskService.Setup(t => t.GetTaskByTaskId(It.IsAny<long>(), It.IsAny<string>()))
+                .ReturnsAsync(new CoreTask());
+
+            _taskService.Setup(t => t.RemoveTask(It.IsAny<long>()))
+                .Returns(Task.CompletedTask);
+
+            var controller = new TaskController(_taskService.Object, _userService.Object);
+
+            var response = await controller.RemoveTask(1);
+
+            Assert.NotNull(response);
+            Assert.AreEqual(response.GetType(), typeof(OkResult));
+
+            var okObj = (OkResult)response;
+
+            Assert.AreEqual(okObj.StatusCode, 200);
+        }
+
+        [Test]
+        public async Task DeleteTask_InternalServerError()
+        {
+            _taskService.Setup(t => t.GetTaskByTaskId(It.IsAny<long>(), It.IsAny<string>()))
+                .ThrowsAsync(new ArgumentException());
+
+            _taskService.Setup(t => t.RemoveTask(It.IsAny<long>()))
+                .ThrowsAsync(new ArgumentException());
+
+            var controller = new TaskController(_taskService.Object, _userService.Object);
+
+            var response = await controller.RemoveTask(1);
+
+            Assert.NotNull(response);
+            Assert.AreEqual(response.GetType(), typeof(ObjectResult));
+
+            var obj = (ObjectResult)response;
+
+            Assert.AreEqual(obj.StatusCode, 500);
+        }
     }
 }
