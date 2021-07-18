@@ -83,5 +83,24 @@ namespace Project.Domain.Services
 
             return projectList;
         }
+
+        public async Task RemoveProjectMember(long projectId, long accountId, string token)
+        {
+            var project = await _projectRepository.GetProjectById(projectId);
+
+            if (project == null)
+            {
+                throw new ArgumentException("Project does not exist");
+            }
+
+            var account = await _userService.GetAccountById(accountId, token);
+
+            if (account.Id == project.OwnerAccountId)
+            {
+                throw new ArgumentException("Cannot remove project owner from project.");
+            }
+
+            await _userToProjectRepository.RemoveProjectMember(project.ProjectId, account.Id);
+        }
     }
 }

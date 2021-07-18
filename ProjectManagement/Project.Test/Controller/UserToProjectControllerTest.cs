@@ -4,7 +4,7 @@ using Moq;
 using NUnit.Framework;
 using Project.Api.Controllers;
 using Project.Api.Models;
-using Project.Domain.Models;
+using CoreAccount = Project.Domain.Models.Account;
 using Project.Domain.Services;
 using System;
 using System.Collections.Generic;
@@ -32,7 +32,7 @@ namespace Project.Test.Controller
             httpContext.Request.Headers["Authorization"] = "Bearer testtoken";
 
             _userToProjectService.Setup(u => u.GetAccountByProjectId(It.IsAny<long>(), It.IsAny<string>()))
-                .ReturnsAsync(new List<Account>());
+                .ReturnsAsync(new List<CoreAccount>());
 
             var controller = new UserToProjectController(_userToProjectService.Object)
             {
@@ -144,7 +144,7 @@ namespace Project.Test.Controller
             httpContext.Request.Headers["Authorization"] = "Bearer testtoken";
 
             _userToProjectService.Setup(u => u.AddMember(It.IsAny<long>(), It.IsAny<string>(), It.IsAny<string>()))
-                .ReturnsAsync(new Account());
+                .ReturnsAsync(new CoreAccount());
 
             var controller = new UserToProjectController(_userToProjectService.Object)
             {
@@ -185,6 +185,56 @@ namespace Project.Test.Controller
                 ProjectId = 1,
                 Email = "email@email.com"
             });
+
+            Assert.NotNull(response);
+            Assert.AreEqual(response.GetType(), typeof(ObjectResult));
+
+            var obj = (ObjectResult)response;
+
+            Assert.AreEqual(obj.StatusCode, 500);
+        }
+
+        [Test]
+        public async Task RemoveProjectMember_Success()
+        {
+            var httpContext = new DefaultHttpContext();
+
+            httpContext.Request.Headers["Authorization"] = "Bearer testtoken";
+
+            _userToProjectService.Setup(u => u.RemoveProjectMember(It.IsAny<long>(), It.IsAny<long>(), It.IsAny<string>()))
+                .Returns(Task.CompletedTask);
+
+            var controller = new UserToProjectController(_userToProjectService.Object)
+            {
+                ControllerContext = new ControllerContext()
+                {
+                    HttpContext = httpContext
+                }
+            };
+
+            var response = await controller.RemoveProjectMember(1, 1);
+
+            Assert.NotNull(response);
+            Assert.AreEqual(response.GetType(), typeof(OkResult));
+
+            var ok = (OkResult)response;
+
+            Assert.AreEqual(ok.StatusCode, 200);
+        }
+
+        [Test]
+        public async Task RemoveProjectMember_InternalServerError()
+        {
+            var httpContext = new DefaultHttpContext();
+
+            httpContext.Request.Headers["Authorization"] = "Bearer testtoken";
+
+            _userToProjectService.Setup(u => u.RemoveProjectMember(It.IsAny<long>(), It.IsAny<long>(), It.IsAny<string>()))
+                .ThrowsAsync(new ArgumentException());
+
+            var controller = new UserToProjectController(_userToProjectService.Object);
+
+            var response = await controller.RemoveProjectMember(1, 1);
 
             Assert.NotNull(response);
             Assert.AreEqual(response.GetType(), typeof(ObjectResult));

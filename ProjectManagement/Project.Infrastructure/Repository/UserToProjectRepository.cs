@@ -60,5 +60,17 @@ namespace Project.Infrastructure.Repository
                 await context.SaveChangesAsync();
             }
         }
+
+        public async Task RemoveProjectMember(long projectId, long accountId)
+        {
+            using (var context = new TaskManagementContext())
+            {
+                var user = await context.UserToProjects.FirstOrDefaultAsync(u => u.ProjectId == projectId && u.AccountId == accountId);
+
+                context.UserToProjects.Remove(user);
+
+                await context.SaveChangesAsync();
+            }
+        }
     }
 }
