@@ -72,5 +72,21 @@ namespace Project.Infrastructure.Repository
                 await context.SaveChangesAsync();
             }
         }
+
+        public async Task DeleteProject(long projectId)
+        {
+            using (var context = new TaskManagementContext())
+            {
+                var projects = await context.UserToProjects.Include(u => u.Project).Where(u => u.ProjectId == projectId).ToListAsync();
+
+                foreach(var project in projects)
+                {
+                    context.UserToProjects.Remove(project);
+                }
+                
+
+                await context.SaveChangesAsync();
+            }
+        }
     }
 }

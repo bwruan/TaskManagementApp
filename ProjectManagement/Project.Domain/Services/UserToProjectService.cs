@@ -43,6 +43,12 @@ namespace Project.Domain.Services
             await _userToProjectRepository.AddProject(ownerId, projectId);
         }
 
+        public async Task DeleteProject(long projectId)
+        {
+            await _userToProjectRepository.DeleteProject(projectId);
+            await _projectRepository.DeleteProject(projectId);
+        }
+
         public async Task<List<Account>> GetAccountByProjectId(long projectId, string token)
         {
             var project = await _projectRepository.GetProjectById(projectId);

@@ -17,5 +17,7 @@ namespace Project.Domain.Services
         Task<Account> AddMember(long projectId, string email, string token);
 
         Task RemoveProjectMember(long projectId, long accountId, string token);
+
+        Task DeleteProject(long projectId);
     }
 }

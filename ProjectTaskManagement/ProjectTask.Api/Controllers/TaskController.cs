@@ -190,5 +190,21 @@ namespace ProjectTask.Api.Controllers
                 return StatusCode(500, ex.Message);
             }
         }
+
+        [HttpDelete]
+        [Route("remove/all/{projectId}")]
+        public async Task<IActionResult> RemoveAllTaskFromProject(long projectId)
+        {
+            try
+            {
+                await _taskService.RemoveAllTaskFromProject(projectId);
+
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
     }
 }

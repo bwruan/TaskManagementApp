@@ -120,6 +120,11 @@ namespace ProjectTask.Domain.Services
             return await _taskRepository.MarkComplete(task.TaskId, true);
         }
 
+        public async Task RemoveAllTaskFromProject(long projectId)
+        {
+            await _taskRepository.RemoveAllTaskFromProject(projectId);
+        }
+
         public async Task RemoveTask(long taskId)
         {
             var task = await _taskRepository.GetTaskByTaskId(taskId);

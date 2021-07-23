@@ -20,5 +20,7 @@ namespace ProjectTask.Infrastructure.Repositories
         Task <List<Entities.Task>> GetTasksByProjectId(long projectId);
 
         Task RemoveTask(long taskId);
+
+        Task RemoveAllTaskFromProject(long projectId);
     }
 }

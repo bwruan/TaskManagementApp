@@ -14,6 +14,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Project.Domain.Services;
+using Project.Infrastructure.ProjectTaskManagement;
 using Project.Infrastructure.Repository;
 using Project.Infrastructure.UserManagement;
 
@@ -36,7 +37,8 @@ namespace Project.Api
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<IRolesService, RolesService>();
             services.AddTransient<IProjectService, ProjectService>();
-            services.AddTransient<IUserToProjectService, UserToProjectService>(); 
+            services.AddTransient<IUserToProjectService, UserToProjectService>();
+            services.AddTransient<ITaskService, TaskService>();
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                  .AddJwtBearer(options =>
                  {

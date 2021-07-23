@@ -20,5 +20,8 @@ namespace ProjectTask.Domain.Services
         Task<List<Models.Task>> GetTasksByProjectId(long projectId, string token);
 
         Task RemoveTask(long taskId);
+
+        Task RemoveAllTaskFromProject(long projectId);
+
     }
 }

@@ -14,5 +14,7 @@ namespace Project.Infrastructure.Repository
         Task AddMember(long projectId, long accountId);
 
         Task RemoveProjectMember(long projectId, long accountId);
+
+        Task DeleteProject(long projectId);
     }
 }

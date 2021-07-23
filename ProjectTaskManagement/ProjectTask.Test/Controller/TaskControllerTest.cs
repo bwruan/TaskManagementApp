@@ -361,9 +361,9 @@ namespace ProjectTask.Test.Controller
             Assert.NotNull(response);
             Assert.AreEqual(response.GetType(), typeof(OkResult));
 
-            var okObj = (OkResult)response;
+            var ok = (OkResult)response;
 
-            Assert.AreEqual(okObj.StatusCode, 200);
+            Assert.AreEqual(ok.StatusCode, 200);
         }
 
         [Test]
@@ -385,6 +385,24 @@ namespace ProjectTask.Test.Controller
             var obj = (ObjectResult)response;
 
             Assert.AreEqual(obj.StatusCode, 500);
+        }
+
+        [Test]
+        public async Task DeleteAllTaskFromProject_Success()
+        {
+            _taskService.Setup(t => t.RemoveAllTaskFromProject(It.IsAny<long>()))
+                .Returns(Task.CompletedTask);
+
+            var controller = new TaskController(_taskService.Object, _userService.Object);
+
+            var response = await controller.RemoveAllTaskFromProject(1);
+
+            Assert.NotNull(response);
+            Assert.AreEqual(response.GetType(), typeof(OkResult));
+
+            var ok = (OkResult)response;
+
+            Assert.AreEqual(ok.StatusCode, 200);
         }
     }
 }
