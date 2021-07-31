@@ -27,7 +27,7 @@ namespace ProjectTask.Test.Controller
         [Test]
         public async Task CreateComment_Success()
         {
-            _taskCommentService.Setup(c => c.CreateComment(It.IsAny<string>(), It.IsAny<long>()))
+            _taskCommentService.Setup(c => c.CreateComment(It.IsAny<string>(), It.IsAny<long>(), It.IsAny<long>()))
                 .Returns(Task.CompletedTask);
 
             var controller = new TaskCommentController(_taskCommentService.Object);
@@ -49,7 +49,7 @@ namespace ProjectTask.Test.Controller
         [Test]
         public async Task CreateComment_InternalServerError()
         {
-            _taskCommentService.Setup(c => c.CreateComment(It.IsAny<string>(), It.IsAny<long>()))
+            _taskCommentService.Setup(c => c.CreateComment(It.IsAny<string>(), It.IsAny<long>(), It.IsAny<long>()))
                 .ThrowsAsync(new Exception());
 
             var controller = new TaskCommentController(_taskCommentService.Object);

@@ -28,7 +28,7 @@ namespace ProjectTask.Api.Controllers
         {
             try
             {
-                await _taskCommentService.CreateComment(request.Comment, request.CommenterId);
+                await _taskCommentService.CreateComment(request.Comment, request.CommenterId, request.TaskId);
 
                 return StatusCode(201);
             }

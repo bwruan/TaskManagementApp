@@ -7,7 +7,7 @@ namespace ProjectTask.Domain.Services
 {
     public interface ITaskCommentService
     {
-        Task CreateComment(string comment, long commenterId);
+        Task CreateComment(string comment, long commenterId, long taskId);
 
         Task UpdateComment(long commentId, string newComment);
 

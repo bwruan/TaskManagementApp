@@ -24,36 +24,36 @@ namespace ProjectTask.Test.Service
         [Test]
         public void CreateComment_CommentEmpty()
         {
-            _taskCommentRepository.Setup(c => c.CreateComment(It.IsAny<string>(), It.IsAny<long>()))
+            _taskCommentRepository.Setup(c => c.CreateComment(It.IsAny<string>(), It.IsAny<long>(), It.IsAny<long>()))
                 .ThrowsAsync(new ArgumentException());
 
             var taskCommentService = new TaskCommentService(_taskCommentRepository.Object);
 
-            Assert.ThrowsAsync<ArgumentException>(() => taskCommentService.CreateComment("", 1));
+            Assert.ThrowsAsync<ArgumentException>(() => taskCommentService.CreateComment("", 1, 1));
         }
 
         [Test]
         public void CreateComment_CommentNull()
         {
-            _taskCommentRepository.Setup(c => c.CreateComment(It.IsAny<string>(), It.IsAny<long>()))
+            _taskCommentRepository.Setup(c => c.CreateComment(It.IsAny<string>(), It.IsAny<long>(), It.IsAny<long>()))
                 .ThrowsAsync(new ArgumentException());
 
             var taskCommentService = new TaskCommentService(_taskCommentRepository.Object);
 
-            Assert.ThrowsAsync<ArgumentException>(() => taskCommentService.CreateComment(null, 1));
+            Assert.ThrowsAsync<ArgumentException>(() => taskCommentService.CreateComment(null, 1, 1));
         }
 
         [Test]
         public async Task CreateComment_Success()
         {
-            _taskCommentRepository.Setup(c => c.CreateComment(It.IsAny<string>(), It.IsAny<long>()))
+            _taskCommentRepository.Setup(c => c.CreateComment(It.IsAny<string>(), It.IsAny<long>(), It.IsAny<long>()))
                 .Returns(Task.CompletedTask);
 
             var taskCommentService = new TaskCommentService(_taskCommentRepository.Object);
 
-            await taskCommentService.CreateComment("Comment", 1);
+            await taskCommentService.CreateComment("Comment", 1, 1);
 
-            _taskCommentRepository.Verify(c => c.CreateComment(It.IsAny<string>(), It.IsAny<long>()), Times.Once);
+            _taskCommentRepository.Verify(c => c.CreateComment(It.IsAny<string>(), It.IsAny<long>(), It.IsAny<long>()), Times.Once);
         }
 
         [Test]

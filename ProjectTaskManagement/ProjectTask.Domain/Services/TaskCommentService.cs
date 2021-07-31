@@ -16,14 +16,14 @@ namespace ProjectTask.Domain.Services
             _taskCommentRepository = taskCommentRepository;
         }
 
-        public async Task CreateComment(string comment, long commenterId)
+        public async Task CreateComment(string comment, long commenterId, long taskId)
         {
             if (string.IsNullOrEmpty(comment))
             {
                 throw new ArgumentException("Please input comment.");
             }
             
-            await _taskCommentRepository.CreateComment(comment, commenterId);
+            await _taskCommentRepository.CreateComment(comment, commenterId, taskId);
         }
 
         public async Task<Models.TaskComment> GetCommentByCommentId(long commentId, string token)
