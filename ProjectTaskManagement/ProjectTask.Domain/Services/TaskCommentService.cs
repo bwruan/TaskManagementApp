@@ -1,4 +1,5 @@
 ﻿using ProjectTask.Domain.Mapper;
+using ProjectTask.Domain.Models;
 using ProjectTask.Infrastructure.Repositories;
 using System;
 using System.Collections.Generic;
@@ -16,7 +17,7 @@ namespace ProjectTask.Domain.Services
             _taskCommentRepository = taskCommentRepository;
         }
 
-        public async Task CreateComment(string comment, long commenterId, long taskId)
+        public async System.Threading.Tasks.Task CreateComment(string comment, long commenterId, long taskId)
         {
             if (string.IsNullOrEmpty(comment))
             {
@@ -26,7 +27,7 @@ namespace ProjectTask.Domain.Services
             await _taskCommentRepository.CreateComment(comment, commenterId, taskId);
         }
 
-        public async Task<Models.TaskComment> GetCommentByCommentId(long commentId, string token)
+        public async Task<TaskComment> GetCommentByCommentId(long commentId, string token)
         {
             var comment = await _taskCommentRepository.GetCommentByCommentId(commentId);
 
@@ -40,7 +41,28 @@ namespace ProjectTask.Domain.Services
             return coreComment;
         }
 
-        public async Task UpdateComment(long commentId, string newComment)
+        public async Task<List<TaskComment>> GetCommentsByTaskId(long taskId, int page)
+        {
+            var commentList = new List<Models.TaskComment>();
+
+            var comments = await _taskCommentRepository.GetCommentsByTaskId(taskId, page);
+
+            if (page <= 0)
+            {
+                throw new ArgumentException("Cannot display less than 1 page.");
+            }
+
+            foreach (var comment in comments)
+            {
+                var coreComment = TaskCommentMapper.DbCommentToCoreComment(comment);
+
+                commentList.Add(coreComment);
+            }
+
+            return commentList;
+        }
+
+        public async System.Threading.Tasks.Task UpdateComment(long commentId, string newComment)
         {
             var comment = await _taskCommentRepository.GetCommentByCommentId(commentId);
 

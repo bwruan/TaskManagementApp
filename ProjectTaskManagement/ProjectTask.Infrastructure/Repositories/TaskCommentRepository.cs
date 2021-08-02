@@ -46,7 +46,14 @@ namespace ProjectTask.Infrastructure.Repositories
                     commentList.Add(comment);
                 }
 
-                return commentList;
+                var skipAmt = (page - 1) * 5;
+
+                if(skipAmt > commentList.Count)
+                {
+                    throw new ArgumentException("No more comments on task.");
+                }
+
+                return commentList.Skip(skipAmt).Take(5).ToList();
             }
         }
 

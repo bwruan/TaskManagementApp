@@ -12,5 +12,7 @@ namespace ProjectTask.Domain.Services
         Task UpdateComment(long commentId, string newComment);
 
         Task<Models.TaskComment> GetCommentByCommentId(long commentId, string token);
+
+        Task<List<Models.TaskComment>> GetCommentsByTaskId(long taskId, int page);
     }
 }

@@ -167,5 +167,61 @@ namespace ProjectTask.Test.Controller
 
             Assert.AreEqual(obj.StatusCode, 500);
         }
+
+        [Test]
+        public async Task GetCommentsByTaskId_Success()
+        {
+            var httpContext = new DefaultHttpContext();
+
+            httpContext.Request.Headers["Authorization"] = "Bearer testtoken";
+
+            _taskCommentService.Setup(c => c.GetCommentsByTaskId(It.IsAny<long>(), It.IsAny<int>()))
+                .ReturnsAsync(new List<CoreComment>());
+
+            var controller = new TaskCommentController(_taskCommentService.Object)
+            {
+                ControllerContext = new ControllerContext()
+                {
+                    HttpContext = httpContext
+                }
+            };
+
+            var response = await controller.GetCommentsByTaskId(1, 1);
+
+            Assert.NotNull(response);
+            Assert.AreEqual(response.GetType(), typeof(OkObjectResult));
+
+            var okObj = (OkObjectResult)response;
+
+            Assert.AreEqual(okObj.StatusCode, 200);
+        }
+
+        [Test]
+        public async Task GetCommentsByTaskId_InternalServerError()
+        {
+            var httpContext = new DefaultHttpContext();
+
+            httpContext.Request.Headers["Authorization"] = "Bearer testtoken";
+
+            _taskCommentService.Setup(c => c.GetCommentsByTaskId(It.IsAny<long>(), It.IsAny<int>()))
+                .ThrowsAsync(new Exception());
+
+            var controller = new TaskCommentController(_taskCommentService.Object)
+            {
+                ControllerContext = new ControllerContext()
+                {
+                    HttpContext = httpContext
+                }
+            };
+
+            var response = await controller.GetCommentsByTaskId(1, 1);
+
+            Assert.NotNull(response);
+            Assert.AreEqual(response.GetType(), typeof(ObjectResult));
+
+            var obj = (ObjectResult)response;
+
+            Assert.AreEqual(obj.StatusCode, 500);
+        }
     }
 }

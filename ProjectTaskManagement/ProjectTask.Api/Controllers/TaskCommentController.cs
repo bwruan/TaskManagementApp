@@ -68,6 +68,36 @@ namespace ProjectTask.Api.Controllers
             }
         }
 
+        [HttpGet]
+        [Route("get/{taskId}/{page}")]
+        public async Task<IActionResult> GetCommentsByTaskId(long taskId, int page)
+        {
+            try
+            {
+                var token = "";
+
+                if (Request.Headers.ContainsKey("Authorization"))
+                {
+                    var jwt = (Request.Headers.FirstOrDefault(s => s.Key.Equals("Authorization"))).Value;
+
+                    if (jwt.Count <= 0)
+                    {
+                        return StatusCode(400);
+                    }
+
+                    token = jwt[0].Replace("Bearer ", "");
+                }
+
+                var comments = await _taskCommentService.GetCommentsByTaskId(taskId, page);
+
+                return Ok(comments);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
+
         [HttpPut]
         [Route("update")]
         public async Task<IActionResult> UpdateComment([FromBody] UpdateCommentRequest request)
