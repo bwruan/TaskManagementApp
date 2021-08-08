@@ -175,7 +175,7 @@ namespace ProjectTask.Test.Controller
 
             httpContext.Request.Headers["Authorization"] = "Bearer testtoken";
 
-            _taskCommentService.Setup(c => c.GetCommentsByTaskId(It.IsAny<long>(), It.IsAny<int>()))
+            _taskCommentService.Setup(c => c.GetCommentsByTaskId(It.IsAny<long>(), It.IsAny<int>(), It.IsAny<string>()))
                 .ReturnsAsync(new List<CoreComment>());
 
             var controller = new TaskCommentController(_taskCommentService.Object)
@@ -203,7 +203,7 @@ namespace ProjectTask.Test.Controller
 
             httpContext.Request.Headers["Authorization"] = "Bearer testtoken";
 
-            _taskCommentService.Setup(c => c.GetCommentsByTaskId(It.IsAny<long>(), It.IsAny<int>()))
+            _taskCommentService.Setup(c => c.GetCommentsByTaskId(It.IsAny<long>(), It.IsAny<int>(), It.IsAny<string>()))
                 .ThrowsAsync(new Exception());
 
             var controller = new TaskCommentController(_taskCommentService.Object)

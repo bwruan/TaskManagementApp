@@ -37,7 +37,7 @@ namespace ProjectTask.Infrastructure.Repositories
         {
             using(var context = new Entities.TaskManagementContext())
             {
-                var comments = await context.TaskComments.Include(c => c.Task).Where(c => c.TaskId == taskId).ToListAsync();
+                var comments = await context.TaskComments.Include(c => c.Task).Include(c => c.Commenter).Where(c => c.TaskId == taskId).ToListAsync();
 
                 var commentList = new List<Entities.TaskComment>();
 

@@ -2,6 +2,7 @@
 using NUnit.Framework;
 using ProjectTask.Domain.Services;
 using ProjectTask.Infrastructure.Repositories;
+using ProjectTask.Infrastructure.UserManagement;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -14,11 +15,13 @@ namespace ProjectTask.Test.Service
     public class TaskCommentServiceTest
     {
         private Mock<ITaskCommentRepository> _taskCommentRepository;
+        private Mock<IUserService> _userService;
 
         [SetUp]
         public void Setup()
         {
             _taskCommentRepository = new Mock<ITaskCommentRepository>();
+            _userService = new Mock<IUserService>();
         }
 
         [Test]
@@ -27,7 +30,7 @@ namespace ProjectTask.Test.Service
             _taskCommentRepository.Setup(c => c.CreateComment(It.IsAny<string>(), It.IsAny<long>(), It.IsAny<long>()))
                 .ThrowsAsync(new ArgumentException());
 
-            var taskCommentService = new TaskCommentService(_taskCommentRepository.Object);
+            var taskCommentService = new TaskCommentService(_taskCommentRepository.Object, _userService.Object);
 
             Assert.ThrowsAsync<ArgumentException>(() => taskCommentService.CreateComment("", 1, 1));
         }
@@ -38,7 +41,7 @@ namespace ProjectTask.Test.Service
             _taskCommentRepository.Setup(c => c.CreateComment(It.IsAny<string>(), It.IsAny<long>(), It.IsAny<long>()))
                 .ThrowsAsync(new ArgumentException());
 
-            var taskCommentService = new TaskCommentService(_taskCommentRepository.Object);
+            var taskCommentService = new TaskCommentService(_taskCommentRepository.Object, _userService.Object);
 
             Assert.ThrowsAsync<ArgumentException>(() => taskCommentService.CreateComment(null, 1, 1));
         }
@@ -49,7 +52,7 @@ namespace ProjectTask.Test.Service
             _taskCommentRepository.Setup(c => c.CreateComment(It.IsAny<string>(), It.IsAny<long>(), It.IsAny<long>()))
                 .Returns(Task.CompletedTask);
 
-            var taskCommentService = new TaskCommentService(_taskCommentRepository.Object);
+            var taskCommentService = new TaskCommentService(_taskCommentRepository.Object, _userService.Object);
 
             await taskCommentService.CreateComment("Comment", 1, 1);
 
@@ -62,7 +65,7 @@ namespace ProjectTask.Test.Service
             _taskCommentRepository.Setup(c => c.GetCommentByCommentId(It.IsAny<long>()))
                 .ThrowsAsync(new ArgumentException());
 
-            var taskCommentService = new TaskCommentService(_taskCommentRepository.Object);
+            var taskCommentService = new TaskCommentService(_taskCommentRepository.Object, _userService.Object);
 
             Assert.ThrowsAsync<ArgumentException>(() => taskCommentService.GetCommentByCommentId(1, It.IsAny<string>()));
         }
@@ -73,7 +76,7 @@ namespace ProjectTask.Test.Service
             _taskCommentRepository.Setup(c => c.GetCommentByCommentId(It.IsAny<long>()))
                 .ReturnsAsync(new DbComment());
 
-            var taskCommentService = new TaskCommentService(_taskCommentRepository.Object);
+            var taskCommentService = new TaskCommentService(_taskCommentRepository.Object, _userService.Object);
 
             await taskCommentService.GetCommentByCommentId(1, It.IsAny<string>());
 
@@ -89,7 +92,7 @@ namespace ProjectTask.Test.Service
             _taskCommentRepository.Setup(c => c.UpdateComment(It.IsAny<long>(), It.IsAny<string>()))
                 .Returns(Task.CompletedTask);
 
-            var taskCommentService = new TaskCommentService(_taskCommentRepository.Object);
+            var taskCommentService = new TaskCommentService(_taskCommentRepository.Object, _userService.Object);
 
             Assert.ThrowsAsync<ArgumentException>(() => taskCommentService.UpdateComment(1, It.IsAny<string>()));
         }
@@ -103,7 +106,7 @@ namespace ProjectTask.Test.Service
             _taskCommentRepository.Setup(c => c.UpdateComment(It.IsAny<long>(), It.IsAny<string>()))
                 .Returns(Task.CompletedTask);
 
-            var taskCommentService = new TaskCommentService(_taskCommentRepository.Object);
+            var taskCommentService = new TaskCommentService(_taskCommentRepository.Object, _userService.Object);
 
             Assert.ThrowsAsync<ArgumentException>(() => taskCommentService.UpdateComment(1, ""));
         }
@@ -117,7 +120,7 @@ namespace ProjectTask.Test.Service
             _taskCommentRepository.Setup(c => c.UpdateComment(It.IsAny<long>(), It.IsAny<string>()))
                 .Returns(Task.CompletedTask);
 
-            var taskCommentService = new TaskCommentService(_taskCommentRepository.Object);
+            var taskCommentService = new TaskCommentService(_taskCommentRepository.Object, _userService.Object);
 
             Assert.ThrowsAsync<ArgumentException>(() => taskCommentService.UpdateComment(1, null));
         }
@@ -131,7 +134,7 @@ namespace ProjectTask.Test.Service
             _taskCommentRepository.Setup(c => c.UpdateComment(It.IsAny<long>(), It.IsAny<string>()))
                 .Returns(Task.CompletedTask);
 
-            var taskCommentService = new TaskCommentService(_taskCommentRepository.Object);
+            var taskCommentService = new TaskCommentService(_taskCommentRepository.Object, _userService.Object);
 
             await taskCommentService.UpdateComment(1, "New Comment");
 

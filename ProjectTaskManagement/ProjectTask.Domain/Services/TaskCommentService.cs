@@ -1,6 +1,7 @@
 ﻿using ProjectTask.Domain.Mapper;
 using ProjectTask.Domain.Models;
 using ProjectTask.Infrastructure.Repositories;
+using ProjectTask.Infrastructure.UserManagement;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -11,10 +12,12 @@ namespace ProjectTask.Domain.Services
     public class TaskCommentService : ITaskCommentService
     {
         private readonly ITaskCommentRepository _taskCommentRepository;
+        private readonly IUserService _userService;
 
-        public TaskCommentService(ITaskCommentRepository taskCommentRepository)
+        public TaskCommentService(ITaskCommentRepository taskCommentRepository, IUserService userService)
         {
             _taskCommentRepository = taskCommentRepository;
+            _userService = userService;
         }
 
         public async System.Threading.Tasks.Task CreateComment(string comment, long commenterId, long taskId)
@@ -41,7 +44,7 @@ namespace ProjectTask.Domain.Services
             return coreComment;
         }
 
-        public async Task<List<TaskComment>> GetCommentsByTaskId(long taskId, int page)
+        public async Task<List<TaskComment>> GetCommentsByTaskId(long taskId, int page, string token)
         {
             var commentList = new List<Models.TaskComment>();
 
@@ -55,6 +58,9 @@ namespace ProjectTask.Domain.Services
             foreach (var comment in comments)
             {
                 var coreComment = TaskCommentMapper.DbCommentToCoreComment(comment);
+                var account = await _userService.GetAccountById(comment.CommenterId, token);
+
+                coreComment.Commenter = TaskCommentMapper.UserAccountToCoreAccount(account);
 
                 commentList.Add(coreComment);
             }

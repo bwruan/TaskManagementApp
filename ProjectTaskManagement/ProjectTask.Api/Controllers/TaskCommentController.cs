@@ -88,7 +88,7 @@ namespace ProjectTask.Api.Controllers
                     token = jwt[0].Replace("Bearer ", "");
                 }
 
-                var comments = await _taskCommentService.GetCommentsByTaskId(taskId, page);
+                var comments = await _taskCommentService.GetCommentsByTaskId(taskId, page, token);
 
                 return Ok(comments);
             }
