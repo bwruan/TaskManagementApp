@@ -35,11 +35,16 @@ namespace ProjectTask.Infrastructure.Repositories
 
         public async Task<List<TaskComment>> GetCommentsByTaskId(long taskId, int page)
         {
-            using(var context = new Entities.TaskManagementContext())
+            using(var context = new TaskManagementContext())
             {
                 var comments = await context.TaskComments.Include(c => c.Task).Include(c => c.Commenter).Where(c => c.TaskId == taskId).ToListAsync();
 
-                var commentList = new List<Entities.TaskComment>();
+                if(comments.Count == 0)
+                {
+                    return comments;
+                }
+
+                var commentList = new List<TaskComment>();
 
                 foreach (var comment in comments)
                 {
@@ -48,12 +53,33 @@ namespace ProjectTask.Infrastructure.Repositories
 
                 var skipAmt = (page - 1) * 5;
 
-                if(skipAmt > commentList.Count)
+                var totalPages = Math.Ceiling((commentList.Count / 5m));
+
+                if(page > totalPages)
                 {
                     throw new ArgumentException("No more comments on task.");
                 }
 
                 return commentList.Skip(skipAmt).Take(5).ToList();
+            }
+        }
+
+        public async Task<decimal> GetLastPageOfCommentsList(long taskId)
+        {
+            using(var context = new TaskManagementContext())
+            {
+                var comments = await context.TaskComments.Include(c => c.Task).Include(c => c.Commenter).Where(c => c.TaskId == taskId).ToListAsync();
+
+                var commentList = new List<TaskComment>();
+
+                foreach (var comment in comments)
+                {
+                    commentList.Add(comment);
+                }
+
+                var lastPage = Math.Ceiling((commentList.Count / 5m));
+
+                return lastPage;
             }
         }
 

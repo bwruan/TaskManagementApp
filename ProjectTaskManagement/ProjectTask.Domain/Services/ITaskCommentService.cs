@@ -14,5 +14,7 @@ namespace ProjectTask.Domain.Services
         Task<Models.TaskComment> GetCommentByCommentId(long commentId, string token);
 
         Task<List<Models.TaskComment>> GetCommentsByTaskId(long taskId, int page, string token);
+
+        Task<decimal> GetLastPageOfCommentsList(long taskId);
     }
 }

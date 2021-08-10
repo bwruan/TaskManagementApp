@@ -14,5 +14,7 @@ namespace ProjectTask.Infrastructure.Repositories
         Task<Entities.TaskComment> GetCommentByCommentId(long commentId);
 
         Task<List<Entities.TaskComment>> GetCommentsByTaskId(long taskId, int page);
+
+        Task<decimal> GetLastPageOfCommentsList(long taskId);
     }
 }

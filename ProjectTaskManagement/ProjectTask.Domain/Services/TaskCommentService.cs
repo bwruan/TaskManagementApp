@@ -68,6 +68,11 @@ namespace ProjectTask.Domain.Services
             return commentList;
         }
 
+        public async Task<decimal> GetLastPageOfCommentsList(long taskId)
+        {
+            return await _taskCommentRepository.GetLastPageOfCommentsList(taskId);
+        }
+
         public async System.Threading.Tasks.Task UpdateComment(long commentId, string newComment)
         {
             var comment = await _taskCommentRepository.GetCommentByCommentId(commentId);

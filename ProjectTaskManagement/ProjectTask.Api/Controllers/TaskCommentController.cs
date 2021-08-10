@@ -98,6 +98,22 @@ namespace ProjectTask.Api.Controllers
             }
         }
 
+        [HttpGet]
+        [Route("lastPage/{taskId}")]
+        public async Task<IActionResult> GetLastPageOfCommentsList(long taskId)
+        {
+            try
+            {
+                var lastPage = await _taskCommentService.GetLastPageOfCommentsList(taskId);
+
+                return Ok(lastPage);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
+
         [HttpPut]
         [Route("update")]
         public async Task<IActionResult> UpdateComment([FromBody] UpdateCommentRequest request)
