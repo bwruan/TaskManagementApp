@@ -31,9 +31,29 @@ namespace User.API.Controller
         {
             try
             {
-                await _accountService.CreateAccount(request.Name, request.Email, request.Password, request.RoleId, request.ProfilePic);
+                var accountid = await _accountService.CreateAccount(request.Name, request.Email, request.Password, request.RoleId, request.ProfilePic);
 
-                return StatusCode(201);
+                return Ok(accountid);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
+
+        [HttpPut("profilePic/{id}")]
+        [AllowAnonymous]
+        public async Task<IActionResult> UploadProfilePic(long id)
+        {
+            try
+            {
+                var file = Request.Form.Files;
+
+                var picByteArray = System.IO.File.ReadAllBytes(file.ToString());
+
+                await _accountService.UploadProfilePic(picByteArray, id);
+
+                return Ok();
             }
             catch (Exception ex)
             {

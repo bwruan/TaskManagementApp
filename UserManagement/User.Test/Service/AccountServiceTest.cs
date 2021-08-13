@@ -112,7 +112,7 @@ namespace User.Test.Service
         public async Task CreateAccount_Success()
         {
             _accountRepository.Setup(a => a.CreateAccount(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<byte[]>()))
-                .Returns(Task.CompletedTask);
+                .ReturnsAsync(1);
 
             var accountService = new AccountService(_accountRepository.Object);
 

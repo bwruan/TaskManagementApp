@@ -33,7 +33,7 @@ namespace User.Test.Controller
         public async Task CreateAccount_Success()
         {
             _accountService.Setup(a => a.CreateAccount(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<byte[]>()))
-                .Returns(Task.CompletedTask);
+                .ReturnsAsync(1);
 
             var controller = new AccountController(_accountService.Object, _configuration.Object);
 
@@ -46,11 +46,11 @@ namespace User.Test.Controller
             });
 
             Assert.NotNull(response);
-            Assert.AreEqual(response.GetType(), typeof(StatusCodeResult));
+            Assert.AreEqual(response.GetType(), typeof(OkObjectResult));
 
-            var statusCode = (StatusCodeResult)response;
+            var okObj = (OkObjectResult)response;
 
-            Assert.AreEqual(statusCode.StatusCode, 201);
+            Assert.AreEqual(okObj.StatusCode, 200);
         }
 
         [Test]
@@ -68,6 +68,42 @@ namespace User.Test.Controller
                 Password = "password123",
                 RoleId = 1
             });
+
+            Assert.NotNull(response);
+            Assert.AreEqual(response.GetType(), typeof(ObjectResult));
+
+            var obj = (ObjectResult)response;
+
+            Assert.AreEqual(obj.StatusCode, 500);
+        }
+
+        [Test]
+        public async Task UploadProfilePic_Success()
+        {
+            _accountService.Setup(a => a.UploadProfilePic(It.IsAny<byte[]>(), It.IsAny<long>()))
+                .Returns(Task.CompletedTask);
+
+            var controller = new AccountController(_accountService.Object, _configuration.Object);
+
+            var response = await controller.UploadProfilePic(1);
+
+            Assert.NotNull(response);
+            Assert.AreEqual(response.GetType(), typeof(OkResult));
+
+            var ok = (OkResult)response;
+
+            Assert.AreEqual(ok.StatusCode, 200);
+        }
+
+        [Test]
+        public async Task UploadProfilePic_InternalServerError()
+        {
+            _accountService.Setup(a => a.UploadProfilePic(It.IsAny<byte[]>(), It.IsAny<long>()))
+                .ThrowsAsync(new Exception());
+
+            var controller = new AccountController(_accountService.Object, _configuration.Object);
+
+            var response = await controller.UploadProfilePic(1);
 
             Assert.NotNull(response);
             Assert.AreEqual(response.GetType(), typeof(ObjectResult));

@@ -29,8 +29,9 @@ namespace ProjectTask.Api.Controllers
             try
             {
                 await _taskCommentService.CreateComment(request.Comment, request.CommenterId, request.TaskId);
+                var lastPage = await _taskCommentService.GetLastPageOfCommentsList(request.TaskId);
 
-                return StatusCode(201);
+                return Ok(lastPage);
             }
             catch (Exception ex)
             {
