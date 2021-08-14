@@ -10,6 +10,6 @@
 
         public int RoleId { get; set; }
 
-        public byte[] ProfilePic { get; set; }
+        public string ProfilePic { get; set; }
     }
 }

@@ -77,23 +77,23 @@ namespace User.Test.Controller
             Assert.AreEqual(obj.StatusCode, 500);
         }
 
-        [Test]
-        public async Task UploadProfilePic_Success()
-        {
-            _accountService.Setup(a => a.UploadProfilePic(It.IsAny<byte[]>(), It.IsAny<long>()))
-                .Returns(Task.CompletedTask);
+        //[Test]
+        //public async Task UploadProfilePic_Success()
+        //{
+        //    _accountService.Setup(a => a.UploadProfilePic(It.IsAny<byte[]>(), It.IsAny<long>()))
+        //        .Returns(Task.CompletedTask);
 
-            var controller = new AccountController(_accountService.Object, _configuration.Object);
+        //    var controller = new AccountController(_accountService.Object, _configuration.Object);
 
-            var response = await controller.UploadProfilePic(1);
+        //    var response = await controller.UploadProfilePic(1);
 
-            Assert.NotNull(response);
-            Assert.AreEqual(response.GetType(), typeof(OkResult));
+        //    Assert.NotNull(response);
+        //    Assert.AreEqual(response.GetType(), typeof(OkResult));
 
-            var ok = (OkResult)response;
+        //    var ok = (OkResult)response;
 
-            Assert.AreEqual(ok.StatusCode, 200);
-        }
+        //    Assert.AreEqual(ok.StatusCode, 200);
+        //}
 
         [Test]
         public async Task UploadProfilePic_InternalServerError()

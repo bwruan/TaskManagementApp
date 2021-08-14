@@ -31,7 +31,9 @@ namespace User.API.Controller
         {
             try
             {
-                var accountid = await _accountService.CreateAccount(request.Name, request.Email, request.Password, request.RoleId, request.ProfilePic);
+                var profilePicByteArray = Convert.FromBase64String(request.ProfilePic);
+
+                var accountid = await _accountService.CreateAccount(request.Name, request.Email, request.Password, request.RoleId, profilePicByteArray);
 
                 return Ok(accountid);
             }
@@ -47,9 +49,12 @@ namespace User.API.Controller
         {
             try
             {
-                var file = Request.Form.Files;
-
-                var picByteArray = System.IO.File.ReadAllBytes(file.ToString());
+                var file = Request.Form.Files[0];
+                var picByteArray = new byte[file.Length];
+                using (var fileStream = file.OpenReadStream())
+                {
+                    fileStream.Read(picByteArray, 0, (int)file.Length);
+                }
 
                 await _accountService.UploadProfilePic(picByteArray, id);
 
