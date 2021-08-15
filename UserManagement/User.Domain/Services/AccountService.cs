@@ -15,7 +15,7 @@ namespace User.Domain.Services
             _accountRepository = accountRepository;
         }
 
-        public async Task CreateAccount(string name, string email, string password, int roleId, byte[] image)
+        public async Task<long> CreateAccount(string name, string email, string password, int roleId, byte[] image)
         {
             if(string.IsNullOrEmpty(name))
             {
@@ -37,7 +37,9 @@ namespace User.Domain.Services
                 throw new ArgumentException("Password length not met.");
             }
 
-            await _accountRepository.CreateAccount(name, email, password, roleId, image);
+            var accountId = await _accountRepository.CreateAccount(name, email, password, roleId, image);
+
+            return accountId;
         }
 
         public async Task<Account> GetAccountByEmail(string email)
@@ -112,6 +114,18 @@ namespace User.Domain.Services
             }
 
             await _accountRepository.UpdatePassword(id, newPassword);
+        }
+
+        public async Task UploadProfilePic(byte[] proPic, long id)
+        {
+            var account = await _accountRepository.GetAccountById(id);
+
+            if (account == null)
+            {
+                throw new ArgumentException("Account does not exist.");
+            }
+
+            await _accountRepository.UploadProfilePic(proPic, id);
         }
     }
 }

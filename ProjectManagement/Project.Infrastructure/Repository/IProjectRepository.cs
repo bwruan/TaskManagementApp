@@ -12,5 +12,7 @@ namespace Project.Infrastructure.Repository
         Task<Entities.Project> GetProjectByName(string name);
 
         Task<Entities.Project> GetProjectById(long id);
+
+        Task DeleteProject(long projectId);
     }
 }

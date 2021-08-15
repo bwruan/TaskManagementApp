@@ -8,19 +8,24 @@ namespace ProjectTask.Infrastructure.Repositories
 {
     public class TaskRepository : ITaskRepository
     {
-        public async System.Threading.Tasks.Task CreateTask(string name, string description, long projectId, long taskeeId)
+        public async Task<long> CreateTask(string name, string description, long projectId, long taskeeId, DateTime dueDate)
         {
             using (var context = new Entities.TaskManagementContext())
             {
-                context.Tasks.Add(new Entities.Task()
+                var task = new Entities.Task()
                 {
                     TaskName = name,
                     TaskDescription = description,
                     ProjectId = projectId,
-                    TaskeeId = taskeeId                    
-                });
+                    TaskeeId = taskeeId,
+                    DueDate = dueDate
+                };
+
+                context.Tasks.Add(task);
 
                 await context.SaveChangesAsync();
+
+                return task.TaskId;
             }
         }
 
@@ -73,7 +78,34 @@ namespace ProjectTask.Infrastructure.Repositories
             }
         }
 
-        public async System.Threading.Tasks.Task UpdateTask(long taskId, string newName, string newDescription, long newTaskeeId, DateTime newDueDate)
+        public async Task RemoveAllTaskFromProject(long projectId)
+        {
+            using(var context = new Entities.TaskManagementContext())
+            {
+                var tasks = await context.Tasks.Where(t => t.ProjectId == projectId).ToListAsync();
+
+                foreach (var task in tasks)
+                {
+                    context.Tasks.Remove(task);
+                }
+
+                await context.SaveChangesAsync();
+            }
+        }
+
+        public async Task RemoveTask(long taskId)
+        {
+            using (var context = new Entities.TaskManagementContext())
+            {
+                var task = await context.Tasks.FirstOrDefaultAsync(t => t.TaskId == taskId);
+
+                context.Tasks.Remove(task);
+
+                await context.SaveChangesAsync();
+            }
+        }
+
+        public async Task UpdateTask(long taskId, string newName, string newDescription, long newTaskeeId, DateTime newDueDate)
         {
             using (var context = new Entities.TaskManagementContext())
             {

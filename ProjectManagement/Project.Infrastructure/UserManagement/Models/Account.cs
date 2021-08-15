@@ -17,5 +17,7 @@ namespace Project.Infrastructure.UserManagement.Models
         public string RoleName { get; set; }
 
         public bool Status { get; set; }
+
+        public byte[] ProfilePic { get; set; }
     }
 }

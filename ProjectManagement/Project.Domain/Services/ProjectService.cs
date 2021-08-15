@@ -1,4 +1,5 @@
 ﻿using Project.Domain.Mapper;
+using Project.Infrastructure.ProjectTaskManagement;
 using Project.Infrastructure.Repository;
 using Project.Infrastructure.UserManagement;
 using System;
@@ -11,12 +12,15 @@ namespace Project.Domain.Services
         private readonly IProjectRepository _projectRepository;
         private readonly IUserService _userService;
         private readonly IUserToProjectRepository _userToProjectRepository;
+        private readonly ITaskService _taskService;
 
-        public ProjectService(IProjectRepository projectRepository, IUserService userService, IUserToProjectRepository userToProjectRepository)
+        public ProjectService(IProjectRepository projectRepository, IUserService userService, 
+            IUserToProjectRepository userToProjectRepository, ITaskService taskService)
         {
             _projectRepository = projectRepository;
             _userService = userService;
             _userToProjectRepository = userToProjectRepository;
+            _taskService = taskService;
         }
 
         public async Task<long> CreateProject(string name, string description, long ownerId, DateTime startDate, DateTime endDate)
@@ -40,6 +44,13 @@ namespace Project.Domain.Services
             await _userToProjectRepository.AddProject(ownerId, projectId);
 
             return projectId;
+        }
+
+        public async Task DeleteProject(long projectId, string token)
+        {
+            await _taskService.RemoveAllTaskFromProject(projectId, token);
+            await _userToProjectRepository.DeleteProject(projectId);
+            await _projectRepository.DeleteProject(projectId);
         }
 
         public async Task<Models.Project> GetProjectById(long id, string token)

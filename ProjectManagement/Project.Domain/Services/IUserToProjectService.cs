@@ -13,5 +13,11 @@ namespace Project.Domain.Services
         Task<List<Account>> GetAccountByProjectId(long projectId, string token);
 
         Task AddProject(string name, string description, long ownerId, DateTime startDate, DateTime endDate, long projectId);
+
+        Task<Account> AddMember(long projectId, string email, string token);
+
+        Task RemoveProjectMember(long projectId, long accountId, string token);
+
+        Task DeleteProject(long projectId);
     }
 }

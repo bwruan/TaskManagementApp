@@ -72,5 +72,35 @@ namespace Project.Test.Service
 
             _userToProjectRepository.Verify(u => u.GetProjectsByAccountId(It.IsAny<long>()), Times.Once);
         }
+
+        [Test]
+        public void AddMember_AccountDoesNotExist()
+        {
+            _userService.Setup(a => a.GetAccountByEmail(It.IsAny<string>(), It.IsAny<string>()))
+                .ThrowsAsync(new ArgumentException());
+
+            var userToProjectService = new UserToProjectService(_userToProjectRepository.Object, _projectRepository.Object, _userService.Object);
+
+            Assert.ThrowsAsync<ArgumentException>(() => userToProjectService.AddMember(1, It.IsAny<string>(), It.IsAny<string>()));
+        }
+
+        [Test]
+        public async Task AddMember_Success()
+        {
+            _projectRepository.Setup(p => p.GetProjectById(It.IsAny<long>()))
+                .ReturnsAsync(new DbProject());
+
+            _userService.Setup(a => a.GetAccountByEmail(It.IsAny<string>(), It.IsAny<string>()))
+                .ReturnsAsync(new Account());
+
+            _userToProjectRepository.Setup(u => u.AddMember(It.IsAny<long>(), It.IsAny<long>()))
+                .Returns(Task.CompletedTask);
+
+            var userToProjectService = new UserToProjectService(_userToProjectRepository.Object, _projectRepository.Object, _userService.Object);
+
+            await userToProjectService.AddMember(1, "email@email.com", It.IsAny<string>());
+
+            _userToProjectRepository.Verify(u => u.AddMember(It.IsAny<long>(), It.IsAny<long>()), Times.Once);
+        }
     }
 }

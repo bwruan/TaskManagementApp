@@ -8,20 +8,23 @@ namespace User.Infrastructure.Repository
 {
     public class AccountRepository : IAccountRepository
     {
-        public async Task CreateAccount(string name, string email, string password, int roleId, byte[] image)
+        public async Task<long> CreateAccount(string name, string email, string password, int roleId, byte[] image)
         {
             using (var context = new TaskManagementContext())
             {
-                context.Account.Add(new Account()
+                var account = new Account()
                 {
                     Name = name,
                     Email = email,
                     Password = password,
                     RoleId = roleId,
                     ProfilePic = image
-                });
+                };
 
+                context.Account.Add(account);
                 await context.SaveChangesAsync();
+
+                return account.Id;
             }
         }
 
@@ -126,6 +129,19 @@ namespace User.Infrastructure.Repository
                 account.Email = newEmail;
                 account.RoleId = newRoleId;
                 account.ProfilePic = newPic;
+                account.UpdatedDate = DateTime.Now;
+
+                await context.SaveChangesAsync();
+            }
+        }
+
+        public async Task UploadProfilePic(byte[] proPic, long id)
+        {
+            using (var context = new TaskManagementContext())
+            {
+                var account = await context.Account.FirstOrDefaultAsync(a => a.Id == id);
+
+                account.ProfilePic = proPic;
                 account.UpdatedDate = DateTime.Now;
 
                 await context.SaveChangesAsync();

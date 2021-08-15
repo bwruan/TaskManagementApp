@@ -21,11 +21,32 @@ namespace Project.Domain.Services
             _userService = userService;
         }
 
+        public async Task<Account> AddMember(long projectId, string email, string token)
+        {
+            var project = await _projectRepository.GetProjectById(projectId);
+            var account = await _userService.GetAccountByEmail(email, token);
+
+            if(account == null)
+            {
+                throw new ArgumentException("Account does not exist");
+            }
+
+            await _userToProjectRepository.AddMember(project.ProjectId, account.Id);
+
+            return ProjectMapper.UserAccountToCoreAccount(account);
+        }
+
         public async Task AddProject(string name, string description, long ownerId, DateTime startDate, DateTime endDate, long projectId)
         {
             await _projectRepository.CreateProject(name, description, ownerId, startDate, endDate);
 
             await _userToProjectRepository.AddProject(ownerId, projectId);
+        }
+
+        public async Task DeleteProject(long projectId)
+        {
+            await _userToProjectRepository.DeleteProject(projectId);
+            await _projectRepository.DeleteProject(projectId);
         }
 
         public async Task<List<Account>> GetAccountByProjectId(long projectId, string token)
@@ -67,6 +88,25 @@ namespace Project.Domain.Services
             }
 
             return projectList;
+        }
+
+        public async Task RemoveProjectMember(long projectId, long accountId, string token)
+        {
+            var project = await _projectRepository.GetProjectById(projectId);
+
+            if (project == null)
+            {
+                throw new ArgumentException("Project does not exist");
+            }
+
+            var account = await _userService.GetAccountById(accountId, token);
+
+            if (account.Id == project.OwnerAccountId)
+            {
+                throw new ArgumentException("Cannot remove project owner from project.");
+            }
+
+            await _userToProjectRepository.RemoveProjectMember(project.ProjectId, account.Id);
         }
     }
 }

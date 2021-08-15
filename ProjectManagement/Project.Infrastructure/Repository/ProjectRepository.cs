@@ -28,6 +28,18 @@ namespace Project.Infrastructure.Repository
             }
         }
 
+        public async Task DeleteProject(long projectId)
+        {
+            using(var context = new TaskManagementContext())
+            {
+                var project = await context.Projects.FirstOrDefaultAsync(p => p.ProjectId == projectId);
+
+                context.Projects.Remove(project);
+
+                await context.SaveChangesAsync();
+            }
+        }
+
         public async Task<Entities.Project> GetProjectById(long id)
         {
             using(var context = new TaskManagementContext())

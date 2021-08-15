@@ -5,7 +5,7 @@ namespace User.Infrastructure.Repository
 {
     public interface IAccountRepository
     {
-        Task CreateAccount(string name, string email, string password, int roleId, byte[] image);
+        Task<long> CreateAccount(string name, string email, string password, int roleId, byte[] image);
 
         Task<Account> GetAccountByName(string name);
 
@@ -15,8 +15,10 @@ namespace User.Infrastructure.Repository
 
         Task UpdatePassword(long id, string newPassword);
 
-        Task UpdateAccountInfo(long id, string newName, string newEmail, int newRoleId, byte[]newPic);
+        Task UpdateAccountInfo(long id, string newName, string newEmail, int newRoleId, byte[] newPic);
 
         Task UpdateStatus(string email, string password, bool status);
+
+        Task UploadProfilePic(byte[] proPic, long id);
     }
 }

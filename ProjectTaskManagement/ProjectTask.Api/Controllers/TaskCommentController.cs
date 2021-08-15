@@ -28,9 +28,10 @@ namespace ProjectTask.Api.Controllers
         {
             try
             {
-                await _taskCommentService.CreateComment(request.Comment, request.CommenterId);
+                await _taskCommentService.CreateComment(request.Comment, request.CommenterId, request.TaskId);
+                var lastPage = await _taskCommentService.GetLastPageOfCommentsList(request.TaskId);
 
-                return StatusCode(201);
+                return Ok(lastPage);
             }
             catch (Exception ex)
             {
@@ -61,6 +62,52 @@ namespace ProjectTask.Api.Controllers
                 var comment = await _taskCommentService.GetCommentByCommentId(commentId, token);
 
                 return Ok(comment);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
+
+        [HttpGet]
+        [Route("get/{taskId}/{page}")]
+        public async Task<IActionResult> GetCommentsByTaskId(long taskId, int page)
+        {
+            try
+            {
+                var token = "";
+
+                if (Request.Headers.ContainsKey("Authorization"))
+                {
+                    var jwt = (Request.Headers.FirstOrDefault(s => s.Key.Equals("Authorization"))).Value;
+
+                    if (jwt.Count <= 0)
+                    {
+                        return StatusCode(400);
+                    }
+
+                    token = jwt[0].Replace("Bearer ", "");
+                }
+
+                var comments = await _taskCommentService.GetCommentsByTaskId(taskId, page, token);
+
+                return Ok(comments);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
+
+        [HttpGet]
+        [Route("lastPage/{taskId}")]
+        public async Task<IActionResult> GetLastPageOfCommentsList(long taskId)
+        {
+            try
+            {
+                var lastPage = await _taskCommentService.GetLastPageOfCommentsList(taskId);
+
+                return Ok(lastPage);
             }
             catch (Exception ex)
             {

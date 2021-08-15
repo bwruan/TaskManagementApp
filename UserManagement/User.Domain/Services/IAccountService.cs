@@ -5,7 +5,7 @@ namespace User.Domain.Services
 {
     public interface IAccountService
     {
-        Task CreateAccount(string name, string email, string password, int roleId, byte[] image);
+        Task<long> CreateAccount(string name, string email, string password, int roleId, byte[] image);
 
         Task<long> LogIn(string email, string password);
 
@@ -18,5 +18,7 @@ namespace User.Domain.Services
         Task UpdatePassword(long id, string newPassword);
 
         Task UpdateAccountInfo(long id, string newName, string newEmail, int newRoleId, byte[] newPic);
+
+        Task UploadProfilePic(byte[] proPic, long id);
     }
 }

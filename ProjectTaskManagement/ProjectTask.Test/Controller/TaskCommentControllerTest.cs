@@ -27,7 +27,7 @@ namespace ProjectTask.Test.Controller
         [Test]
         public async Task CreateComment_Success()
         {
-            _taskCommentService.Setup(c => c.CreateComment(It.IsAny<string>(), It.IsAny<long>()))
+            _taskCommentService.Setup(c => c.CreateComment(It.IsAny<string>(), It.IsAny<long>(), It.IsAny<long>()))
                 .Returns(Task.CompletedTask);
 
             var controller = new TaskCommentController(_taskCommentService.Object);
@@ -49,7 +49,7 @@ namespace ProjectTask.Test.Controller
         [Test]
         public async Task CreateComment_InternalServerError()
         {
-            _taskCommentService.Setup(c => c.CreateComment(It.IsAny<string>(), It.IsAny<long>()))
+            _taskCommentService.Setup(c => c.CreateComment(It.IsAny<string>(), It.IsAny<long>(), It.IsAny<long>()))
                 .ThrowsAsync(new Exception());
 
             var controller = new TaskCommentController(_taskCommentService.Object);
@@ -159,6 +159,62 @@ namespace ProjectTask.Test.Controller
                 CommentId = 1,
                 NewComment = "new comment"
             });
+
+            Assert.NotNull(response);
+            Assert.AreEqual(response.GetType(), typeof(ObjectResult));
+
+            var obj = (ObjectResult)response;
+
+            Assert.AreEqual(obj.StatusCode, 500);
+        }
+
+        [Test]
+        public async Task GetCommentsByTaskId_Success()
+        {
+            var httpContext = new DefaultHttpContext();
+
+            httpContext.Request.Headers["Authorization"] = "Bearer testtoken";
+
+            _taskCommentService.Setup(c => c.GetCommentsByTaskId(It.IsAny<long>(), It.IsAny<int>(), It.IsAny<string>()))
+                .ReturnsAsync(new List<CoreComment>());
+
+            var controller = new TaskCommentController(_taskCommentService.Object)
+            {
+                ControllerContext = new ControllerContext()
+                {
+                    HttpContext = httpContext
+                }
+            };
+
+            var response = await controller.GetCommentsByTaskId(1, 1);
+
+            Assert.NotNull(response);
+            Assert.AreEqual(response.GetType(), typeof(OkObjectResult));
+
+            var okObj = (OkObjectResult)response;
+
+            Assert.AreEqual(okObj.StatusCode, 200);
+        }
+
+        [Test]
+        public async Task GetCommentsByTaskId_InternalServerError()
+        {
+            var httpContext = new DefaultHttpContext();
+
+            httpContext.Request.Headers["Authorization"] = "Bearer testtoken";
+
+            _taskCommentService.Setup(c => c.GetCommentsByTaskId(It.IsAny<long>(), It.IsAny<int>(), It.IsAny<string>()))
+                .ThrowsAsync(new Exception());
+
+            var controller = new TaskCommentController(_taskCommentService.Object)
+            {
+                ControllerContext = new ControllerContext()
+                {
+                    HttpContext = httpContext
+                }
+            };
+
+            var response = await controller.GetCommentsByTaskId(1, 1);
 
             Assert.NotNull(response);
             Assert.AreEqual(response.GetType(), typeof(ObjectResult));

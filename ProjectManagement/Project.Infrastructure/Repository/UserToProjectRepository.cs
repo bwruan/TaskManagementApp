@@ -33,15 +33,57 @@ namespace Project.Infrastructure.Repository
             }
         }
 
-        public async Task AddProject(long accountId, long projectId)
+        public async Task AddProject(long ownerId, long projectId)
         {
             using (var context = new TaskManagementContext())
             {
                 context.UserToProjects.Add(new UserToProject()
                 {
-                    AccountId = accountId,
+                    AccountId = ownerId,
                     ProjectId = projectId
                 });
+
+                await context.SaveChangesAsync();
+            }
+        }
+
+        public async Task AddMember(long projectId, long accountId)
+        {
+            using (var context = new TaskManagementContext())
+            {
+                context.UserToProjects.Add(new UserToProject()
+                {
+                    ProjectId = projectId,
+                    AccountId = accountId
+                });
+
+                await context.SaveChangesAsync();
+            }
+        }
+
+        public async Task RemoveProjectMember(long projectId, long accountId)
+        {
+            using (var context = new TaskManagementContext())
+            {
+                var user = await context.UserToProjects.FirstOrDefaultAsync(u => u.ProjectId == projectId && u.AccountId == accountId);
+
+                context.UserToProjects.Remove(user);
+
+                await context.SaveChangesAsync();
+            }
+        }
+
+        public async Task DeleteProject(long projectId)
+        {
+            using (var context = new TaskManagementContext())
+            {
+                var projects = await context.UserToProjects.Include(u => u.Project).Where(u => u.ProjectId == projectId).ToListAsync();
+
+                foreach(var project in projects)
+                {
+                    context.UserToProjects.Remove(project);
+                }
+                
 
                 await context.SaveChangesAsync();
             }

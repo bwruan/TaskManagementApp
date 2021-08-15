@@ -38,6 +38,7 @@ namespace ProjectTask.Api
             services.AddTransient<ITaskCommentService, TaskCommentService>();
             services.AddTransient<IProjectService, ProjectService>();
             services.AddTransient<IUserService, UserService>();
+            services.AddTransient<IUserToProjectService, UserToProjectService>();
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                  .AddJwtBearer(options =>
                  {

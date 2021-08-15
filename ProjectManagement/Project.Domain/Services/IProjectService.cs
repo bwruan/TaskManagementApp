@@ -14,5 +14,7 @@ namespace Project.Domain.Services
         Task<Models.Project> GetProjectByName(string name, string token);
 
         Task<Models.Project> GetProjectById(long id, string token);
+
+        Task DeleteProject(long projectId, string token);
     }
 }

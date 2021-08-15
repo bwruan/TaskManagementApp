@@ -13,5 +13,7 @@ namespace ProjectTask.Domain.Models
         public long TaskId { get; set; }
 
         public long CommenterId { get; set; }
+
+        public Account Commenter { get; set; }
     }
 }
